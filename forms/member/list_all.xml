@@ -1,0 +1,29 @@
+<form name="theform" id="theform" method="GET" >
+    <input type="hidden" name="form-name" id="form-name" value="1" />
+
+<config
+    hidden="1"
+    id="config"
+    sanity-check="form-name"
+    form-id="theform">
+    <element
+        name="email"
+        element-id="email" />
+    <element
+        name="name"
+        element-id="name" />
+</config>
+
+<p>Filter by:
+<input type="text" name="name" id="name"
+    value="[name]"
+    onFocus="if(this.value == '[name]') this.value = '';"
+    onBlur="if(this.value == '') this.value = '[name]';"/>
+<input type="text" name="email" id="email"
+    value="[email]"
+    onFocus="if(this.value == '[email]') this.value = '';"
+    onBlur="if(this.value == '') this.value = '[email]';"/>
+<input type="submit" value="Go"/>
+</p>
+
+</form>

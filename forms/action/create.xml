@@ -1,0 +1,121 @@
+<form name="theform" id="theform" method="POST">
+    <input type="hidden" name="form-name" id="form-name" value="1" />
+
+<config
+    hidden="1"
+    id="config"
+    sanity-check="form-name"
+    error-element="overall-error"
+    form-id="theform">
+    <element
+        required="1"
+        name="title"
+        element-id="title" />
+    <element
+        required="1"
+        name="summary"
+        element-id="summary" />
+    <element
+        required="1"
+        name="label"
+        element-id="label" />
+    <element
+        required="1"
+        name="row"
+        data-type="integer"
+        element-id="row" />
+    <element
+        required="1"
+        name="description"
+        element-id="description" />
+    <element
+        required="1"
+        name="apply-object"
+        tag-name="input" />
+</config>
+
+<p class="error" id="overall-error" hidden="1">Some information is incorrect.
+Please correct the errors marked below and resubmit.</p>
+
+<table>
+
+  <tr hidden="1" id="title-error">
+    <td colspan="2" class="error">
+    This field is required.
+    </td>
+  </tr>
+  <tr>
+    <td>Title (name that the system uses; should be all lowercase, with only letters and underscores)</td>
+    <td><input maxlength="100" type="text" name="title" id="title" /></td>
+  </tr>
+
+  <tr hidden="1" id="summary-error">
+    <td colspan="2" class="error">
+    This field is required.
+    </td>
+  </tr>
+  <tr>
+    <td>Summary; should be one or two words suitable for displaying in a drop-down menu</td>
+    <td>
+      <input maxlength="25" type="text" name="summary" id="summary" />
+    </td>
+  </tr>
+
+  <tr hidden="1" id="label-error">
+    <td colspan="2" class="error">
+    This field is required.
+    </td>
+  </tr>
+  <tr>
+    <td>Label; used for UI.  Insert an &amp; character to create an access key.</td>
+    <td>
+      <input maxlength="25" type="text" name="label" id="label" />
+    </td>
+  </tr>
+
+  <tr hidden="1" id="row-error">
+    <td colspan="2" class="error">
+    This field is required and must be an integer.
+    </td>
+  </tr>
+  <tr>
+    <td>Row.  Used for UI; specifies a preferred level for a tabbed box.</td>
+    <td>
+      <input type="text" name="row" id="row" />
+    </td>
+  </tr>
+
+  <tr hidden="1" id="description-error">
+    <td colspan="2" class="error">
+    This field is required.
+    </td>
+  </tr>
+  <tr>
+    <td>Description; should be a single sentence that describes the action's purpose</td>
+    <td>
+      <input maxlength="255" type="text" name="description" id="description" />
+    </td>
+  </tr>
+
+  <tr hidden="1" id="apply-object-error">
+    <td colspan="2" class="error">
+    This field is required.
+    </td>
+  </tr>
+  <tr>
+    <td>Applies to:</td>
+    <td>
+      <input type="radio" name="apply-object" value="1" id="apply-object1" />
+      <label for="apply-object1">Objects</label>
+      <input type="radio" name="apply-object" value="0" id="apply-object0" />
+      <label for="apply-object0">Tables</label>
+    </td>
+  </tr>
+
+  <tr>
+    <td align="right" colspan="2">
+    <input type="submit" value="Create Action" />
+    </td>
+  </tr>
+</table>
+</form>

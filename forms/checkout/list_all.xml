@@ -1,0 +1,39 @@
+<form name="theform" id="theform" method="GET">
+    <input type="hidden" name="form-name" id="form-name" value="1" />
+
+<config
+    hidden="1"
+    id="config"
+    sanity-check="form-name"
+    form-id="theform">
+    <element
+        name="status"
+        element-id="status" />
+    <element
+        name="member"
+        element-id="member" />
+</config>
+
+<table>
+  <tr>
+    <td>Filter by: </td>
+    <td>
+
+    <select name="status" id="status" onChange="this.form.submit()" >
+      <option value="">[All Statuses]</option>{STATUS:}
+      <option value="{id}">{c_title}</option>{:STATUS}
+    </select>
+
+    <select name="member" id="member" onChange="this.form.submit()" >
+      <option value="">[All Members]</option>{member:}
+      <option value="{c_member}">{c_last_name}, {c_first_name}</option>{:member}
+    </select>
+
+    <input type="submit" value="Go" />
+
+    </td>
+  </tr>
+
+</table>
+
+</form>

@@ -1,0 +1,22 @@
+<form name="theform" id="theform" method="POST">
+    <input type="hidden" name="form-name" id="form-name" value="1" />
+
+<config
+    hidden="1"
+    id="config"
+    sanity-check="form-name"
+    form-id="theform">
+
+{CONFIG:}
+    <element
+        required="1"
+        data-type="{TYPE}"
+        name="{NAME}"
+        element-id="{NAME}" />{:CONFIG}
+
+</config>
+
+{ELEMENT:}
+<input type="text" name="{NAME}" id="{NAME}" />{:ELEMENT}
+
+</form>

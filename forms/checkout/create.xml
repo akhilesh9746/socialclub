@@ -1,0 +1,35 @@
+<form name="theform" id="the-form" method="POST">
+    <input type="hidden" name="form-name" id="form-name" value="1" />
+
+<config
+    hidden="1"
+    id="config"
+    sanity-check="form-name"
+    form-id="the-form">
+    <element
+        required="1"
+        name="member"
+        error-element="error-element"
+        element-id="member" />
+    <element
+        required="1"
+        name="activity"
+        error-element="error-element"
+        element-id="activity" />
+</config>
+
+<p class="error" hidden="1" id="error-element">You must select some values.</p>
+
+<select name="member" id="member">
+  <option value="">Select one</option>{member:}
+  <option value="{c_uid}">{c_last_name}, {c_first_name}</option>{:member}
+</select>
+
+<select name="activity" id="activity">
+  <option value="">Select one</option>{option:}
+  <option value="{c_uid}">{c_title}</option>{:option}
+</select>
+
+<input type="submit" value="Go" />
+
+</form>
