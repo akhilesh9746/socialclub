@@ -18,9 +18,6 @@
 <p>SQL definition:</p>
 <pre style="background:white; border:1px dashed green; padding:5px; margin:5px">{QUERY}</pre>
 
-<p>Instructions:</p>
-<p class="notice">{C_INSTRUCTIONS}</p>
-
 {actions,{PAGE},{OBJECT},default}
 
 </div>

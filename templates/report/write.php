@@ -9,8 +9,7 @@
 <p class="notice">Your changes were saved.</p>
 {:SUCCESS}
 
-<p>Use the following form to edit a report.  The same notes about parameters
-apply as when creating a report.</p>
+<p>Use the following form to edit a report.</p>
 
 {BAD:}
 <p class="error">There were some disallowed words in the query.  Please remove
