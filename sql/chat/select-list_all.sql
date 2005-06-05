@@ -4,12 +4,11 @@ select
     ct.c_title,
     ch.c_uid as t_chat,
     ch.c_screenname,
-    case when (ch.c_flags & fl.c_bitmask) then 'Y' else 'N' end as c_primary
+    case when (ch.c_flags & 512) then 'Y' else 'N' end as c_primary
 from
     [_]chat as ch
     inner join [_]member as me on me.c_uid = ch.c_owner
     inner join [_]chat_type as ct on ct.c_uid = ch.c_type
-    inner join [_]flag as fl on fl.c_title = "primary"
 where ch.c_deleted <> 1
     and me.c_deleted <> 1
     and ct.c_deleted <> 1

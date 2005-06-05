@@ -10,10 +10,9 @@ from [_]location as lo
     inner join [_]adventure_activity as aa on aa.c_adventure = ad.c_uid
     inner join [_]interest as ir on ir.c_activity = aa.c_activity
     inner join [_]activity as ac on ac.c_uid = aa.c_activity
-    inner join [_]status as st on st.c_uid = ad.c_status
 where
     ir.c_member = {member,int}
-    and st.c_title = 'active'
+    and (ad.c_status & 8 <> 0)
     and lo.c_deleted <> 1
     and ad.c_deleted <> 1
     and aa.c_deleted <> 1

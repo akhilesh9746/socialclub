@@ -9,12 +9,11 @@ select
 from
     [_]attendee as at
     inner join [_]member as me on at.c_member = me.c_uid
-    inner join [_]status as st on at.c_status = st.c_uid
     left outer join [_]absence as ab on ab.c_attendee = at.c_uid
         and ab.c_deleted <> 1
 where
     at.c_adventure = {adventure,int}
-    and (st.c_title = "active" or st.c_title = "default")
+    and (at.c_status & 9 <> 0)
     and at.c_deleted <> 1
     and me.c_deleted <> 1
 group by me.c_uid

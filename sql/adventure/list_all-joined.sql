@@ -6,7 +6,6 @@ select
     lo.c_uid as loc_uid
 from [_]adventure as ad
     inner join [_]location as lo on ad.c_destination = lo.c_uid
-    inner join [_]status as st on ad.c_status = st.c_uid
     inner join [_]attendee as at on at.c_adventure = ad.c_uid
 where at.c_member = {member,int,,,0,at.c_member}
     and ad.c_deleted <> 1

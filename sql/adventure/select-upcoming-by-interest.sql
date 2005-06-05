@@ -7,8 +7,7 @@ from [_]interest as ir
     inner join [_]adventure_activity as aa on aa.c_activity = ir.c_activity
     inner join [_]adventure as ad on ad.c_uid = aa.c_adventure
     inner join [_]activity as ac on ac.c_uid = ir.c_activity
-    inner join [_]status as st on ad.c_status = st.c_uid
-where st.c_title = "active"
+where (ad.c_status & 8 <> 0)
     and ad.c_start_date > current_date
     and ir.c_member = {member,int}
     and ir.c_deleted <> 1

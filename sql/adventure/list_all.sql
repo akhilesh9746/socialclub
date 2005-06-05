@@ -8,9 +8,8 @@ select
     me.c_full_name
 from [_]adventure as ad
     inner join [_]location as lo on ad.c_destination = lo.c_uid
-    inner join [_]status as st on ad.c_status = st.c_uid
     inner join [_]member as me on ad.c_owner = me.c_uid
-where st.c_title = "active"
+where (ad.c_status & 8 <> 0)
     and ad.c_deleted <> 1
     and lo.c_deleted <> 1
     and ({title,char} is null or ad.c_title like {title,char})

@@ -4,10 +4,9 @@ select
     ph.c_title,
     ph.c_uid as t_phone_number,
     ph.c_phone_number,
-    case when (ph.c_flags & fl.c_bitmask) then 'Y' else 'N' end as c_primary
+    case when (ph.c_flags & 512 <> 0) then 'Y' else 'N' end as c_primary
 from [_]phone_number as ph
     inner join [_]member as me on me.c_uid = ph.c_owner
-    inner join [_]flag as fl on fl.c_title = "primary"
 where ph.c_deleted <> 1
     and me.c_deleted <> 1
 order by {orderby,none,,0,me.c_last_name}

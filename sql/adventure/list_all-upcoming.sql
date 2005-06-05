@@ -6,9 +6,8 @@ select
     lo.c_uid as loc_uid
 from [_]adventure as ad
     inner join [_]location as lo on ad.c_destination = lo.c_uid
-    inner join [_]status as st on ad.c_status = st.c_uid
 where ad.c_start_date >= now()
-    and st.c_title = "active"
+    and (ad.c_status & 8 <> 0)
     and ad.c_deleted <> 1
     and lo.c_deleted <> 1
 order by ad.c_start_date

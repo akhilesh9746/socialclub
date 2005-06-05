@@ -14,8 +14,7 @@ from [_]adventure as ad
     left outer join [_]interest as ir on ir.c_activity = aa.c_activity
         and ir.c_member = {member,int}
         and ir.c_deleted <> 1
-    inner join [_]status as st on ad.c_status = st.c_uid
-where st.c_title = "active"
+where (ad.c_status & 8 <> 0)
     and c_start_date > current_date
     and ad.c_deleted <> 1
     and lo.c_deleted <> 1

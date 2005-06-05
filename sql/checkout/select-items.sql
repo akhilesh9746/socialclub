@@ -3,13 +3,11 @@ select
     it.c_uid as it_uid,
     coalesce(iat1.c_value, "[null]") as c_primary,
     coalesce(iat2.c_value, "[null]") as c_secondary,
-    ty.c_title as ty_title,
-    st.c_title as st_title
+    ty.c_title as ty_title
 from [_]checkout_item as ci
     inner join [_]item as it on it.c_uid = ci.c_item
     inner join [_]item_type as ty on ty.c_uid = it.c_type
     inner join [_]item_category as ic on ic.c_uid = ty.c_category
-    inner join [_]status as st on st.c_uid = ci.c_status
     left outer join [_]item_feature as iat1 on iat1.c_item = it.c_uid
         and iat1.c_name = ty.c_primary_feature
         and iat1.c_deleted <> 1
@@ -20,4 +18,4 @@ where ci.c_checkout = {checkout,int}
     and ci.c_deleted <> 1
     and it.c_deleted <> 1
     and ic.c_deleted <> 1
-    and ({status,int} is null or ci.c_status = {status,int})
+    and ({status,int} is null or (ci.c_status & {status,int} <> 0))

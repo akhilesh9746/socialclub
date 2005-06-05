@@ -17,7 +17,7 @@ select
     sum(
         case when (
             ms.c_uid is not null
-            and st.c_title = 'active'
+            and (ms.c_status & 8 <> 0)
             and ms.c_begin_date <= current_date
             and ms.c_expiration_date >= current_date
             )
@@ -44,7 +44,7 @@ select
     sum(
         case when (
             ms.c_uid is not null and (
-                st.c_title = 'inactive' and ms.c_expiration_date > current_date
+                (ms.c_status & 4 <> 0) and ms.c_expiration_date > current_date
             )
         )
         then 1
@@ -57,7 +57,6 @@ select
 from [_]member as me
     left outer join [_]membership as ms on me.c_uid = ms.c_member
         and ms.c_deleted <> 1
-    left outer join [_]status as st on ms.c_status = st.c_uid
 where me.c_email = {email,char,60}
     and me.c_deleted <> 1
 group by me.c_uid

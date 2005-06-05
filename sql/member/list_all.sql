@@ -47,10 +47,14 @@ from
     left outer join [_]chat_type as ct on ct.c_uid = ch.c_type
         and ct.c_deleted <> 1
 where 
-    ms.c_status = {active,int}
-    and now() >= ms.c_begin_date 
-    and now() <= ms.c_expiration_date
-    and not (me.c_flags & {private,int})
+    ({view_inactive,int} > 0 or (
+        ms.c_status & {active,int} <> 0
+        and now() >= ms.c_begin_date 
+        and now() <= ms.c_expiration_date
+    ))
+    and ({view_private,int} > 0 or (
+        me.c_flags & {private,int} = 0
+    ))
     and ms.c_deleted <> 1
     and me.c_deleted <> 1
     and ({name,char} is null or me.c_full_name like {name,char})
