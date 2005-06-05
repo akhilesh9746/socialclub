@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: check-orphaned-rows.php,v 1.1 2005/03/27 19:53:16 bps7j Exp $
+ * $Id: check-orphaned-rows.php,v 1.2 2005/06/05 16:23:56 bps7j Exp $
  *
  * This page checks for objects that don't have broken references, but may be
  * "stranded" because nothing points to them.  For example, an Interest that no
@@ -61,12 +61,6 @@ $queries["[_]chat_type"] =
         left join [_]chat as ch on ch.c_type = ct.c_uid
         where
         ch.c_uid is null";
-
-$queries["[_]group"] =
-        "select gr.c_uid, c_title from [_]group as gr
-        left join [_]member_group as mg on mg.c_related_group = gr.c_uid
-        where
-        mg.c_uid is null";
 
 $queries["[_]membership_type"] =
         "select mt.c_uid, c_title from [_]membership_type as mt
