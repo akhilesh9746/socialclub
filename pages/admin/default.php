@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: default.php,v 1.1 2005/03/27 19:53:15 bps7j Exp $
+ * $Id: default.php,v 1.2 2005/06/05 16:24:07 bps7j Exp $
  *
  * This is the default page for the Admin Tasks tab.
  */
@@ -35,12 +35,13 @@ if (!$obj['user']->isRootUser()
 $contents = file_get_contents("templates/admin/default.php");
 
 if ($obj['user']->isRootUser()
-        || $obj['user']->isInGroup('treasurer')) {
+        || $obj['user']->isInGroup('activator')) {
     $contents = Template::unhide($contents, "ACTIVATE");
 }
 
 if ($obj['user']->isRootUser()) {
     $contents = Template::unhide($contents, "DBCOMMON");
+    $contents = Template::unhide($contents, "UNSUBSCRIBE");
 }
 
 $res['content'] = $contents;

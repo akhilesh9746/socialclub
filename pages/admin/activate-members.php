@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: activate-members.php,v 1.1 2005/03/27 19:53:16 bps7j Exp $
+ * $Id: activate-members.php,v 1.2 2005/06/05 16:23:22 bps7j Exp $
  */
 
 include_once("membership.php");
@@ -26,7 +26,7 @@ include_once("Email.php");
 require_once("transaction.php");
 
 # Check that the user has correct permissions
-if (!$obj['user']->isInGroup('root') && !$obj['user']->isInGroup('treasurer')) {
+if (!$obj['user']->isInGroup('root') && !$obj['user']->isInGroup('activator')) {
     # The user is not allowed to access this page.
     include_once("pages/common/not-permitted.php");
     return false;
