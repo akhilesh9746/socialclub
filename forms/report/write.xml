@@ -20,9 +20,6 @@
         required="1"
         name="query"
         element-id="query" />
-    <element
-        name="instructions"
-        element-id="instructions" />
 </config>
 
 <table>
@@ -58,14 +55,6 @@
     <td>Query text</td>
     <td>
       <textarea name="query" id="query" rows="5" cols="60"> </textarea>
-    </td>
-  </tr>
-
-  <tr>
-    <td>Instructions.  This field is optional; use it to describe to users how
-    they should fill in any parameters when running the report.</td>
-    <td>
-      <textarea name="instructions" id="instructions" rows="5" cols="60"> </textarea>
     </td>
   </tr>
 
