@@ -1,4 +1,4 @@
-<h1>Add Privilege</h1>
+<h1>Change Group</h1>
 
 <table class="tabbedBox" border="0" cellpadding="0" cellspacing="0">
 {TABS}
