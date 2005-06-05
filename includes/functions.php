@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: functions.php,v 1.1 2005/03/27 19:54:19 bps7j Exp $
+ * $Id: functions.php,v 1.2 2005/06/05 16:20:49 bps7j Exp $
  */
 
 # ------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ function highlightSql($sql) {
 
 
 function titlecase($text) {
-    $articles = "to|at|in|it|the|from|for|and|of|on|or|a|this|by";
+    $articles = "to|with|at|in|it|the|from|for|and|of|on|or|a|this|by";
     $bad = array("!!!");
     $good = array("!");
     return ucfirst(preg_replace("/\b($articles)\b/ie", 'strtolower("\\1");',
@@ -203,6 +203,23 @@ function smiley($text) {
         $replace[$key] = "<img alt=\"\\0\" title=\"\\0\" height=\"18\" width=\"18\" src=\"assets/smiley-$val.png\">";
     }
     return preg_replace($find, $replace, $text);
+}
+
+/*
+ * Converts a bitmask value to its string representation: comma-separated names.
+ * @param value The value to convert
+ * @param type the name of the $cfg[] entry that holds the values
+ * @return string
+ */
+function bitmaskString($value, $type) {
+    global $cfg;
+    $tmp = array();
+    foreach ($cfg[$type] as $name => $val) {
+        if (($val & $value) != 0) {
+            $tmp[] = $name;
+        }
+    }
+    return join(", ", $tmp);
 }
 
 ?>
