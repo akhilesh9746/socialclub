@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: tabbed-box.php,v 1.1 2005/03/27 19:52:51 bps7j Exp $
+ * $Id: tabbed-box.php,v 1.2 2005/06/05 16:22:50 bps7j Exp $
  *
  * This page looks for an object called $cfg['object'] that it can use to check
  * permissions and so forth.  It then generates a row of tabs, one for each
@@ -39,12 +39,12 @@ if (isset($object)) {
         # 'Details' action
         foreach ($actions as $row) {
             if ($row['c_flags'] & $cfg['flag']['generic']
-                || $row['c_uid'] == $cfg['action_id']['read'])
+                || $row['c_title'] == 'read')
             {
                 $obj['tabbed_box']->addTab($row['c_label'],
                     $row['c_row'],
                     "members/{PAGE}/$row[c_title]/{OBJECT}");
-                if ($row['c_uid'] == $cfg['action']) {
+                if ($row['c_title'] == $cfg['action']) {
                     $obj['tabbed_box']->setActiveTab($row['c_label']);
                 }
             }
@@ -60,7 +60,7 @@ if (isset($object)) {
                     # Ignore the row for this.  The override file may override this
                     0,
                     "members/{PAGE}/$row[c_title]/{OBJECT}");
-                if ($row['c_uid'] == $cfg['action']) {
+                if ($row['c_title'] == $cfg['action']) {
                     $obj['tabbed_box']->setActiveTab($row['c_label']);
                 }
             }
