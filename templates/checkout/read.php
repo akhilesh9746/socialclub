@@ -51,4 +51,6 @@ tr.checked_out td {
   </tr>{:gear}
 </table>
 
+{actions,{PAGE},{OBJECT},default}
+
 </div>
