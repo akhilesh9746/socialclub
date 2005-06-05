@@ -17,19 +17,10 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: set_flags.php,v 1.1 2005/03/27 19:53:25 bps7j Exp $
+ * $Id: set_flags.php,v 1.2 2005/06/05 17:12:44 bps7j Exp $
  */
 
 $template = file_get_contents("templates/common/set_flags.php");
-
-/*Here is a useful query for determining what the status of the object's flags
- * are, as a sanity check (not needed in this code, because we already have all
- * this information in the object and in the $cfg['flag'] array).
- *      select fl.c_title,
- *      case when (fl.c_bitmask & ob.c_flags) then 1 else 0 end as checked
- *      from [_]flag as fl, $object->table as ob
- *      where ob.c_uid = $object->c_uid
-*/
 
 # Get an array of checkboxes that the user checked
 $checkboxes = postval('flags');

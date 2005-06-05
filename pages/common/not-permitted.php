@@ -17,12 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: not-permitted.php,v 1.1 2005/03/27 19:53:24 bps7j Exp $
- *
- * This file is included when there's a request for an 'action' file (a file in
- * the appropriate directory that's named the same as the database action) but
- * that 'action' file can't be found.  This is where the "action not
- * implemented" page comes from.
+ * $Id: not-permitted.php,v 1.2 2005/06/05 17:12:44 bps7j Exp $
  *
  */
 

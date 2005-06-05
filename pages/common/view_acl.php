@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_acl.php,v 1.1 2005/03/27 19:53:24 bps7j Exp $
+ * $Id: view_acl.php,v 1.2 2005/06/05 17:12:44 bps7j Exp $
  */
 
 # Create templates
@@ -32,8 +32,12 @@ $result =& $cmd->executeReader();
 if ($result->numRows()) {
     $template = Template::unhide($template, "SOME");
     while ($row =& $result->fetchRow()) {
-        $template = Template::block($template, "ROWS", 
-            array_change_key_case($row, 1));
+        if ($row['c_who_type'] == 'group'
+            || $row['c_who_type'] == 'group_owner')
+        {
+            $row['c_who'] = bitmaskString($row['c_who_uid'], 'group_id');
+        }
+        $template = Template::block($template, "ROWS", $row);
     }
 }
 else {
