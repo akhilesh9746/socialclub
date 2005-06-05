@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: JoinAdventure.php,v 1.1 2005/03/27 19:54:04 bps7j Exp $
+ * $Id: JoinAdventure.php,v 1.2 2005/06/05 16:16:48 bps7j Exp $
  */
 // {{{require statements
 include_once("Email.php");
@@ -111,9 +111,7 @@ class JoinAdventure {
             "C_FULL_NAME" => $member->getFullName(),
             "TO_EMAIL" => $member->getEmail(),
             "DEPARTURE" => $departure->getTitle(),
-            "WITHDRAW" => $cfg['action_id']['withdraw'],
-            "BASEURL" => $cfg['site_url'] . $cfg['base_url'],
-            "READ" => $cfg['action_id']['read']
+            "BASEURL" => $cfg['site_url'] . $cfg['base_url']
             );
         $emailTemplate = $adventure->insertIntoTemplate($emailTemplate);
         $email->setBody(Template::replace($emailTemplate, $array));
