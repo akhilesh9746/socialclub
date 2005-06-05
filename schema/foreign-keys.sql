@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: foreign-keys.sql,v 1.1 2005/03/27 19:54:09 bps7j Exp $
+ * $Id: foreign-keys.sql,v 1.2 2005/06/05 18:07:47 bps7j Exp $
  *
  */
 
@@ -24,7 +24,7 @@ delete from [_]foreign_key;
 
 --------------------------------------------------------------------------------
 -- Define foreign keys.  Insert rows for properties that every table has: owner,
--- creator, group, status
+-- creator, status
 --------------------------------------------------------------------------------
 
 insert into [_]foreign_key
@@ -35,16 +35,6 @@ insert into [_]foreign_key
 insert into [_]foreign_key
     (c_parent_table, c_child_table, c_parent_col, c_child_col)
     select "[_]member", c_name, "c_uid", "c_creator"
-    from [_]table;
-
-insert into [_]foreign_key
-    (c_parent_table, c_child_table, c_parent_col, c_child_col)
-    select "[_]group", c_name, "c_uid", "c_group"
-    from [_]table;
-
-insert into [_]foreign_key
-    (c_parent_table, c_child_table, c_parent_col, c_child_col)
-    select "[_]status", c_name, "c_uid", "c_status"
     from [_]table;
 
 --------------------------------------------------------------------------------
@@ -68,16 +58,11 @@ insert into [_]foreign_key
     ("[_]chat_type",            "[_]chat",                  "c_uid",    "c_type"),
     ("[_]condition",            "[_]item",                  "c_uid",    "c_condition"),
     ("[_]condition",            "[_]item_note",             "c_uid",    "c_condition"),
-    ("[_]decision_category",    "[_]decision",              "c_uid",    "c_category"),
-    ("[_]decision",             "[_]decision_xref",         "c_uid",    "c_decision"),
-    ("[_]decision",             "[_]decision_xref",         "c_uid",    "c_xref"),
     ("[_]email_list",           "[_]subscription",          "c_uid",    "c_list"),
     ("[_]expense_report",       "[_]expense",               "c_uid",    "c_report"),
     ("[_]expense_report",       "[_]expense_report_note",   "c_uid",    "c_report"),
-    ("[_]status",               "[_]expense_report_note",   "c_uid",    "c_new_status"),
     ("[_]expense_category",     "[_]expense",               "c_uid",    "c_category"),
     ("[_]member",               "[_]expense_report",        "c_uid",    "c_member"),
-    ("[_]group",                "[_]member_group",          "c_uid",    "c_related_group"),
     ("[_]item",                 "[_]item_note",             "c_uid",    "c_item"),
     ("[_]item",                 "[_]item_feature",          "c_uid",    "c_item"),
     ("[_]item_category",        "[_]item_type",             "c_uid",    "c_category"),
@@ -88,7 +73,6 @@ insert into [_]foreign_key
     ("[_]location",             "[_]location_activity",     "c_uid",    "c_location"),
     ("[_]member",               "[_]attendee",              "c_uid",    "c_member"),
     ("[_]member",               "[_]interest",              "c_uid",    "c_member"),
-    ("[_]member",               "[_]member_group",          "c_uid",    "c_member"),
     ("[_]member",               "[_]member_note",           "c_uid",    "c_member"),
     ("[_]member",               "[_]membership",            "c_uid",    "c_member"),
     ("[_]member",               "[_]optout",                "c_uid",    "c_member"),

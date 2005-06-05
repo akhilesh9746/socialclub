@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.sql,v 1.1 2005/03/27 19:54:09 bps7j Exp $
+ * $Id: create.sql,v 1.2 2005/06/05 18:06:43 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -26,10 +26,9 @@
  *
  * Explanation of Table Structure and Naming Conventions
  *
- * These tables, with the exception of [_]flags and [_]unixperms which are bitmask
- * definitions, and [_]implemented_action which is an association matrix, and
- * [_]table which is a list of tables, have a common set of columns that mean as 
+ * These tables, with some exceptions, have a common set of columns that mean as
  * follows:
+ *
  *  c_uid
  *      is the primary key.
  *  c_owner
@@ -37,9 +36,8 @@
  *  c_creator
  *      is the user that created the row, and relates to [_]member
  *  c_group
- *      is the group that owns the row, and relates to [_]group.  This is NOT the
- *      group that the member belongs to (in the case of [_]member, this confuses
- *      many people).
+ *      is the group that owns the row.  This is NOT the group to which the
+ *      member belongs (in the case of [_]member, this confuses many people).
  *  c_unixperms
  *      is a bitmask field that defines read, write, and delete permissions on
  *      the row for user, group, and other.  This is inspired by unix
@@ -53,11 +51,9 @@
  *      timestamp columns will auto-update in MySql.  Do not assign a value to
  *      this row, and it will take care of itself whenever you update the row.
  *  c_status
- *      relates to [_]status.
+ *      is a bitmasked combination of flags defined in includes/setup.php.
  *  c_flags
- *      is a bitmasked combination of flags defined in [_]flag.  If you want to
- *      know what a value means, try the following query:
- *      select c_title from [_]flag where c_bitmask & c_flags
+ *      is a bitmasked combination of flags defined in includes/setup.php.
  *  c_deleted
  *      is a tinyint that is 1 when the record is deleted.
  *
@@ -74,7 +70,7 @@ create table [_]absence (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 3, -- treasurer
+    c_group           int unsigned    not null default 2, -- officer
     -- Members of the group are allowed to read and write, but ordinary users
     -- are not allowed to even read the absence.
     c_unixperms       int unsigned    not null default 496, -- 111110000
@@ -91,9 +87,6 @@ create table [_]absence (
 ) type=MyISAM;
 
 /*
- * Some actions apply not to specific objects, but to the entire set of objects
- * (or rather to the database table).
- *
  * For coding simplicity, titles should be all one word, only alphanumeric and _
  * characters.  The title is used in code, but the short and long descriptions
  * are for people to see.  The long description is really only for admin users
@@ -102,26 +95,13 @@ create table [_]absence (
  */
 
 create table [_]action (
-    c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 1,   -- root
-    c_creator         int unsigned    not null default 1,   -- root
-    c_group           int unsigned    not null default 2,   -- officer
-    -- Members of the group are not allowed to write an action created by
-    -- someone else.
-    c_unixperms       int unsigned    not null default 484, -- 111100100
-    c_created_date    datetime        not null,
-    c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
     c_title           varchar(100),   -- unique string, lowercase with _
     c_summary         varchar(25),    -- a few words
     c_label           varchar(25),    -- for UI.  & creates an access key
     c_row             tinyint         not null default 0,   -- for UI
     c_description     varchar(255),   -- a full description of the action
-    -- Whether the action applies to a table or to objects in a table
-    unique index(c_title),
-    primary key  (c_uid)
+    c_flags           int unsigned    not null default 0,
+    primary key (c_title)
 ) type=MyISAM;
 
 create table [_]activity (
@@ -265,7 +245,7 @@ create table [_]attendee (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 4, -- leader
+    c_group           int unsigned    not null default 8, -- leader
     -- Members of the group are allowed the extra privilege of deleting an
     -- attendee that someone else has created.
     c_unixperms       int unsigned    not null default 508, -- 111111100
@@ -324,7 +304,7 @@ create table [_]checkout (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -342,7 +322,7 @@ create table [_]checkout_gear (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -368,7 +348,7 @@ create table [_]checkout_item (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -409,7 +389,7 @@ create table [_]condition (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -421,57 +401,6 @@ create table [_]condition (
     c_description     varchar(255)    not null,
     primary key  (c_uid),
     unique index (c_title)
-) type=MyISAM;
-
-create table [_]decision (
-    c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 1, -- root
-    c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 2, -- officer
-    c_unixperms       int unsigned    not null default 760,
-    c_created_date    datetime        not null,
-    c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
-    c_title           varchar(100)    not null,
-    c_text            text            not null,
-    c_category        int unsigned    not null, -- > [_]decision_category
-    primary key  (c_uid),
-    index (c_category),
-    index (c_title)
-) type=MyISAM;
-
-create table [_]decision_category (
-    c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 1, -- root
-    c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 2, -- officer
-    c_unixperms       int unsigned    not null default 500,
-    c_created_date    datetime        not null,
-    c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
-    c_title           varchar(100),
-    primary key  (c_uid)
-) type=MyISAM;
-
-create table [_]decision_xref (
-    c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 1, -- root
-    c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 2, -- officer
-    c_unixperms       int unsigned    not null default 500,
-    c_created_date    datetime        not null,
-    c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
-    c_decision        int unsigned    not null, -- > [_]decision
-    c_xref            int unsigned    not null, -- > [_]decision
-    primary key  (c_uid),
-    unique index (c_decision, c_xref)
 ) type=MyISAM;
 
 create table [_]email_list (
@@ -498,33 +427,11 @@ create table [_]email_list (
     primary key  (c_uid)
 ) type=MyISAM;
 
-/* These flags match up to the c_flags field in various tables, and are used as
- * a bitmask to decide whether a flag is set or not.  For example, suppose the
- * flag "email_me" has bitmask of 1.  This represents the bitmask 00..001.  This
- * can be AND-ed with c_flags to see if the flag has a value of true or false.
- * This table is not consistent with the other tables because we do not think it
- * will ever be manipulated through the website directly.  These values should
- * be pretty much hard coded by inserting them from the initialize.sql script.
- *
- * Try the following query to find actions that do not apply to objects:
- *
- * select ac.c_title, fl.c_title
- * from t_action as ac
- * inner join t_flag as fl on (fl.c_bitmask & ac.c_flags = 0)
- * where fl.c_title = 'applies_to_object'
- */
-create table [_]flag (
-    c_title           varchar(100)    not null,
-    c_bitmask         int unsigned    not null,
-    primary key (c_title),
-    unique index (c_bitmask)
-) type=MyISAM;
-
 create table [_]expense (
     c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 3, -- treasurer
-    c_creator         int unsigned    not null default 3, -- treasurer
-    c_group           int unsigned    not null default 3, -- treasurer
+    c_owner           int unsigned    not null default 1, -- root
+    c_creator         int unsigned    not null default 1, -- root
+    c_group           int unsigned    not null default 4, -- treasurer
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -543,9 +450,9 @@ create table [_]expense (
 
 create table [_]expense_category (
     c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 3, -- treasurer
-    c_creator         int unsigned    not null default 3, -- treasurer
-    c_group           int unsigned    not null default 3, -- treasurer
+    c_owner           int unsigned    not null default 1, -- root
+    c_creator         int unsigned    not null default 1, -- root
+    c_group           int unsigned    not null default 4, -- treasurer
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -561,9 +468,9 @@ create table [_]expense_category (
 -- cannot edit or delete it anymore.
 create table [_]expense_report (
     c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 3, -- treasurer
-    c_creator         int unsigned    not null default 3, -- treasurer
-    c_group           int unsigned    not null default 3, -- treasurer
+    c_owner           int unsigned    not null default 1, -- root
+    c_creator         int unsigned    not null default 1, -- root
+    c_group           int unsigned    not null default 4, -- treasurer
     c_unixperms       int unsigned    not null default 508, -- nonstandard!
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -576,9 +483,9 @@ create table [_]expense_report (
 
 create table [_]expense_report_note (
     c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 3, -- root
-    c_creator         int unsigned    not null default 3, -- root
-    c_group           int unsigned    not null default 3, -- treasurer
+    c_owner           int unsigned    not null default 1, -- root
+    c_creator         int unsigned    not null default 1, -- root
+    c_group           int unsigned    not null default 4, -- treasurer
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -594,7 +501,7 @@ create table [_]expense_submission (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -608,7 +515,7 @@ create table [_]expense_submission_expense (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -632,24 +539,6 @@ create table [_]foreign_key (
     primary key (c_parent_table, c_child_table, c_parent_col, c_child_col)
 ) type=MyISAM;
 
-create table [_]group (
-    c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 1,   -- root
-    c_creator         int unsigned    not null default 1,   -- root
-    c_group           int unsigned    not null default 1,   -- root
-    -- No one but the creator is allowed to alter a group.
-    c_unixperms       int unsigned    not null default 484, -- 111100100
-    c_created_date    datetime        not null,
-    c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
-    c_title           varchar(100),
-    c_description     varchar(255),
-    unique index (c_title),
-    primary key  (c_uid)
-) type=MyISAM;
-
 /* This table maintains an association between actions and data types, to
  * specify which actions apply to which data types.  The columns mean as
  * follows:
@@ -658,10 +547,14 @@ create table [_]group (
  *      action applies to ALL tables.
  *  c_action
  *      is an action that applies to (is implemented by) objects in c_table.
+ *  c_status
+ *      is a bit field that specifies which statuses the action is valid for.
+ *      If this field is 0, then the action is valid for every status.
  */
 create table [_]implemented_action (
     c_table           varchar(100)    not null,
-    c_action          int unsigned    not null, -- > [_]action
+    c_action          varchar(100)    not null, -- > [_]action
+    c_status          int unsigned    not null default 0,
     primary key (c_table, c_action)
 ) type=MyISAM;
 
@@ -687,7 +580,7 @@ create table [_]item (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -708,7 +601,7 @@ create table [_]item_note (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -727,7 +620,7 @@ create table [_]item_feature (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -746,7 +639,7 @@ create table [_]item_category (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -764,7 +657,7 @@ create table [_]item_type_feature (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -784,7 +677,7 @@ create table [_]item_type (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -803,7 +696,7 @@ create table [_]location (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 4, -- leader
+    c_group           int unsigned    not null default 8, -- leader
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -820,7 +713,7 @@ create table [_]location_activity (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 4, -- leader
+    c_group           int unsigned    not null default 8, -- leader
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -840,7 +733,7 @@ create table [_]member (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 6, -- member
+    c_group           int unsigned    not null default 32, -- member
     -- Members of the 'member' group can take the 'read' action, but no privileges
     -- are granted to 'other' at all.  Thus the guest user cannot view member
     -- info.
@@ -859,25 +752,10 @@ create table [_]member (
     c_full_name       varchar(60),
     c_birth_date      date,
     c_gender          enum('m','f'),
+    -- A bitmask of which groups the member belongs to.
+    c_group_memberships int unsigned  not null default 0,
     unique index (c_email),
     primary key  (c_uid)
-) type=MyISAM;
-
-create table [_]member_group (
-    c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 1, -- root
-    c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 2, -- officer
-    c_unixperms       int unsigned    not null default 500,
-    c_created_date    datetime        not null,
-    c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
-    c_member          int unsigned    not null, -- > [_]member
-    c_related_group   int unsigned    not null, -- > [_]group
-    unique index (c_member, c_related_group),
-    primary key(c_uid)
 ) type=MyISAM;
 
 create table [_]member_note (
@@ -1037,18 +915,19 @@ create table [_]privilege (
     -- Which user or group it applies to (only needed if c_what_granted_to is
     -- "user" or "group")
     c_who_granted_to  int unsigned    not null default 0,
-    -- The action that the privilege grants.  Defaults to 'read' if not specified
-    c_action          int unsigned    not null default 1,
-    -- What the privilege applies to: a table, an object in a table, all of the objects 
-    -- in the specified table, or oneself.  The values should hence be 'table', 'object',
-    -- 'global' or 'self'.
+    -- The action that the privilege grants.
+    c_action          varchar(100)    not null,
+    -- What the privilege applies to: a table, an object in a table, all of the
+    -- objects in the specified table, or oneself.  The values should hence be
+    -- 'table', 'object', 'global' or 'self'.
     c_what_relates_to varchar(30)     not null default 'nothing',
     -- The table to which the privilege applies (never optional), though it
     -- doesn't matter for a 'self' privilege which only applies to objects in the
     -- [_]member table.
     c_related_table   varchar(100)    not null default '',
     -- The object to which the privilege applies (only needed if the privilege is
-    -- an object privilege; global and table privileges don't care about this value)
+    -- an object privilege; global and table privileges don't care about this
+    -- value)
     c_related_uid     int unsigned    not null default 0,
     primary key  (c_uid),
     unique index(
@@ -1060,7 +939,7 @@ create table [_]question (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 4, -- leader
+    c_group           int unsigned    not null default 8, -- leader
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -1105,25 +984,6 @@ create table [_]report (
     c_title           varchar(100),
     c_description     varchar(255),
     c_query           text,
-    c_instructions    text,
-    primary key  (c_uid)
-) type=MyISAM;
-
-create table [_]status (
-    c_uid             int unsigned    not null auto_increment,
-    c_owner           int unsigned    not null default 1,   -- root
-    c_creator         int unsigned    not null default 1,   -- root
-    c_group           int unsigned    not null default 2,   -- officer
-    -- members of the group and others are allowed to read but not alter
-    c_unixperms       int unsigned    not null default 484, -- 111100100
-    c_created_date    datetime        not null,
-    c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 1, -- > [_]status  :-)
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
-    c_title           varchar(100),
-    c_description     varchar(255),
-    unique index (c_title),
     primary key  (c_uid)
 ) type=MyISAM;
 
@@ -1153,7 +1013,7 @@ create table [_]transaction (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
     c_creator         int unsigned    not null default 1, -- root
-    c_group           int unsigned    not null default 5, -- quartermaster
+    c_group           int unsigned    not null default 16, -- quartermaster
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
@@ -1168,11 +1028,4 @@ create table [_]transaction (
     c_expense         int unsigned    not null default 0, -- > [_]expense (optional)
     primary key  (c_uid),
     index (c_from, c_to)
-) type=MyISAM;
-
-create table [_]unixperm (
-    c_title           varchar(100)    not null,
-    c_bitmask         int unsigned    not null,
-    primary key  (c_title),
-    unique index (c_bitmask)
 ) type=MyISAM;

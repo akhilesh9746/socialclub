@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: drop.sql,v 1.1 2005/03/27 19:54:09 bps7j Exp $
+ * $Id: drop.sql,v 1.2 2005/06/05 18:07:47 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -45,9 +45,6 @@ drop table if exists [_]checkout_item;
 drop table if exists [_]checkout_item_qty;
 drop table if exists [_]classified_ad;
 drop table if exists [_]condition;
-drop table if exists [_]decision;
-drop table if exists [_]decision_category;
-drop table if exists [_]decision_xref;
 drop table if exists [_]email_list;
 drop table if exists [_]expense;
 drop table if exists [_]expense_category;
@@ -55,9 +52,7 @@ drop table if exists [_]expense_report;
 drop table if exists [_]expense_report_note;
 drop table if exists [_]expense_submission;
 drop table if exists [_]expense_submission_expense;
-drop table if exists [_]flag;
 drop table if exists [_]foreign_key;
-drop table if exists [_]group;
 drop table if exists [_]implemented_action;
 drop table if exists [_]interest;
 drop table if exists [_]item;
@@ -69,7 +64,6 @@ drop table if exists [_]item_type_feature;
 drop table if exists [_]location;
 drop table if exists [_]location_activity;
 drop table if exists [_]member;
-drop table if exists [_]member_group;
 drop table if exists [_]member_note;
 drop table if exists [_]membership;
 drop table if exists [_]membership_type;
@@ -80,7 +74,6 @@ drop table if exists [_]privilege;
 drop table if exists [_]question;
 drop table if exists [_]rating;
 drop table if exists [_]report;
-drop table if exists [_]status;
 drop table if exists [_]subscription;
 drop table if exists [_]table;
 drop table if exists [_]transaction;
