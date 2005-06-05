@@ -4,7 +4,6 @@
   <base href="{BASE}">
   <title>{TITLE}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-
   <link rel="stylesheet" href="assets/stylesheet.css" type="text/css">
   <script type="text/javascript" src="assets/combo-box.js" language="text/javascript"></script>
   <script type="text/javascript" src="assets/datechooser.js" language="javascript"></script>
@@ -23,6 +22,7 @@
 </div>
 
 <div id="content">
+{HELP}
 {CONTENT}
 </div>
 
