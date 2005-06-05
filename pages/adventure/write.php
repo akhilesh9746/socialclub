@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:33 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/06/05 16:27:02 bps7j Exp $
  */
 
 include_once("location.php");
@@ -54,9 +54,6 @@ while ($row =& $result->fetchRow()) {
 }
 
 # Turn the form template into a form and XML-parse it
-# (Don't finalize it before replacing common variables)
-$formTemplate = preg_replace("/\{ACTION_([^}]+)\}/e",
-    "\$cfg['action_id'][ strtolower('\\1') ]", $formTemplate);
 $form =& new XMLForm(Template::finalize($formTemplate), true);
 
 # Put the adventure's information into the form

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: announce.php,v 1.1 2005/03/27 19:53:34 bps7j Exp $
+ * $Id: announce.php,v 1.2 2005/06/05 16:26:02 bps7j Exp $
  */
 
 include_once("MassEmail.php");
@@ -69,9 +69,7 @@ if (!$error && getval('continue')) {
         "LEADER_EMAIL" => $leader->getEmail(),
         "DEPARTURE" => $departure->getTitle(),
         "DESTINATION" => $destination->getTitle(),
-        "BASEURL" => $cfg['site_url'] . $cfg['base_url'],
-        "READ" => $cfg['action_id']['read'],
-        "JOIN" => $cfg['action_id']['join']));
+        "BASEURL" => $cfg['site_url'] . $cfg['base_url']));
     MassEmail::sendMassEmail($obj['user'], $subject, $emailBody, $category);
     $template = Template::unhide($template, "SUCCESS");
 
