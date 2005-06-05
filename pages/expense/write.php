@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:22 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/06/05 17:13:24 bps7j Exp $
  */
 
 # Create templates
@@ -43,8 +43,6 @@ while ($row =& $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "category", $row);
 }
 
-$formTemplate = Template::replace($formTemplate, array(
-            "create" => $cfg['action_id']['create']));
 $form =& new XMLForm(Template::finalize($formTemplate), true);
 
 $form->setValue("category", $object->getCategory());

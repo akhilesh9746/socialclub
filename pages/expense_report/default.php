@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: default.php,v 1.1 2005/03/27 19:53:27 bps7j Exp $
+ * $Id: default.php,v 1.2 2005/06/05 17:13:24 bps7j Exp $
  *
  * Presents a default list of actions you can take on a table.  If there is a
  * template, it uses that; otherwise it uses a default template.  You can use
@@ -34,7 +34,7 @@ $links = 0;
 $singleAction = 0;
 foreach ($obj['table']->getAllowedActions() as $key => $row) {
     # Check that the action is actually implemented before showing a link to it
-    if (file_exists("$cfg[page_path]/{$cfg['action_title'][$key]}.php")) {
+    if (file_exists("$cfg[page_path]/$cfg[action].php")) {
         $links++;
         $singleAction = $key;
         $template = Template::block($template, "actions", $row);
@@ -51,7 +51,7 @@ foreach (array("expense", "expense_submission", "transaction") as $what) {
         # Don't show "create" pages
         if ($row['c_title'] != "create") {
             # Check that the action is actually implemented before showing a link to it
-            if (file_exists("pages/$what/{$cfg['action_title'][$key]}.php")) {
+            if (file_exists("pages/$what/$cfg[action].php")) {
                 $unhide = true;
                 $template = Template::block($template, "{$what}_actions", $row);
             }

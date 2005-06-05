@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: not-implemented.php,v 1.1 2005/03/27 19:53:24 bps7j Exp $
+ * $Id: not-implemented.php,v 1.2 2005/06/05 17:10:17 bps7j Exp $
  *
  * This file is included when there's a request for an 'action' file (a file in
  * the appropriate directory that's named the same as the database action) but
@@ -29,8 +29,8 @@
 trigger_error("Action not implemented: $_SERVER[REQUEST_URI]", E_USER_ERROR);
 
 $res['content'] = "<h1>Error: Action Not Implemented</h1><p>The action <b>"
-    . $cfg['action_summary'][$cfg['action']] . "</b> does not appear to be implemented"
-    . " for this type of object.</p>";
+    . $cfg['actions'][$cfg['action']]['c_summary']
+    . "</b> does not appear to be implemented for this type of object.</p>";
 $res['title'] = "Action Not Implemented";
 
 ?>

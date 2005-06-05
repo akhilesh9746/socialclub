@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:20 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/06/05 17:08:23 bps7j Exp $
  */
 
 # Create templates
@@ -67,7 +67,6 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
         $activityMenu = Template::block($activityMenu, "option", $row);
     }
     $activityMenu = Template::replace($activityMenu, array(
-        "ACTION_WRITE" => $cfg['action_id']['write'],
         "OBJECT" => $cfg['object']));
     $activityForm =& new XmlForm(Template::finalize($activityMenu), true);
     $activityForm->setValue("activity", $object->getActivity());
@@ -121,8 +120,6 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     }
     $gearTemplate = Template::replace($gearTemplate, array(
         "types" => $thisGroup), 1);
-    $gearTemplate = Template::replace($gearTemplate, array(
-        "ACTION_CREATE" => $cfg['action_id']['create']));
 
     $gearForm =& new XMLForm(Template::finalize($gearTemplate), true);
     $gearForm->setValue("checkout", $cfg['object']);

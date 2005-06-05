@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:18 bps7j Exp $
+ * $Id: create.php,v 1.2 2005/06/05 17:08:23 bps7j Exp $
  */
 
 # Create templates
@@ -90,8 +90,6 @@ else {
     }
     $formTemplate = Template::replace($formTemplate, array(
         "types" => $thisGroup), 1);
-    $formTemplate = Template::replace($formTemplate, array(
-        "ACTION_CREATE" => $cfg['action_id']['create']));
 
     $form =& new XMLForm(Template::finalize($formTemplate), true);
 

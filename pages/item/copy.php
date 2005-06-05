@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: copy.php,v 1.1 2005/03/27 19:53:11 bps7j Exp $
+ * $Id: copy.php,v 1.2 2005/06/05 17:13:45 bps7j Exp $
  */
 
 # Make a copy of the object and redirect to the copy's edit page.
@@ -33,7 +33,7 @@ $cmd->addParameter("owner", $cfg['user']);
 $cmd->executeNonQuery();
 
 if (isset($_SERVER['HTTP_REFERER'])
-        && strpos($_SERVER['HTTP_REFERER'], "action={$cfg['action_id']['edit_features']}"))
+        && strpos($_SERVER['HTTP_REFERER'], "edit_features"))
 {
     redirect("$cfg[base_url]/members/item/edit_features/$item->c_uid");
 }

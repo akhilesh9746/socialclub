@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: include-file.php,v 1.1 2005/03/27 19:53:23 bps7j Exp $
+ * $Id: include-file.php,v 1.2 2005/06/05 17:10:17 bps7j Exp $
  *
  * This file is included from many pages that have the generic directory
  * structure of files named with the name of the action.  If the action file
@@ -30,7 +30,7 @@
 if ($cfg['action']) {
 
     # If the action requires a specific object, create it and call it $object.
-    if (isset($cfg['action_title'][$cfg['action']])
+    if (isset($cfg['actions'][$cfg['action']])
         && in_array($cfg['action'], $cfg['require_object_actions'])) {
         if (!$cfg['object']) {
             # Error: there's no way to identify the object!
@@ -62,38 +62,38 @@ if ($cfg['action']) {
             mail($cfg['webmaster_email'],
                 "Permission Error",
                 "User " . $obj['user']->toString() . " (" .  $obj['user']->getFullName()
-                    . ") is not allowed to take action {$cfg['action_summary'][$cfg['action']]} "
+                    . ") is not allowed to take action {$cfg['actions'][$cfg['action']]['c_summary']} "
                     . "($cfg[action]) on object " . $object->toString() . "; referred from "
                     . "$_SERVER[HTTP_REFERER] on $_SERVER[REQUEST_URI]");
             $res['content'] = "
             <h1>Permission Error</h1>
 
             <p>Sorry, but you are not allowed to take this action
-            <b>({$cfg['action_summary'][$cfg['action']]})</b> on this object.</p>";
+            <b>({$cfg['actions'][$cfg['action']]['c_summary']})</b> on this object.</p>";
 
             $res['title'] = "Permission Error";
+            $res['help'] = "HelpOnPrivileges";
 
             return;
         }
 
     }
-    elseif (isset($cfg['action_title'][$cfg['action']])) {
-        # It's assumed that the action is on a table (see initialize.sql and look
-        # at the section of insterts into [_]flag -- they are mutex).  Check
-        # permissions:
+    elseif (isset($cfg['actions'][$cfg['action']])) {
+        # It's assumed that the action is on a table, because the table/object
+        # actions are mutually exclusive.   Check permissions:
         $table =& new table("$cfg[table_prefix]$cfg[page]");
         if (!$table->permits($cfg['action'])) {
             mail($cfg['webmaster_email'],
                 "Permission Error",
                 "User " . $obj['user']->toString() . " (" .  $obj['user']->getFullName()
-                    . ") is not allowed to take action {$cfg['action_summary'][$cfg['action']]} "
+                    . ") is not allowed to take action {$cfg['actions'][$cfg['action']]['c_summary']} "
                     . "($cfg[action]) on table $cfg[page]; referred from $_SERVER[HTTP_REFERER] "
                     . "on $_SERVER[REQUEST_URI]");
             $res['content'] = "
             <h1>Permission Error</h1>
 
             <p>Sorry, but you are not allowed to take this action
-            <b>({$cfg['action_summary'][$cfg['action']]})</b> on this table.</p>";
+            <b>({$cfg['actions'][$cfg['action']]['c_summary']})</b> on this table.</p>";
 
             $res['title'] = "Permission Error";
 
@@ -102,19 +102,17 @@ if ($cfg['action']) {
 
     }
 
-    # Include the file identified by the action parameter.  Use the action
-    # parameter to look up the action's title, which will be the filename.
-    if (isset($cfg['action_title'][$cfg['action']])
-        && file_exists("$cfg[page_path]/{$cfg['action_title'][$cfg['action']]}.php"))
-    {
+    # Include the file identified by the action parameter.
+    if (isset($cfg['actions'][$cfg['action']])) {
         # If the action is implemented directly in the page's subdirectiory,
         # include the file
-        include_once("$cfg[page_path]/{$cfg['action_title'][$cfg['action']]}.php");
-    } elseif (isset($cfg['action_title'][$cfg['action']])
-        && file_exists("pages/common/{$cfg['action_title'][$cfg['action']]}.php"))
-    {
+        if (file_exists("$cfg[page_path]/$cfg[action].php")) {
+            include_once("$cfg[page_path]/$cfg[action].php");
+        }
         # If the action is implemented in the common directory, include the file
-        include_once("pages/common/{$cfg['action_title'][$cfg['action']]}.php");
+        elseif (file_exists("pages/common/$cfg[action].php")) {
+            include_once("pages/common/$cfg[action].php");
+        }
     } elseif (file_exists("pages/$cfg[page]/$cfg[action].php")) {
         # If the action names the file directly instead of referring to it by
         # number, include that file:

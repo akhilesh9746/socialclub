@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: add_privilege.php,v 1.1 2005/03/27 19:53:24 bps7j Exp $
+ * $Id: add_privilege.php,v 1.2 2005/06/05 17:10:17 bps7j Exp $
  */
 
 include_once("privilege.php");
@@ -27,10 +27,10 @@ $template = file_get_contents("templates/common/add_privilege.php");
 $formTemplate = file_get_contents("forms/common/add_privilege.xml");
 
 # Add actions and tables to the form template
-foreach ($cfg['action_summary'] as $key => $val) {
+foreach ($cfg['action'] as $key => $val) {
     $formTemplate = Template::block($formTemplate, "ACTION", array(
         "C_UID" => $key,
-        "C_SUMMARY" => $val));
+        "C_SUMMARY" => $val['c_summary']));
 }
 $result =& $obj['conn']->query("select * from [_]table");
 while ($row =& $result->fetchRow()) {
