@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: navbar.php,v 1.1 2005/03/27 19:52:51 bps7j Exp $
+ * $Id: navbar.php,v 1.2 2005/06/05 16:22:29 bps7j Exp $
  */
 
 include_once("TreeNavbar.php");
@@ -34,7 +34,6 @@ $obj['navbar']->addNode("members/adventure", "Adventures", "Member's Area");
 $obj['navbar']->addNode("members/member/list_all", "Members", "Member's Area");
 $obj['navbar']->addNode("members/classified_ad", "Classified Ads", "Member's Area");
 $obj['navbar']->addNode("members/profile", "Profile", "Member's Area");
-$obj['navbar']->addNode("members/decision/list_all", "Officer Policies", "Member's Area");
 $obj['navbar']->addNode("members/main/inventory", "Inventory", "Member's Area");
 
 # Add additional tabs depending on who's logged in
