@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: adventure.php,v 1.1 2005/03/27 19:52:53 bps7j Exp $
+ * $Id: adventure.php,v 1.2 2005/06/05 16:22:13 bps7j Exp $
  */
 
 include_once("JoinAdventure.php");
@@ -31,20 +31,18 @@ if ($now > $object->getStartDate()) {
 }
 
 if ($attending || $now > $object->getSignupDate()
-        || ($object->getOwner() == $cfg['user'] && $object->getStatus()
-        != $cfg['status_id']['inactive'])) {
+        || $object->getOwner() == $cfg['user'])
+{
     $obj['tabbed_box']->deleteTab('Join');
 }
 
-if ($object->getStatus() != $cfg['status_id']['active']
-        || $now >= $object->getStartDate()
-        || count($object->getChildren("attendee"))) {
+if ($now >= $object->getStartDate()
+        || count($object->getChildren("attendee")))
+{
     $obj['tabbed_box']->deleteTab('Deactivate');
 }
 
-if (!$attending
-        || $object->getStatus() == $cfg['status_id']['active']
-        || $now >= $object->getStartDate()) {
+if (!$attending || $now >= $object->getStartDate()) {
     $obj['tabbed_box']->deleteTab('Activate');
 }
 
