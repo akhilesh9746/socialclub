@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: report.php,v 1.1 2005/03/27 19:54:23 bps7j Exp $
+ * $Id: report.php,v 1.2 2005/06/05 16:13:38 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -27,7 +27,6 @@ class report extends database_object {
     var $c_title = null; // String
     var $c_description = null; // String
     var $c_query = null; // String
-    var $c_instructions = null; // String
     // }}}
 
     /* {{{constructor
@@ -43,29 +42,6 @@ class report extends database_object {
     function execute() {
         global $obj;
         return $obj['conn']->query($this->c_query);
-    } //}}}
-
-    /* {{{getParameters
-     * returns an associative array of parameters, with their names pointing to
-     * their datatypes.
-     */
-    function getParameters() {
-        $matches = array();
-        $result = array();
-        preg_match_all ("/\{.*?\}/", $this->c_query, $matches);
-        foreach ($matches[0] as $match) {
-            list($key, $val) = explode(",", str_replace("{", "", str_replace("}", "", $match)));
-            $result[$key] = $val;
-        }
-        return $result;
-    } //}}}
-
-    /* {{{replaceParameter
-     * A parameter is embedded in the query in the form {name,datatype} and must
-     * be replaced before execution.
-     */
-    function replaceParameter($name, $value) {
-        $this->c_query = preg_replace("/\\\{$name,.*?\}/", $value, $this->c_query);
     } //}}}
 
     /* {{{getTitle
@@ -108,20 +84,6 @@ class report extends database_object {
      */
     function setQuery($value) {
         $this->c_query = $value;
-    } //}}}
-
-    /* {{{getInstructions
-     *
-     */
-    function getInstructions() {
-        return $this->c_instructions;
-    } //}}}
-
-    /* {{{setInstructions
-     *
-     */
-    function setInstructions($value) {
-        $this->c_instructions = $value;
     } //}}}
 
     /* {{{checkForAlter
