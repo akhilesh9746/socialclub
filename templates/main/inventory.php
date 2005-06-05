@@ -16,7 +16,7 @@
 
 <h1>{CLUB_NAME} Inventory</h1>
 
-<p>This section of the website handles our equipment inventory.</p>
+<p>This section of the website handles equipment inventory.</p>
 
 <p>You may do the following:</p>
 
@@ -33,6 +33,7 @@
 {:checkout_create}
 {checkout_list_all:}
 <li><a href="members/checkout/list_all">View equipment that's checked out</a></li>
+<li><a href="members/checkout/list_all?form-name=1&status=1">View unfinished checkout sheets</a></li>
 {:checkout_list_all}
 {manage:}
 <li><a href="members/item_category">Manage item categories</a></li>
