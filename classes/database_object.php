@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: database_object.php,v 1.1 2005/03/27 19:54:27 bps7j Exp $
+ * $Id: database_object.php,v 1.2 2005/06/05 16:12:41 bps7j Exp $
  */
 
 include_once("DateTime.php");
@@ -303,6 +303,10 @@ class database_object {
         unset($array["C_UID"]);
         $array[strtoupper("t_" . get_class($this))] = $this->c_uid;
 
+        // And the bitmask fields need to be converted to strings
+        $array['C_STATUS_STRING'] = bitmaskString($this->c_status, 'status_id');
+        $array['C_FLAGS_STRING'] = bitmaskString($this->c_flags, 'flag');
+
         return $array;
     } //}}}
 
@@ -517,6 +521,7 @@ class database_object {
         $cmd =& $obj['conn']->createCommand();
         $cmd->loadQuery("sql/privilege/select-allowed-object-actions.sql");
         $cmd->addParameter("member", $cfg['user']);
+        $cmd->addParameter("groups", $obj['user']->c_group_memberships);
         $cmd->addParameter("object", $this->c_uid);
         $cmd->addParameter("table", $this->table);
         $cmd->addParameter("applies_to_object", $cfg['flag']['applies_to_object']);
@@ -526,7 +531,7 @@ class database_object {
         }
         $result =& $cmd->executeReader();
         while ($row = $result->fetchRow()) {
-            $this->allowedActions[$row['c_uid']] = $row;
+            $this->allowedActions[$row['c_title']] = $row;
         }
     }
 
