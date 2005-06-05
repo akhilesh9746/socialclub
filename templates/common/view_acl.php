@@ -25,10 +25,10 @@ a new privilege for this object</a>.</p>
   </tr>
   {ROWS:}
   <tr>
-    <td><a href="members/privilege/read/{C_UID}">{C_UID}</a></td>
-    <td>{C_WHO_TYPE} {C_WHO_UID} ({C_WHO})</td>
-    <td><a href="members/action/read/{C_ACTION}">{C_ACTION_TITLE}</a></td>
-    <td><b>{C_GRANTED_ON}</b> {C_TABLE}({C_RELATED_UID})</td>
+    <td>{c_uid}</td>
+    <td>{c_who_type} {c_who_uid} ({c_who})</td>
+    <td>{c_action_title}</td>
+    <td><b>{c_granted_on}</b> {c_table}({c_related_uid})</td>
   </tr>
     </tr>
   {:ROWS}

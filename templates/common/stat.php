@@ -35,10 +35,9 @@
   </tr>
 
   <tr>
-    <th>Group</th><td><a
-    href="members/group/read/{C_GROUP}">{GROUP}<a>
-    This is the group that owns the object.  Do not confuse this with
-    a member's group membership.  They are totally separate.</td>
+    <th>Group</th><td><b>{GROUP}</b>
+    <i>This is the group that owns the object.  Do not confuse this with
+    a member's group membership.  They are totally separate.</i></td>
   </tr>
 
   <tr>
@@ -50,8 +49,13 @@
   </tr>
 
   <tr>
-    <th>Status</th><td><a
-    href="members/status/read/{C_STATUS}">{STATUS}</td>
+    <th>Status</th>
+    <td>{C_STATUS_STRING}</td>
+  </tr>
+
+  <tr>
+    <th>Flags</th>
+    <td>{C_FLAGS_STRING}</td>
   </tr>
 
 </table>

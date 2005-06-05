@@ -26,7 +26,7 @@
   </tr>
   <tr>
     <th>Status</th>
-    <td>{STATUS_TITLE}</td>
+    <td>{C_STATUS}</td>
   </tr>
   <tr>
     <th>Quantity</th>
