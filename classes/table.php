@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: table.php,v 1.1 2005/03/27 19:54:29 bps7j Exp $
+ * $Id: table.php,v 1.2 2005/06/05 16:14:34 bps7j Exp $
  */
 
 class table {
@@ -68,12 +68,13 @@ class table {
         $cmd =& $obj['conn']->createCommand();
         $cmd->loadQuery("sql/privilege/select-allowed-table-actions.sql");
         $cmd->addParameter("member", $cfg['user']);
+        $cmd->addParameter("groups", $obj['user']->c_group_memberships);
         $cmd->addParameter("table", $this->name);
         $cmd->addParameter("applies_to_object", $cfg['flag']['applies_to_object']);
         $cmd->addParameter("root_group", $cfg['root_uid']);
         $result =& $cmd->executeReader();
         while ($row = $result->fetchRow()) {
-            $this->allowedActions[$row['c_uid']] = $row;
+            $this->allowedActions[$row['c_title']] = $row;
         }
     }
 

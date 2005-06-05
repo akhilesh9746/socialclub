@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: member.php,v 1.1 2005/03/27 19:54:22 bps7j Exp $
+ * $Id: member.php,v 1.2 2005/06/05 16:13:17 bps7j Exp $
  */
 
 include_once("member_note.php");
@@ -32,6 +32,7 @@ class member extends database_object {
     var $c_email = null;
     var $c_password = null;
     var $c_birth_date = null;
+    var $c_group_memberships = null;
     // }}}
 
     /* {{{constructor
@@ -262,13 +263,34 @@ class member extends database_object {
             $group = $cfg['group_id'][$group];
         }
 
-        foreach ($this->getChildren("member_group", "c_member") as $id => $g) {
-            if ($g->getRelatedGroup() == $group) {
-                return true;
-            }
-        }
-        return false;
+        return (($group & $this->c_group_memberships) != 0) ? 1 : 0;
     } //}}}
+
+    /* {{{setInGroup
+     * Sets the bitmask that specifies which groups the user belongs to.
+     */
+    function setInGroup($group, $value) {
+        global $cfg;
+        if (!is_numeric($group)) {
+            $group = $cfg['group_id'][$group];
+        }
+
+        # Watch out for bitwise operations on null values... nothing happens
+        if (!$this->c_group_memberships) {
+            $this->c_group_memberships = 0;
+        }
+
+        $this->c_group_memberships = $value
+            ? $this->c_group_memberships | $group
+            : $this->c_group_memberships & (~ $group);
+    } //}}}
+
+    function &getVarArray() {
+        $result =& parent::getVarArray();
+        // The bitmask fields need to be converted to strings
+        $result['C_GROUP_MEMBERSHIPS_STRING'] = bitmaskString($this->c_group_memberships, 'group_id');
+        return $result;
+    }
 
 }
 ?>
