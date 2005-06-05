@@ -17,16 +17,10 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: index.php,v 1.1 2005/03/27 19:52:51 bps7j Exp $
+ * $Id: index.php,v 1.2 2005/06/05 16:11:46 bps7j Exp $
  */
 
 include_once("includes/setup.php");
-
-# If the action was specified by name rather than by UID (maybe in a friendly
-# URL that was mod_rewritten), translate it to UID.
-if (isset($cfg['action_id'][$cfg['action']])) {
-    $cfg['action'] = $cfg['action_id'][$cfg['action']];
-}
 
 # ----------------------------------------------------------------------------
 # The individual page is now executed, if it exists.  First do some sanity
@@ -67,6 +61,9 @@ $page = Template::replace($page, array(
     "REQUEST_URI" => $_SERVER['REQUEST_URI'],
     "CONTENT" => $res['content'],
     "TABS" => $res['tabs'],
+    "HELP" => ($res['help']
+        ? "<div style='float:right'><a target='_blank' href='http://socialclub.sourceforge.net/wiki/?$res[help]'>Help</a></div>"
+        : ""),
     "NAVBAR" => $obj['navbar']->toString()));
 
 # Plug in information about the user
