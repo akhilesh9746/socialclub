@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:12 bps7j Exp $
+ * $Id: read.php,v 1.2 2005/06/05 17:20:29 bps7j Exp $
  */
 
 # Create templates
@@ -69,9 +69,7 @@ $cond =& new condition();
 $cond->select($object->getCondition());
 $cfg['status_title'] = array_flip($cfg['status_id']);
 $template = Template::replace($template, array(
-    "CONDITION_TITLE" => $cond->getTitle(),
-    "STATUS_TITLE" => $cfg['status_title'][$object->getStatus()]));
-
+    "CONDITION_TITLE" => $cond->getTitle()));
 $res['content'] = $object->insertIntoTemplate($template);
 $res['title'] = "Item: " . $object->getUID();
 
