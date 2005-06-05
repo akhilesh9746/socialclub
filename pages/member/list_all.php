@@ -17,13 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:29 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/06/05 18:03:36 bps7j Exp $
  */
 
 $template = file_get_contents("templates/member/list_all.php");
 
 # Create the form
-$form =& new XmlForm("forms/member/list_all.xml");
+$formT = file_get_contents("forms/member/list_all.xml");
+if ($obj['user']->isInGroup('root') || $obj['user']->isInGroup('officer')) {
+    $formT = Template::unhide($formT, "HIDDEN");
+}
+
+$form =& new XmlForm(Template::finalize($formT), true);
 $form->snatch();
 
 # Show the members in a list.  Don't show information that the user isn't
@@ -41,6 +46,14 @@ if ($nameCrit != '' && $nameCrit != '[name]') {
 }
 if ($emailCrit != '' && $emailCrit != '[email]') {
     $cmd->addParameter("email", "%$emailCrit%");
+}
+if ($obj['user']->isInGroup('root') || $obj['user']->isInGroup('officer')) {
+    if ($form->getValue("view_inactive")) {
+        $cmd->addParameter("view_inactive", 1);
+    }
+    if ($form->getValue("view_private")) {
+        $cmd->addParameter("view_private", 1);
+    }
 }
 
 # Add constants.
