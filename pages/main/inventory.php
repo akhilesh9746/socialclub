@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: inventory.php,v 1.1 2005/03/27 19:53:13 bps7j Exp $
+ * $Id: inventory.php,v 1.2 2005/06/05 18:02:11 bps7j Exp $
  */
 
 include_once("includes/authorize.php");
@@ -36,19 +36,19 @@ $template = file_get_contents("templates/main/inventory.php");
 $item =& new table("$cfg[table_prefix]item");
 $checkout =& new table("$cfg[table_prefix]checkout");
 
-if ($item->permits($cfg['action_id']['list_all'])) {
+if ($item->permits('list_all')) {
     $template = Template::unhide($template, "item_list_all");
 }
 
-if ($item->permits($cfg['action_id']['create'])) {
+if ($item->permits('create')) {
     $template = Template::unhide($template, "item_create");
 }
 
-if ($checkout->permits($cfg['action_id']['create'])) {
+if ($checkout->permits('create')) {
     $template = Template::unhide($template, "checkout_create");
 }
 
-if ($checkout->permits($cfg['action_id']['list_all'])) {
+if ($checkout->permits('list_all')) {
     $template = Template::unhide($template, "checkout_list_all");
 }
 
