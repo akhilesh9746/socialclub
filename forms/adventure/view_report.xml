@@ -1,4 +1,4 @@
-<form name="theform" id="theform" method="GET">
+<form name="theform" id="theform" method="GET" action="members/adventure/view_report/{OBJECT}">
     <input type="hidden" name="form-name" id="form-name" value="1" />
 
 <config
@@ -14,9 +14,6 @@
         tag-name="input" />
 </config>
 
-  <input type="hidden" name="page" value="{PAGE}" />
-  <input type="hidden" name="object" value="{OBJECT}" />
-  <input type="hidden" name="action" value="{ACTION_VIEW_REPORT}" />
   <p class="compact">View:
     <select name="status" id="status" onchange="this.form.submit()">
       <option selected="1" value="1">Joined</option>
