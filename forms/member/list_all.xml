@@ -12,10 +12,20 @@
     <element
         name="name"
         element-id="name" />
+    {HIDDEN:}
+    <element
+        name="view_inactive"
+        element-id="view_inactive" />
+    <element
+        name="view_private"
+        element-id="view_private" />
+    {:HIDDEN}
 </config>
 
-<p>Filter by:
-<input type="text" name="name" id="name"
+<fieldset>
+<legend>Filtering Options</legend>
+
+Filter By: <input type="text" name="name" id="name"
     value="[name]"
     onFocus="if(this.value == '[name]') this.value = '';"
     onBlur="if(this.value == '') this.value = '[name]';"/>
@@ -24,6 +34,16 @@
     onFocus="if(this.value == '[email]') this.value = '';"
     onBlur="if(this.value == '') this.value = '[email]';"/>
 <input type="submit" value="Go"/>
-</p>
+
+{HIDDEN:}
+<br />
+View members who are
+<input type="checkbox" name="view_private" id="view_private" value="1" />
+<label for="view_private">Private</label>
+<input type="checkbox" name="view_inactive" id="view_inactive" value="1" />
+<label for="view_inactive">Inactive</label>
+{:HIDDEN}
+
+</fieldset>
 
 </form>
