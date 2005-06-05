@@ -17,15 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: chgrp.php,v 1.1 2005/03/27 19:53:24 bps7j Exp $
+ * $Id: chgrp.php,v 1.2 2005/06/05 17:11:03 bps7j Exp $
  */
-
-include_once("group.php");
 
 # Create templates
 $template = file_get_contents("templates/common/chgrp.php");
 
-# If the form's been submitted, update the member's group
+# If the form's been submitted, update the object's group
 $newGroup = postval('group');
 
 if ($newGroup) {
@@ -51,5 +49,6 @@ $template = Template::replace($template, array(
 # Plug it all into the template
 $res['content'] = $object->insertIntoTemplate($template);
 $res['title'] = "Change Group";
+$res['help'] = "HelpOnGroupOwnership";
 
 ?>
