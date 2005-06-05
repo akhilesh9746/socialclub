@@ -6,6 +6,6 @@ Options -Indexes
 DirectoryIndex index.php
 
 RewriteEngine on
-RewriteRule ^members/([a-z_]+)/([a-z0-9_\-]+)/([0-9]+) index.php?page=$1&action=$2&object=$3 [QSA]
-RewriteRule ^members/([a-z_]+)/([a-z0-9_\-]+) index.php?page=$1&action=$2 [QSA]
+RewriteRule ^members/([a-z_]+)/([a-z_\-]+)/([0-9]+) index.php?page=$1&action=$2&object=$3 [QSA]
+RewriteRule ^members/([a-z_]+)/([a-z_\-]+) index.php?page=$1&action=$2 [QSA]
 RewriteRule ^members/([a-z_]+) index.php?page=$1 [QSA]
