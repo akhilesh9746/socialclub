@@ -17,12 +17,11 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: JoinClub.php,v 1.1 2005/03/27 19:54:05 bps7j Exp $
+ * $Id: JoinClub.php,v 1.2 2005/06/05 16:17:34 bps7j Exp $
  */
 // {{{require statements
 include_once("Email.php");
 include_once("membership_type.php");
-include_once("member_group.php");
 include_once("membership.php");
 //}}}
 
@@ -61,15 +60,11 @@ class JoinClub {
         # Set the user's ID
         $cfg['user'] = $member->getUID();
 
-        # Insert a new member_group for the user
-        $mg =& new member_group();
-        $mg->setOwner($cfg['root_uid']);
-        $mg->setMember($member->getUID());
-        $mg->setRelatedGroup($cfg['group_id']['member']);
-        $mg->insert();
+        # Make the user a 'member' initially
+        $member->setInGroup('member', 1);
 
         $address =& new address();
-        $address->setTitle("Main Address");
+        $address->setTitle($form->getValue('street'));
         $address->setStreet($form->getValue('street'));
         $address->setCity($form->getValue('city'));
         $address->setState($form->getValue('state'));
@@ -79,10 +74,10 @@ class JoinClub {
         $address->insert();
 
         $phone =& new phone_number();
-        $phone->setTitle("Phone Number");
         $phone->setAreaCode($form->getValue('areaCode'));
         $phone->setExchange($form->getValue('exchange'));
         $phone->setNumber($form->getValue('number'));
+        $phone->setTitle($phone->getPhoneNumber());
         $phone->setType($form->getValue("phoneNumberType"));
         $phone->setFlag("primary", true);
         $phone->insert();
