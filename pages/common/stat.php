@@ -17,14 +17,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: stat.php,v 1.1 2005/03/27 19:53:24 bps7j Exp $
+ * $Id: stat.php,v 1.2 2005/06/05 17:11:30 bps7j Exp $
  */
-
-include_once("status.php");
-include_once("group.php");
 
 # Create templates
 $template = file_get_contents("templates/common/stat.php");
+
+# Find out the names of the groups
+$cfg['group_name'] = array_flip($cfg['group_id']);
 
 # Automagically insert what data we can
 $template = $object->insertIntoTemplate($template);
@@ -32,12 +32,8 @@ $template = $object->insertIntoTemplate($template);
 # Go through the remaining keys and fill them in
 $owner =& new member();
 $creator =& new member();
-$status =& new status();
-$group =& new group();
 $owner->select($object->getOwner());
 $creator->select($object->getCreator());
-$status->select($object->getStatus());
-$group->select($object->getGroup());
 
 $template = Template::replace($template, array(
     "TABLE" => $cfg['page'],
@@ -45,8 +41,7 @@ $template = Template::replace($template, array(
     "OWNER_LAST_NAME" => $owner->getLastName(),
     "CREATOR_FIRST_NAME" => $creator->getFirstName(),
     "CREATOR_LAST_NAME" => $creator->getLastName(),
-    "GROUP" => $group->getTitle(),
-    "STATUS" => $status->getTitle(),
+    "GROUP" => $cfg['group_name'][$object->getGroup()],
     "OWNER_READ" => $object->getPerm('owner_read') ? "Yes" : "No",
     "GROUP_READ" => $object->getPerm('group_read') ? "Yes" : "No",
     "OTHER_READ" => $object->getPerm('other_read') ? "Yes" : "No",

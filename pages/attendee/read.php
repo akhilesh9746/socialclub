@@ -17,30 +17,21 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:15 bps7j Exp $
+ * $Id: read.php,v 1.2 2005/06/05 17:07:42 bps7j Exp $
  */
-
-include_once("status.php");
 
 $template = file_get_contents("templates/attendee/read.php");
 
 # Get info about the attendee & adventure
 $member =& new member();
 $adventure =& new adventure();
-$status =& new status();
 $member->select($object->getMember());
 $adventure->select($object->getAdventure());
-$status->select($object->getStatus());
 
 # Plug info into the template template
-$template = Template::replace(
-    $member->insertIntoTemplate(
-        $object->insertIntoTemplate(
-            $adventure->insertIntoTemplate($template))),
-        array( 
-            "T_STATUS" => $status->getUID(),
-            "STATUS" => $status->getTitle()
-            ));
+$template = $member->insertIntoTemplate(
+    $object->insertIntoTemplate(
+        $adventure->insertIntoTemplate($template)));
 
 $res['content'] = $template;
 $res['title'] = "View Attendee Details";

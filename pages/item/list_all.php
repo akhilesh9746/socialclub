@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:11 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/06/05 17:13:57 bps7j Exp $
  */
 
 $res['title'] = "List All Items";
@@ -219,6 +219,7 @@ else {
 
 if ($result->numRows()) {
     while ($row =& $result->fetchRow()) {
+        $row['c_status'] = bitmaskString($row['c_status'], "status_id");
         $template = Template::block($template, "item", $row);
     }
 }

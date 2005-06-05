@@ -17,21 +17,16 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:27 bps7j Exp $
+ * $Id: read.php,v 1.2 2005/06/05 17:08:48 bps7j Exp $
  */
-
-include_once("status.php");
 
 # Create templates
 $template = file_get_contents("templates/classified_ad/read.php");
 
 $template = $object->insertIntoTemplate($template);
-$status =& new status();
-$status->select($object->getStatus());
 $member =& new member();
 $member->select($object->getOwner());
 $res['content'] = Template::replace($template, array(
-    "STATUS" => $status->getTitle(),
     "OWNER" => $member->getFullName()));
 $res['title'] = "View Ad Details";
 
