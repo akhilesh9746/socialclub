@@ -7,11 +7,8 @@ allowed to run it.</p>
 <p>The following links will help you manage various things in the database:</p>
 
 <ol>
-    <li><a href="members/action">Manage actions</a></li>
     <li><a href="members/activity">Manage activities</a></li>
     <li><a href="members/membership_type">Manage membership types</a></li>
-    <li><a href="members/group">Manage groups</a></li>
-    <li><a href="members/status">Manage statuses</a></li>
 </ol>
 
 {ACTIVATE:}
@@ -19,8 +16,10 @@ allowed to run it.</p>
 
 <ol>
   <li><a href="members/admin/activate-members">Activate Memberships</a></li>
+  {UNSUBSCRIBE:}
   <li><a href="members/admin/auto-unsubscribe-expired-members">Unsubscribe
   expired members</a></li>
+  {:UNSUBSCRIBE}
 </ol>
 {:ACTIVATE}
 
