@@ -27,6 +27,10 @@
   <tr>
     <th>Password</th>
     <td>{C_PASSWORD}</td>
+  </tr>
+  <tr>
+    <th>Groups</th>
+    <td>{C_GROUP_MEMBERSHIPS_STRING}</td>
   </tr>{:PASSWORD}{:MEMBER}{ADDRESS:}
   <tr>
     <td></td>

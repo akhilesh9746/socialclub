@@ -9,7 +9,7 @@
 <p class="notice">Your changes were saved.</p>
 {:SUCCESS}
 
-<p>Choose groups that {C_FULL_NAME} should belong to:</p>
+<p>Choose groups to which {C_FULL_NAME} should belong:</p>
 
 <form method="POST" action="members/member/chgrp_secondary/{T_MEMBER}">
 <input type="hidden" name="posted" value="1">
@@ -17,8 +17,7 @@
 <p>
 {GROUP:}
   <input type="checkbox" name="groups[]" value="{c_uid}" id="group{c_uid}" {CHECKED}>
-  <a title="View details for this group" href="members/group/read/{c_uid}">&raquo;</a>
-  <label for="group{c_uid}"><b>{c_title}</b> {c_description}</label><br>
+  <label for="group{c_uid}">{c_title}</label><br>
 {:GROUP}
 </p>
 
