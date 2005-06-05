@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:32 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/06/05 18:05:10 bps7j Exp $
  */
 
 $template = file_get_contents("templates/report/write.php");
@@ -29,7 +29,6 @@ $form =& new XmlForm("forms/report/write.xml");
 $form->setValue("title", $object->getTitle());
 $form->setValue("description", $object->getDescription());
 $form->setValue("query", $object->getQuery());
-$form->setValue("instructions", $object->getInstructions());
 
 # Validate the form
 $form->snatch();
@@ -39,7 +38,6 @@ if ($form->isValid()) {
     $object->setTitle($form->getValue("title"));
     $object->setDescription($form->getValue("description"));
     $object->setQuery($form->getValue("query"));
-    $object->setInstructions($form->getValue("instructions"));
 
     # Make sure the report can't modify the database.
     $badWords = $object->checkForAlter();

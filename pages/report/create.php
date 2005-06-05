@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:32 bps7j Exp $
+ * $Id: create.php,v 1.2 2005/06/05 18:04:06 bps7j Exp $
  */
 
 $template = file_get_contents("templates/report/create.php");
@@ -32,7 +32,6 @@ if ($form->isValid()) {
     $object->setTitle($form->getValue("title"));
     $object->setDescription($form->getValue("description"));
     $object->setQuery($form->getValue("query"));
-    $object->setInstructions($form->getValue("instructions"));
     # Make sure the report can't modify the database.
     $badWords = $object->checkForAlter();
     if (count($badWords)) {
@@ -40,7 +39,6 @@ if ($form->isValid()) {
             $template = Template::block($template, "ITEM", array(
                 "WORD" => $word));
         }
-        $template = Template::unhide($template, "INSTRUCTIONS");
         $template = Template::unhide($template, "BAD");
         $template = Template::replace($template, array(
             "FORM" => $form->toString()));
@@ -51,7 +49,6 @@ if ($form->isValid()) {
     }
 }
 else {
-    $template = Template::unhide($template, "INSTRUCTIONS");
     $template = Template::replace($template, array(
         "FORM" => $form->toString()));
 }
