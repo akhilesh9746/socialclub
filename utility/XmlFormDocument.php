@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: XmlFormDocument.php,v 1.1 2005/03/27 19:54:16 bps7j Exp $
+ * $Id: XmlFormDocument.php,v 1.2 2005/06/11 13:11:17 bps7j Exp $
  */
 /* 
  * Purpose:  Represents an HTML form object that is derived from a DOM tree that
@@ -516,6 +516,9 @@ class XMLFormDocument extends Document {
                 break;
             case "words":
                 return preg_match('/^[\w\d\t ]+$/', $val);
+                break;
+            case "bool":
+                return true;
                 break;
             default:
                 trigger_error("Unknown value for data-type attribute: '"
