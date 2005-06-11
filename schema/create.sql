@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.sql,v 1.2 2005/06/05 18:06:43 bps7j Exp $
+ * $Id: create.sql,v 1.3 2005/06/11 13:12:23 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -401,6 +401,15 @@ create table [_]condition (
     c_description     varchar(255)    not null,
     primary key  (c_uid),
     unique index (c_title)
+) type=MyISAM;
+
+create table [_]configuration (
+    c_name            varchar(50)     not null,
+    c_value           varchar(255)    not null,
+    -- Value is one of bool integer string number datetime date email
+    c_type            varchar(10)     not null,
+    c_description     varchar(255)    not null,
+    primary key(c_name)
 ) type=MyISAM;
 
 create table [_]email_list (

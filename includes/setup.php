@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: setup.php,v 1.2 2005/06/05 16:21:23 bps7j Exp $
+ * $Id: setup.php,v 1.3 2005/06/11 13:12:23 bps7j Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -94,7 +94,10 @@ function userErrorHandler($errno, $errstr, $errfile, $errline) {
     if ((intval($errno) & ERROR_EMAILING) != 0) {
         error_log($logMessage, 1, $cfg['webmaster_email']);
     }
-    if ((intval($errno) & ERROR_LOGGING) != 0) {
+    if (isset($cfg['error_log'])
+        && $cfg['error_log']
+        && (intval($errno) & ERROR_LOGGING) != 0)
+    {
         error_log(date("Y-m-d h:i:s ", time()) . $logMessage . "\r\n", 3, $cfg['error_log']);
     }
 }
@@ -174,7 +177,9 @@ function fatalErrorHandler(&$buffer) {
         # Trim leading space off the message and log it
         $logMessage = preg_replace('/(?m)^\s*/', "", $logMessage);
         error_log($logMessage . "\r\n", 1, $cfg['webmaster_email']);
-        error_log($logMessage, 3, $cfg['error_log']);
+        if (isset($cfg['error_log']) && $cfg['error_log']) {
+            error_log($logMessage, 3, $cfg['error_log']);
+        }
         
         # Display a friendly error message
         return "<html><head><title>Error</title></head><body>
@@ -347,6 +352,25 @@ $cfg['tables'] = array();
 $result =& $obj['conn']->query("select c_name from [_]table order by c_name");
 while ($row =& $result->fetchRow()) {
     $cfg['tables'][] = $row['c_name'];
+}
+
+# ------------------------------------------------------------------------------
+# Configuration that is stored in the database.
+# ------------------------------------------------------------------------------
+$result =& $obj['conn']->query(
+    "select c_name, c_value, c_type from [_]configuration");
+while ($row =& $result->fetchRow()) {
+    switch ($row['c_type']) {
+    case "integer":
+        $cfg[$row['c_name']] = intval($row['c_value']);
+        break;
+    case "number":
+        $cfg[$row['c_name']] = floatval($row['c_value']);
+        break;
+    default:
+        $cfg[$row['c_name']] = $row['c_value'];
+        break;
+    }
 }
 
 ?>

@@ -6,22 +6,30 @@ allowed to run it.</p>
 
 <p>The following links will help you manage various things in the database:</p>
 
-<ol>
+<ul>
     <li><a href="members/activity">Manage activities</a></li>
     <li><a href="members/membership_type">Manage membership types</a></li>
-</ol>
+</ul>
 
 {ACTIVATE:}
 <p>Use the following links to manage memberships:</p>
 
-<ol>
+<ul>
   <li><a href="members/admin/activate-members">Activate Memberships</a></li>
   {UNSUBSCRIBE:}
   <li><a href="members/admin/auto-unsubscribe-expired-members">Unsubscribe
   expired members</a></li>
   {:UNSUBSCRIBE}
-</ol>
+</ul>
 {:ACTIVATE}
+
+{CONFIG:}
+<p>You can configure various settings with the following link:</p>
+
+<ul>
+    <li><a href="members/admin/configuration">Manage website configuration</a></li>
+</ul>
+{:CONFIG}
 
 {DBCOMMON:}
 
@@ -30,7 +38,7 @@ allowed to run it.</p>
 <p class="notice">NOTE: These pages iteratively query the database; some of the
 queries require table scans.  Don't run them casually.</p>
 
-<ol>
+<ul>
   <li><a href="members/admin/check-foreign-keys">
       Check the integrity of foreign keys in the database
     </a></li>
@@ -40,5 +48,5 @@ queries require table scans.  Don't run them casually.</p>
   <li><a href="members/admin/dedupe-questions">
       De-dupe questions in the database
     </a></li>
-</ol>
+</ul>
 {:DBCOMMON}

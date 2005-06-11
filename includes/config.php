@@ -17,25 +17,15 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: config.php,v 1.1 2005/03/27 19:54:20 bps7j Exp $
+ * $Id: config.php,v 1.2 2005/06/11 13:12:23 bps7j Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
  */
 
-# Organization name.
-$cfg['club_name'] = "SocialClub";
-
-# The email address for whoever's in charge of the club operation
-$cfg['club_admin_email'] = "admin@socialclub.org";
-$cfg['webmaster_email'] = "webmaster@socialclub.org";
-// TODO: replace this with the members of the treasurer group
-$cfg['treasurer_email'] = array("treasurer@socialclub.org");
-$cfg['error_log'] = ".hterror";
-$cfg['club_admin_email_name'] = 'Socialclub Administrator <admin@socialclub.org>';
-
-# Whether the system should send emails when requested to do so.
-$cfg['send_emails'] = true;
+# Where the system should log error messages.  Leave blank if you don't want to
+# log any messages.
+$cfg['error_log'] = "";
 
 # The prefix for database table names.
 $cfg['table_prefix'] = "t_";

@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: drop.sql,v 1.2 2005/06/05 18:07:47 bps7j Exp $
+ * $Id: drop.sql,v 1.3 2005/06/11 13:12:23 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -45,6 +45,7 @@ drop table if exists [_]checkout_item;
 drop table if exists [_]checkout_item_qty;
 drop table if exists [_]classified_ad;
 drop table if exists [_]condition;
+drop table if exists [_]configuration;
 drop table if exists [_]email_list;
 drop table if exists [_]expense;
 drop table if exists [_]expense_category;

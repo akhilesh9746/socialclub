@@ -16,9 +16,24 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: initialize.sql,v 1.2 2005/06/05 18:07:47 bps7j Exp $
+ * $Id: initialize.sql,v 1.3 2005/06/11 13:12:23 bps7j Exp $
  *
  */
+
+insert into [_]configuration
+    (c_name, c_value, c_type, c_description)
+    values
+    ('club_name', 'SocialClub', 'string', 'Organization name'),
+    ('club_admin_email', 'admin@socialclub.org', 'email', 'Club Administrator'),
+    ('club_admin_email_name', 'SocialClub Administrator <admin@socialclub.org>',
+        'string', 'Club Administrator, full email with name'),
+    ('webmaster_email', 'webmaster@socialclub.org', 'email',
+        'The club webmaster'),
+    ('treasurer_email', 'treasurer@socialclub.org', 'email',
+        'The club treasurer'),
+    ('send_emails', 'true', 'bool', 'Whether the website should send any email'),
+    ('root_uid', '1', 'integer', 'The "root" user for the system'),
+    ('expense_from_uid', '2', 'integer', 'The user from whom expenses come');
 
 insert into [_]table
     (c_name)

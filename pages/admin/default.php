@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: default.php,v 1.2 2005/06/05 16:24:07 bps7j Exp $
+ * $Id: default.php,v 1.3 2005/06/11 13:12:23 bps7j Exp $
  *
  * This is the default page for the Admin Tasks tab.
  */
@@ -42,6 +42,7 @@ if ($obj['user']->isRootUser()
 if ($obj['user']->isRootUser()) {
     $contents = Template::unhide($contents, "DBCOMMON");
     $contents = Template::unhide($contents, "UNSUBSCRIBE");
+    $contents = Template::unhide($contents, "CONFIG");
 }
 
 $res['content'] = $contents;
