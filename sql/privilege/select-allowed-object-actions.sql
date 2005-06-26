@@ -10,7 +10,13 @@
 --      applies_to_object: flag
 --      root_group: The UID of the root group
 --      All of the various bitmasks from [_]unixperm.
-select ac.*
+select
+    ac.c_title,
+    ac.c_summary,
+    case when (ia.c_label <> '') then ia.c_label else ac.c_label end as c_label,
+    ac.c_row,
+    ac.c_description,
+    ac.c_flags
     -- You could add columns to the select statement to show what granted the
     -- privilege, for instance group_owner.c_uid would show if the member is in
     -- the group that owns the object.

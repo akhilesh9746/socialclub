@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.sql,v 1.3 2005/06/11 13:12:23 bps7j Exp $
+ * $Id: create.sql,v 1.4 2005/06/26 18:46:28 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -91,7 +91,9 @@ create table [_]absence (
  * characters.  The title is used in code, but the short and long descriptions
  * are for people to see.  The long description is really only for admin users
  * to understand what is going on.  The summary is for use in a drop-down menu
- * of actions, so it should be something useful, like "Change Permissions."
+ * of actions, so it should be something useful, like "Change Permissions."  The
+ * label is for user interfaces, and may be overridden by the values in
+ * [_]implemented_action.
  */
 
 create table [_]action (
@@ -556,6 +558,9 @@ create table [_]foreign_key (
  *      action applies to ALL tables.
  *  c_action
  *      is an action that applies to (is implemented by) objects in c_table.
+ *  c_label
+ *      When this field contains something other than the empty string, it will
+ *      override the value in [_]action.
  *  c_status
  *      is a bit field that specifies which statuses the action is valid for.
  *      If this field is 0, then the action is valid for every status.
@@ -563,6 +568,7 @@ create table [_]foreign_key (
 create table [_]implemented_action (
     c_table           varchar(100)    not null,
     c_action          varchar(100)    not null, -- > [_]action
+    c_label           varchar(25)     not null,
     c_status          int unsigned    not null default 0,
     primary key (c_table, c_action)
 ) type=MyISAM;
