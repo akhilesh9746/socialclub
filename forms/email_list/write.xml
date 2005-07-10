@@ -107,7 +107,7 @@ Please correct the errors marked below and resubmit.</p>
   </tr>
   <tr>
     <td>The email address to which list commands should be sent. For example,
-    majordomo@socialclub.org</td>
+    majordomo@domain.org</td>
     <td>
       <input type="text" name="mgmt-address" id="mgmt-address" />
     </td>
@@ -127,7 +127,7 @@ Please correct the errors marked below and resubmit.</p>
   </tr>
   <tr>
     <td>The email address to use when you want to send something to the list
-  members. For example, adventures@socialclub.org.</td>
+  members. For example, adventures@domain.org.</td>
     <td>
       <input type="text" name="list-address" id="list-address" />
     </td>

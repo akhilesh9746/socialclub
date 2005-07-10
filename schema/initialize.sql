@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: initialize.sql,v 1.3 2005/06/11 13:12:23 bps7j Exp $
+ * $Id: initialize.sql,v 1.4 2005/07/10 18:13:56 bps7j Exp $
  *
  */
 
@@ -24,12 +24,12 @@ insert into [_]configuration
     (c_name, c_value, c_type, c_description)
     values
     ('club_name', 'SocialClub', 'string', 'Organization name'),
-    ('club_admin_email', 'admin@socialclub.org', 'email', 'Club Administrator'),
-    ('club_admin_email_name', 'SocialClub Administrator <admin@socialclub.org>',
+    ('club_admin_email', 'admin@domain.org', 'email', 'Club Administrator'),
+    ('club_admin_email_name', 'SocialClub Administrator <admin@domain.org>',
         'string', 'Club Administrator, full email with name'),
-    ('webmaster_email', 'webmaster@socialclub.org', 'email',
+    ('webmaster_email', 'webmaster@domain.org', 'email',
         'The club webmaster'),
-    ('treasurer_email', 'treasurer@socialclub.org', 'email',
+    ('treasurer_email', 'treasurer@domain.org', 'email',
         'The club treasurer'),
     ('send_emails', 'true', 'bool', 'Whether the website should send any email'),
     ('root_uid', '1', 'integer', 'The "root" user for the system'),
@@ -224,9 +224,9 @@ insert into [_]member
     (c_created_date, c_first_name, c_last_name, c_email, c_password,
     c_gender, c_birth_date, c_full_name, c_flags, c_group_memberships)
 values
-    (now(), "Club", "Manager", "admin@socialclub.org", "root",
+    (now(), "Club", "Manager", "admin@domain.org", "root",
       "m", '2000-01-01', "Club Manager", 1, 1),
-    (now(), "Guest", "User", "guest@socialclub.org", "guest",
+    (now(), "Guest", "User", "guest@domain.org", "guest",
       "m", '2000-01-01', "Guest User", 1, 64);
 
 insert into [_]chat_type
@@ -263,7 +263,7 @@ insert into [_]membership
 select now(), 8, me.c_uid, mt.c_uid, mt.c_begin_date,
     mt.c_expiration_date, c_units_granted, c_unit, c_total_cost, 0
     from [_]member as me, [_]membership_type as mt
-    where me.c_email in ("admin@socialclub.org", "guest@socialclub.org")
+    where me.c_email in ("admin@domain.org", "guest@domain.org")
         and mt.c_title = "Lifetime Membership";
 
 insert into [_]activity
