@@ -26,7 +26,6 @@ function formEnabled(form) {
     }
     else {
         for (var i = 0; i < form.elements["object"].length; ++i) {
-            alert (form.elements["object"][i].checked);
             if (form.elements["object"][i].checked) {
                 left = true;
             }
