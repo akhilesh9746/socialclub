@@ -2,8 +2,7 @@
 
 <p>Enter your email address below and submit the form.  The system will email
 your password to the email address on record. If you don't remember which email
-address you signed up with,
-<a href="index.php?page=contact">contact us</a>.</p>
+address you signed up with, please contact us.</p>
 
 <p class="notice">Please note: you have to use your email address to
 sign in.  If you've changed your email address through editing your

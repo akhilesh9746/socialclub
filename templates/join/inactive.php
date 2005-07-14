@@ -9,6 +9,3 @@ are no delays getting your membership activated.</p>
 <p>If an unwanted, inactive membership is keeping you from signing up with a new
 membership, you may <a href="members/join/delete-old">delete old
 memberships</a>.</p>
-
-<p>Questions?  Please <a href="index.php?page=contact">contact
-us</a>.</p>
