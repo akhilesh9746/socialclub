@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: config.php,v 1.2 2005/06/11 13:12:23 bps7j Exp $
+ * $Id: config.php,v 1.3 2005/07/14 01:46:36 bps7j Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -42,9 +42,5 @@ $cfg['db'] = array(
     'dump' => false,
     'errlevel' => E_USER_ERROR,
     'prefix' => $cfg['table_prefix']);
-
-# UIDs for important members.
-$cfg['root_uid'] = 1;
-$cfg['expense_from_uid'] = 2;
 
 ?>
