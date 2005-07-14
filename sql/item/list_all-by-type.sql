@@ -3,7 +3,7 @@ select{select:}
     it.c_uid as ID_table,
     it.c_qty as qty_table,
     it.c_status,
-    co.c_title as condition_table,
+    co.c_title as condition_table
 from [_]item as it
     inner join [_]condition as co on co.c_uid = it.c_condition
     inner join [_]item_type as ty on ty.c_uid = it.c_type{join:}
