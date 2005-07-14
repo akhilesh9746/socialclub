@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2005/06/05 17:13:57 bps7j Exp $
+ * $Id: list_all.php,v 1.3 2005/07/14 01:47:00 bps7j Exp $
  */
 
 $res['title'] = "List All Items";
@@ -166,7 +166,7 @@ else {
     # The list should be filtered by type.  This requires building a custom
     # query and template.  Get the attributes that belong to the item type as a
     # guide for this process.
-    $queryTemplate = file_get_contents("item/list_all-by-type.sql");
+    $queryTemplate = file_get_contents("sql/item/list_all-by-type.sql");
     $type =& new item_type();
     $type->select($crit['type']);
     $res['title'] = "List All Items: " . $type->getTitle();
