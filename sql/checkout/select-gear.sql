@@ -2,6 +2,7 @@ select
     cg.c_uid,
     cg.c_qty,
     cg.c_description,
+    cg.c_status,
     ic.c_title as ic_title,
     it.c_title as it_title
 from [_]checkout_gear as cg

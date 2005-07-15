@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:20 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/07/15 01:41:00 bps7j Exp $
  */
 
 # Create a template 
@@ -49,7 +49,8 @@ if ($form->getValue("member")) {
 $result =& $cmd->executeReader();
 
 while ($row =& $result->fetchRow()) {
-    $template = Template::block($template, "checkout", $row);
+    $template = Template::block($template, "checkout", $row
+        + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
 }
 
 if ($result->numRows()) {

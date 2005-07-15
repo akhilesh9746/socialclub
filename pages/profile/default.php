@@ -17,14 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: default.php,v 1.1 2005/03/27 19:53:37 bps7j Exp $
+ * $Id: default.php,v 1.2 2005/07/15 01:41:06 bps7j Exp $
  */
 
 require_once("chat.php");
 require_once("address.php");
 require_once("phone_number.php");
 
-# Create templates
 $wrapper = file_get_contents("templates/profile/default.php");
 
 # Update the member's choice of primary address

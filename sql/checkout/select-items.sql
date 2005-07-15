@@ -1,6 +1,7 @@
 select
     ci.c_uid,
     it.c_uid as it_uid,
+    it.c_status,
     coalesce(iat1.c_value, "[null]") as c_primary,
     coalesce(iat2.c_value, "[null]") as c_secondary,
     ty.c_title as ty_title

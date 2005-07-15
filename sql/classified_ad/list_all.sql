@@ -8,7 +8,7 @@ select
     ad.c_text
 from [_]classified_ad as ad
     inner join [_]member as me on me.c_uid = ad.c_owner
-where (ad.c_status & 8 <> 0)
+where (ad.c_status & 9 <> 0)
     and ad.c_deleted <> 1
     and me.c_deleted <> 1
 order by ad.c_created_date desc

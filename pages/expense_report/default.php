@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: default.php,v 1.2 2005/06/05 17:13:24 bps7j Exp $
+ * $Id: default.php,v 1.3 2005/07/15 01:41:06 bps7j Exp $
  *
  * Presents a default list of actions you can take on a table.  If there is a
  * template, it uses that; otherwise it uses a default template.  You can use
@@ -29,12 +29,12 @@ include_once("includes/authorize.php");
 $template = file_get_contents("templates/expense_report/default.php");
 
 # Plug in allowed actions.  If there is only one, redirect to it.
-$obj['table'] =& new table("$cfg[table_prefix]$cfg[page]");
+$obj['table'] =& new table("$cfg[table_prefix]expense_report");
 $links = 0;
 $singleAction = 0;
 foreach ($obj['table']->getAllowedActions() as $key => $row) {
     # Check that the action is actually implemented before showing a link to it
-    if (file_exists("$cfg[page_path]/$cfg[action].php")) {
+    if (file_exists("pages/expense_report/$row[c_title].php")) {
         $links++;
         $singleAction = $key;
         $template = Template::block($template, "actions", $row);
@@ -51,7 +51,7 @@ foreach (array("expense", "expense_submission", "transaction") as $what) {
         # Don't show "create" pages
         if ($row['c_title'] != "create") {
             # Check that the action is actually implemented before showing a link to it
-            if (file_exists("pages/$what/$cfg[action].php")) {
+            if (file_exists("pages/$what/$row[c_title].php")) {
                 $unhide = true;
                 $template = Template::block($template, "{$what}_actions", $row);
             }

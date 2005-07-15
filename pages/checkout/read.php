@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:21 bps7j Exp $
+ * $Id: read.php,v 1.2 2005/07/15 01:41:06 bps7j Exp $
  */
 
 # Create templates
@@ -31,7 +31,8 @@ $result =& $cmd->executeReader();
 if ($result->numRows()) {
     $template = Template::unhide($template, "somegear");
     while ($row =& $result->fetchRow()) {
-        $template = Template::block($template, "gear", $row);
+        $template = Template::block($template, "gear", $row
+            + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
     }
 }
 
@@ -42,7 +43,8 @@ $result =& $cmd->executeReader();
 if ($result->numRows()) {
     $template = Template::unhide($template, "someitems");
     while ($row =& $result->fetchRow()) {
-        $template = Template::block($template, "item", $row);
+        $template = Template::block($template, "item", $row
+            + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
     }
 }
 

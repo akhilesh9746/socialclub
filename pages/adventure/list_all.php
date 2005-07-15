@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:33 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/07/15 01:40:55 bps7j Exp $
  *
  * This page expects some criteria for what to display: past, joined.
  * This variable comes from $_GET[criteria].
@@ -71,9 +71,7 @@ switch (getval('criteria')) {
         $critLoc = $form->getValue("location");
         $critLeader = $form->getValue("leader");
         $critStart = $form->getValue("start");
-        $startDate = date("Y-m-d", strtotime($critStart));
         $critEnd = $form->getValue("end");
-        $endDate = date("Y-m-d", strtotime($critEnd));
         if ($critTitle != "" && $critTitle != "[title]") {
             $cmd->addParameter("title", "%$critTitle%");
         }
@@ -84,10 +82,10 @@ switch (getval('criteria')) {
             $cmd->addParameter("leader", "%$critLeader%");
         }
         if ($critStart != "") {
-            $cmd->addParameter("start", $startDate);
+            $cmd->addParameter("start", date("Y-m-d", strtotime($critStart)));
         }
         if ($critEnd != "") {
-            $cmd->addParameter("end", $endDate);
+            $cmd->addParameter("end", date("Y-m-d", strtotime($critEnd)));
         }
         break;
 }
