@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: migrate.sql,v 1.1 2005/07/14 01:42:08 bps7j Exp $
+ * $Id: migrate.sql,v 1.2 2005/07/15 01:41:31 bps7j Exp $
  *
  */
 
@@ -1624,7 +1624,7 @@ insert into [new]phone_number (
         c_uid, c_owner, c_creator, c_group, c_unixperms,
         c_created_date, c_last_modified, c_status, c_flags, c_deleted, 
         c_type, c_country_code, c_area_code, c_exchange, c_number, c_extension,
-        c_phone_number)
+        c_phone_number, c_title)
 select c_uid, c_owner, c_creator,
     case when c_group = @og_root then @ng_root
         when c_group = @og_officer then @ng_officer
@@ -1661,7 +1661,7 @@ select c_uid, c_owner, c_creator,
         + case when c_flags & @of_generic then @nf_generic else 0 end,
     case when c_status = @os_deleted then 1 else 0 end,
     c_type, c_country_code, c_area_code, c_exchange, c_number, c_extension,
-    c_phone_number
+    c_phone_number, c_title
 from [old]phone_number;
 
 delete from [new]question;
