@@ -12,16 +12,16 @@
     <th>Note</th>
     <th>Condition</th>
     <th>Status</th>
-  </tr>{NOTE:}
+  </tr>{note:}
   <tr>
-    <td>{C_CREATED_DATE|_date_format,'n/j/y'}</td>
+    <td>{c_created_date|_date_format,'n/j/y'}</td>
     <td nowrap>
-      <a href="members/member/read/{C_CREATOR}">{C_FULL_NAME}</a>
+      <a href="members/member/read/{c_creator}">{c_full_name}</a>
     </td>
-    <td>{C_NOTE}</td>
-    <td>{C_TITLE}</td>
-    <td>{STATUS_TITLE}</td>
-  </tr>{:NOTE}
+    <td>{c_note}</td>
+    <td>{c_title}</td>
+    <td>{st_title}</td>
+  </tr>{:note}
 </table>
 
 </div>

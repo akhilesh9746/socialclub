@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_notes.php,v 1.1 2005/03/27 19:53:12 bps7j Exp $
+ * $Id: view_notes.php,v 1.2 2005/07/16 01:08:30 bps7j Exp $
  */
 
 # Create templates
@@ -28,8 +28,8 @@ $cmd->loadQuery("sql/item_note/select-all.sql");
 $cmd->addParameter("item", $cfg['object']);
 $result =& $cmd->executeReader();
 while ($row =& $result->fetchRow()) {
-    $template = Template::block($template, "NOTE",
-        array_change_key_case($row, 1));
+    $template = Template::block($template, "note", $row
+        + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
 }
 
 # Auto-link to items when they are in the format "item XYZ"

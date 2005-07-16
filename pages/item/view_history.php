@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_history.php,v 1.1 2005/03/27 19:53:11 bps7j Exp $
+ * $Id: view_history.php,v 1.2 2005/07/16 01:08:30 bps7j Exp $
  *
  * Purpose: view all checkouts for an item.
  */
@@ -31,7 +31,8 @@ $result =& $cmd->executeReader();
 
 if ($result->numRows()) {
     while ($row =& $result->fetchRow()) {
-        $template = Template::block($template, "checkout", $row);
+        $template = Template::block($template, "checkout", $row
+            + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
     }
     $template = Template::unhide($template, "some");
 }
