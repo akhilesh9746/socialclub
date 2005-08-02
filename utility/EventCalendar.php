@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: EventCalendar.php,v 1.1 2005/03/27 19:54:17 bps7j Exp $
+ * $Id: EventCalendar.php,v 1.2 2005/08/02 23:45:38 bps7j Exp $
  */
 
 class EventCalendar {
@@ -38,8 +38,9 @@ class EventCalendar {
      * $fill means whether to expand the "selection" to fill out partial
      * beginning and ending weeks.
      */
-    function &getEvents(/*DateTime*/ $start, /*DateTime*/ $end, $fill = false) {
+    function getEvents(/*DateTime*/ $start, /*DateTime*/ $end, $fill = false) {
         global $obj;
+        global $cfg;
         $cal = array();
 
         # Fill out partial weeks
@@ -59,16 +60,17 @@ class EventCalendar {
         }
 
         # Query the DB to see what's in it for the given date range
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/calendar.sql");
+        $cmd->addParameter("active", $cfg['status_id']['active']);
         $cmd->addParameter("start", $start->toString("Y-m-d"));
         $cmd->addParameter("end", $end->toString("Y-m-d"));
-        $result =& $cmd->executeReader();
+        $result = $cmd->executeReader();
 
         # Add the adventures in the result set to the array to return, making
         # certain not to add adventures to elements in the array that are
         # outside the bounds of the dates we want to show.
-        while ($row =& $result->fetchRow()) {
+        while ($row = $result->fetchRow()) {
             $st =& new DateTime(substr($row['c_start_date'], 0, 10));
             if ($st->compareTo($start) < 0) {
                 $st =& new DateTime($start->toString("Y-m-d"));
