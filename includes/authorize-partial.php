@@ -17,15 +17,16 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: authorize-partial.php,v 1.1 2005/03/27 19:54:21 bps7j Exp $
+ * $Id: authorize-partial.php,v 1.2 2005/08/02 02:37:21 bps7j Exp $
  */
+
 # If the 'user' cookie exists, we can use that.  Test to see if this user is in
 # the database, but only if there is NOT any auth data:
 if (isset($_COOKIE['user']) && $_COOKIE['user']
-    && $cfg['auth']['user']
-    && $cfg['auth']['pass'])
+    && !$cfg['auth']['user']
+    && !$cfg['auth']['pass'])
 {
-    $result =& $obj['conn']->query("select current_timestamp, [_]member.* "
+    $result = $obj['conn']->query("select current_timestamp, [_]member.* "
         . "from [_]member where c_uid = {uid,int}",
         array('uid' => $_COOKIE['user']));
     if ($result->numRows()) {
