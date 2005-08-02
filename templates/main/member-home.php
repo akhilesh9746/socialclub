@@ -70,12 +70,12 @@
           <th>#trips</th>
           <th>Activity</th>
           <th>Location</th>
-        </tr>{POP_LOC:}
+        </tr>{pop_loc:}
         <tr class='{CLASS}'>
-          <td>{NUM}</td>
-          <td>{AC_TITLE}</td>
-          <td><a href="members/location/read/{LOC_UID}">{LOC_TITLE}</a></td>
-        </tr>{:POP_LOC}
+          <td>{num}</td>
+          <td>{ac_title}</td>
+          <td><a href="members/location/read/{loc_uid}">{loc_title}</a></td>
+        </tr>{:pop_loc}
       </table>
       <div align="right" class="tiny">
         {MORE_ACTIVITIES:}
@@ -108,7 +108,7 @@
       <h4 class="boxed">Search</h4>
       <form action="members/member/list_all" method="GET">
         <p>Search for members by name:<br>
-        <input type="hidden" name="form-name" id="form-name" value="1" />
+        <input type="hidden" name="go" value="1" />
         <input type="text" name="name" value="">
         <input type="submit" value="Go">
         </p>

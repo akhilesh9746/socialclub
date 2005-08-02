@@ -18,14 +18,14 @@
     <th>Begins</th>
     <th>Expires</th>
   </tr>
-  <tr>{MEMBERSHIP:}
-    <td><a href="members/membership/read/{C_UID}">{C_TITLE}</a></td>
-    <td nowrap>{C_CREATED_DATE|_date_format,'M j, Y'}</td>
-    <td align="right">${C_TOTAL_COST|number_format,2}</td>
-    <td>{ST_TITLE}</td>
-    <td nowrap>{C_BEGIN_DATE|_date_format,'M j, Y'}</td>
-    <td nowrap>{C_EXPIRATION_DATE|_date_format,'M j, Y'}</td>
-  </tr>{:MEMBERSHIP}
+  <tr>{membership:}
+    <td><a href="members/membership/read/{c_uid}">{c_title}</a></td>
+    <td nowrap>{c_created_date|_date_format,'M j, Y'}</td>
+    <td align="right">${c_total_cost|number_format,2}</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
+    <td nowrap>{c_begin_date|_date_format,'M j, Y'}</td>
+    <td nowrap>{c_expiration_date|_date_format,'M j, Y'}</td>
+  </tr>{:membership}
 </table>
 {:SOME}
 
