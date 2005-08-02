@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: member-home.php,v 1.1 2005/03/27 19:53:13 bps7j Exp $
+ * $Id: member-home.php,v 1.2 2005/08/02 02:55:12 bps7j Exp $
  *
  * Purpose: the member homepage that members see after they log in.
  */
@@ -49,7 +49,7 @@ if (($chat = $obj['user']->getPrimaryChat()) != null) {
 
 # Add a message if the member needs to renew within $days days
 $days = 30;
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/membership/needs-to-renew.sql");
 $cmd->addParameter("member", $cfg['user']);
 if (($daysLeft = $cmd->executeScalar()) < $days) {
@@ -62,23 +62,25 @@ if (($daysLeft = $cmd->executeScalar()) < $days) {
 $favImg = "<img src='assets/smiley-tiny.png' width='12' height='12' "
     . "title='This adventure matches your interests' "
     . "alt='This adventure matches your interests'>";
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/adventure/select-top-upcoming.sql");
+$cmd->addParameter("active", $cfg['status_id']['active']);
 $cmd->addParameter("number", 100);
 $cmd->addParameter("member", $cfg['user']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $wrapper = Template::block($wrapper, "UPCOMING",
         array_change_key_case($row, 1)
         + array("IMG" => (($row['fav'] > 0) ? $favImg : "")));
 }
 
 # Get recent classified ads
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/classified_ad/select-newest.sql");
+$cmd->addParameter("default", $cfg['status_id']['default']);
 $cmd->addParameter("limit", 5);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $wrapper = Template::block($wrapper, "CLASSIFIEDS",
         array_change_key_case($row, 1));
 }
@@ -96,23 +98,23 @@ if (count($obj['user']->getChildren("interest"))) {
     else {
         $wrapper = Template::unhide($wrapper, "MORE_ACTIVITIES");
     }
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/location/select-by-interest.sql");
+    $cmd->addParameter("active", $cfg['status_id']['active']);
     $cmd->addParameter("member", $cfg['user']);
     # Not used anymore in the query -- needs a subselect
     # $cmd->addParameter("limit", $limit);
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     $evenOdd = 0;
-    while ($row =& $result->fetchRow() && $count < $limit) {
+    while (($row = $result->fetchRow()) && $count < $limit) {
         # The query itself can't return just one row per activity without using
         # a subselect, and for that reason the 'limit' parameter is useless too.
         # So we simulate the same effect here with $seen and $count:
         if (!in_array($row['ac_title'], $seen)) {
             $seen[] = $row['ac_title'];
             $count++;
-            $wrapper = Template::block($wrapper, "POP_LOC",
-                array_change_key_case($row, 1)
-                + array("CLASS" => (($evenOdd++ % 2) ? "even" : "odd")));
+            $wrapper = Template::block($wrapper, "pop_loc", $row
+                + array("class" => (($evenOdd++ % 2) ? "even" : "odd")));
         }
     }
 }
