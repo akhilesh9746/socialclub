@@ -50,3 +50,9 @@ queries require table scans.  Don't run them casually.</p>
     </a></li>
 </ul>
 {:DBCOMMON}
+
+{SU:}
+<ul>
+  <li><a href="members/member/su/{root_uid}">Become the administrator</a></li>
+</li>
+{:SU}
