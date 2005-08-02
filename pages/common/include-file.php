@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: include-file.php,v 1.2 2005/06/05 17:10:17 bps7j Exp $
+ * $Id: include-file.php,v 1.3 2005/08/02 02:51:32 bps7j Exp $
  *
  * This file is included from many pages that have the generic directory
  * structure of files named with the name of the action.  If the action file
@@ -58,18 +58,19 @@ if ($cfg['action']) {
 
         # Check permissions
         if (!$object->permits($cfg['action'])) {
-            # Email the webmasters
-            mail($cfg['webmaster_email'],
-                "Permission Error",
-                "User " . $obj['user']->toString() . " (" .  $obj['user']->getFullName()
-                    . ") is not allowed to take action {$cfg['actions'][$cfg['action']]['c_summary']} "
-                    . "($cfg[action]) on object " . $object->toString() . "; referred from "
-                    . "$_SERVER[HTTP_REFERER] on $_SERVER[REQUEST_URI]");
+            trigger_error("User " . $obj['user']->toString() . " (" 
+                . $obj['user']->getFullName()
+                . ") is not allowed to take action "
+                . $cfg['actions'][$cfg['action']]['c_summary']
+                . "($cfg[action]) on object " . $object->toString()
+                . "; referred from $_SERVER[HTTP_REFERER] on "
+                . "$_SERVER[REQUEST_URI]", E_USER_ERROR);
             $res['content'] = "
             <h1>Permission Error</h1>
 
             <p>Sorry, but you are not allowed to take this action
-            <b>({$cfg['actions'][$cfg['action']]['c_summary']})</b> on this object.</p>";
+            <b>({$cfg['actions'][$cfg['action']]['c_summary']})</b>
+            on this object.</p>";
 
             $res['title'] = "Permission Error";
             $res['help'] = "HelpOnPrivileges";
