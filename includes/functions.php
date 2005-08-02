@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: functions.php,v 1.2 2005/06/05 16:20:49 bps7j Exp $
+ * $Id: functions.php,v 1.3 2005/08/02 02:38:32 bps7j Exp $
  */
 
 # ------------------------------------------------------------------------------
@@ -207,6 +207,7 @@ function smiley($text) {
 
 /*
  * Converts a bitmask value to its string representation: comma-separated names.
+ * Note that this can be used in templates.
  * @param value The value to convert
  * @param type the name of the $cfg[] entry that holds the values
  * @return string
