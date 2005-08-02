@@ -17,7 +17,7 @@
     <td><a href="members/checkout/read/{c_uid}">{c_last_name}, {c_first_name}</a></td>
     <td>{officer_name}</td>
     <td>{c_created_date|_date_format,'n/j/Y'}</td>
-    <td>{st_title}</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>{:checkout}
 </table>
 {:SOME}

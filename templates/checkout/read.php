@@ -23,14 +23,14 @@ tr.checked_out td {
     <th>Details 2</th>
     <th>Status</th>
   </tr>{item:}
-  <tr class="{st_title}">
+  <tr class="{c_status|bitmaskString,'status_id'}">
     <td>
       <a href="members/item/read/{it_uid}">{it_uid}</a>
     </td>
     <td>{ty_title}</td>
     <td>{c_primary}</td>
     <td>{c_secondary}</td>
-    <td>{st_title}</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>{:item}
 </table>
 

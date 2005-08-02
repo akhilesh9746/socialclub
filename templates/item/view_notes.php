@@ -20,7 +20,7 @@
     </td>
     <td>{c_note}</td>
     <td>{c_title}</td>
-    <td>{st_title}</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>{:note}
 </table>
 

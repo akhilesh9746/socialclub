@@ -45,17 +45,8 @@
   </tr>
 
   <tr>
-    <th>Last Modified</th><td>{C_LAST_MODIFIED}</td>
-  </tr>
-
-  <tr>
     <th>Status</th>
-    <td>{C_STATUS_STRING}</td>
-  </tr>
-
-  <tr>
-    <th>Flags</th>
-    <td>{C_FLAGS_STRING}</td>
+    <td>{C_STATUS|bitmaskString,'status_id'}</td>
   </tr>
 
 </table>
