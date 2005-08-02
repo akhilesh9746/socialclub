@@ -7,7 +7,6 @@
 --      object: The UID of the object
 --      table:  The table the object lives in.  This parameter appears in both
 --              char and none data types.
---      applies_to_object: flag
 --      root_group: The UID of the root group
 --      All of the various bitmasks from [_]unixperm.
 select
@@ -16,7 +15,7 @@ select
     case when (ia.c_label <> '') then ia.c_label else ac.c_label end as c_label,
     ac.c_row,
     ac.c_description,
-    ac.c_flags
+    ac.c_generic
     -- You could add columns to the select statement to show what granted the
     -- privilege, for instance group_owner.c_uid would show if the member is in
     -- the group that owns the object.
@@ -41,41 +40,41 @@ from
                 or (pr.c_what_relates_to = 'self' and {object,int} = {member,int} and {table,char} = '[_]member'))
 where
     -- The action must apply to objects
-    (ac.c_flags & {applies_to_object,int} <> 0)
+    ac.c_apply_object
     and obj.c_deleted <> 1
     and (
         -- Members of the 'root' group are always allowed to do everything
         ({groups,int} & {root_group,int} <> 0)
         -- UNIX style read permissions in the bit field
         or (ac.c_title = 'read' and (
-            -- The other_read flag is on
+            -- The other_read permission bit is on
             (obj.c_unixperms & {other_read,int} <> 0)
-            -- The owner_read flag is on, and the member is the owner
+            -- The owner_read permission bit is on, and the member is the owner
             or ((obj.c_unixperms & {owner_read,int} <> 0) and obj.c_owner = {member,int})
-            -- The group_read flag is on, and the member is in the group
+            -- The group_read permission bit is on, and the member is in the group
             or ((obj.c_unixperms & {group_read,int} <> 0) and ({groups,int} & obj.c_group <> 0))))
         -- UNIX style write permissions in the bit field
         or (ac.c_title = 'write' and (
-            -- The other_write flag is on
+            -- The other_write permission bit is on
             (obj.c_unixperms & {other_write,int} <> 0)
-            -- The owner_write flag is on, and the member is the owner
+            -- The owner_write permission bit is on, and the member is the owner
             or ((obj.c_unixperms & {owner_write,int} <> 0) and obj.c_owner = {member,int})
-            -- The group_write flag is on, and the member is in the group
+            -- The group_write permission bit is on, and the member is in the group
             or ((obj.c_unixperms & {group_write,int} <> 0) and ({groups,int} & obj.c_group <> 0))))
         -- UNIX style delete permissions in the bit field
         or (ac.c_title = 'delete' and (
-            -- The other_delete flag is on
+            -- The other_delete permission bit is on
             (obj.c_unixperms & {other_delete,int} <> 0)
-            -- The owner_delete flag is on, and the member is the owner
+            -- The owner_delete permission bit is on, and the member is the owner
             or ((obj.c_unixperms & {owner_delete,int} <> 0) and obj.c_owner = {member,int})
-            -- The group_delete flag is on, and the member is in the group
+            -- The group_delete permission bit is on, and the member is in the group
             or ((obj.c_unixperms & {group_delete,int} <> 0) and ({groups,int} & obj.c_group <> 0))))
         -- user privileges
         or (pr.c_what_granted_to = 'user' and pr.c_who_granted_to = {member,int})
         -- owner privileges
         or (pr.c_what_granted_to = 'owner' and obj.c_owner = {member,int})
         -- owner_group privileges
-        or (pr.c_what_granted_to = 'owner_group' and (pr.c_who_granted_to & {groups,int} <> 0))
+        or (pr.c_what_granted_to = 'owner_group' and (obj.c_group & {groups,int} <> 0))
         -- group privileges
         or (pr.c_what_granted_to = 'group' and (pr.c_who_granted_to & {groups,int} <> 0)))
 order by ac.c_summary
