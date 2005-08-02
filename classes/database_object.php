@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: database_object.php,v 1.2 2005/06/05 16:12:41 bps7j Exp $
+ * $Id: database_object.php,v 1.3 2005/08/02 02:30:47 bps7j Exp $
  */
 
 include_once("DateTime.php");
@@ -31,9 +31,7 @@ class database_object {
     var $c_group = null;            // Group
     var $c_unixperms = null;        // String; Unix permissions
     var $c_created_date = null;     // String
-    var $c_last_modified = null;    // Timestamp
     var $c_status = null;           // Status
-    var $c_flags = null;            // Bit-flags, stored as int
     var $c_deleted = null;          // Tinyint
 
     var $GUID;
@@ -70,7 +68,7 @@ class database_object {
      * This method returns an array of all the variables that correspond
      * directly to some column in the database.
      */
-    function &getDatabaseVars() {
+    function getDatabaseVars() {
         $someVariables = array();
         foreach (array_keys(get_class_vars(get_class($this))) as $key) {
             if (substr($key, 0, 2) == "c_") {
@@ -119,15 +117,12 @@ class database_object {
 
         $this->setUpDatabaseDefaults();
 
-        $vars =& $this->getDatabaseVars();
+        $vars = $this->getDatabaseVars();
         foreach ($vars as $key => $val) {
             if (is_null($this->$key)) {
                 unset($vars[$key]);
             }
         }
-        // Null out the timestamp column so it will get auto-incremented by the
-        // DB upon insertion.
-        unset($vars['c_last_modified']);
 
         // Make an array suitable for passing to autoExecute(), in the format
         // 'c_foobar' => $this->c_foobar.  This depends on the database columns
@@ -137,8 +132,8 @@ class database_object {
             $array[$key] = $this->$key;
         }
 
-        $cmd =& $obj['conn']->createCommand();
-        $res =& $cmd->autoExecute($this->table, $array, DB_AUTOQUERY_INSERT);
+        $cmd = $obj['conn']->createCommand();
+        $res = $cmd->autoExecute($this->table, $array, DB_AUTOQUERY_INSERT);
         $this->c_uid = intval($res->identity());
         return $this->c_uid;
     } //}}}
@@ -157,11 +152,10 @@ class database_object {
     function doUpdate() {
         global $obj;
         $this->ensureUID(__LINE__, __FILE__);
-        $vars =& $this->getDatabaseVars();
-        # Some special cases: we don't want to try to explicitly set c_uid,
-        # c_last_modified, or anything that's NULL.
+        $vars = $this->getDatabaseVars();
+        # Some special cases: we don't want to try to explicitly set c_uid
+        # or anything that's NULL.
         unset($vars['c_uid']);
-        unset($vars['c_last_modified']);
         foreach ($vars as $key => $val) {
             if (is_null($this->$key)) {
                 unset($vars[$key]);
@@ -175,7 +169,7 @@ class database_object {
         }
 
         // Now use this to update the object's tuple in the database.
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->autoExecute($this->table, $array, DB_AUTOQUERY_UPDATE,
             "c_uid = " . intval($this->c_uid));
     } //}}}
@@ -192,7 +186,7 @@ class database_object {
                     .  $this->table, E_USER_ERROR);
             return false;
         }
-        $result =& $obj['conn']->query("select * from $this->table "
+        $result = $obj['conn']->query("select * from $this->table "
             . "where c_deleted <> 1 and c_uid = {uid,int}",
             array('uid' => $uid));
         if ($strict && $result->numRows() == 0) {
@@ -201,7 +195,7 @@ class database_object {
             return false;
         }
         if ($result->numRows() > 0) {
-            $row =& $result->fetchRow();
+            $row = $result->fetchRow();
             $this->initFromRow($row);
         }
         return true;
@@ -258,12 +252,9 @@ class database_object {
      * If the value is just numbers and has no "date" in the name, casts it to
      * an integer.
      */
-    function initFromRow(&$row) {
+    function initFromRow($row) {
         foreach ($this->getDatabaseVars() as $key) {
-            $this->$key =
-                (preg_match('/^\d+$/', $row[$key]) && strpos($key, "date") < 0)
-                ? intval($row[$key])
-                : $row[$key];
+            $this->$key = $row[$key];
         }
         $this->GUID = "{$this->table}($row[c_uid])";
     } //}}}
@@ -284,28 +275,17 @@ class database_object {
      * Method to get an object to return an array of its variables, in
      * a form suitable for sending to Template::replace().
      */
-    function &getVarArray() {
+    function getVarArray() {
         $array = array();
 
         foreach ($this->getDatabaseVars() as $key) {
             $array[strtoupper($key)] = $this->$key;
         }
 
-        # The last-modified timestamp needs to be converted to date-time format
-        if ($this->c_last_modified) {
-            $lastModified =& new DateTime($this->c_last_modified);
-            $array["C_LAST_MODIFIED"]
-                    = $lastModified->toString("Y-m-d H:i:s");
-        }
-
         // And the UID, which is too common among all classes and needs to be
         // renamed to avoid frequent clashes in templating situations.
         unset($array["C_UID"]);
         $array[strtoupper("t_" . get_class($this))] = $this->c_uid;
-
-        // And the bitmask fields need to be converted to strings
-        $array['C_STATUS_STRING'] = bitmaskString($this->c_status, 'status_id');
-        $array['C_FLAGS_STRING'] = bitmaskString($this->c_flags, 'flag');
 
         return $array;
     } //}}}
@@ -359,13 +339,6 @@ class database_object {
         $this->c_group = $value;
     } //}}}
 
-    /* {{{getLastModified
-     *
-     */
-    function getLastModified() {
-        return $this->c_last_modified;
-    } //}}}
-
     /* {{{getCreatedDate
      *
      */
@@ -392,36 +365,6 @@ class database_object {
      */
     function setStatus($value) {
         $this->c_status = $value;
-    } //}}}
-
-    /* {{{getFlag
-     * Returns bool if the flag bit is set
-     * $flag is the name of the flag
-     */
-    function getFlag($flag) {
-        global $cfg;
-        return (($cfg['flag'][$flag] & $this->c_flags) != 0 ) ? 1 : 0;
-    } //}}}
-
-    /* {{{setFlag
-     * Sets the bit to 1 or 0, depending on $value
-     * $flag is the name of the flag
-     */
-    function setFlag($flag, $value) {
-        global $cfg;
-
-        if (!isset($cfg['flag'][$flag])) {
-            trigger_error("Flag '$flag' isn't defined", E_USER_NOTICE);
-        }
-
-        # Watch out for bitwise operations on null values... nothing happens
-        if (!$this->c_flags) {
-            $this->c_flags = 0;
-        }
-
-        $this->c_flags = $value
-            ? $this->c_flags | intval($cfg['flag'][$flag])
-            : $this->c_flags & (~ intval($cfg['flag'][$flag]));
     } //}}}
 
     /* {{{getUID
@@ -484,7 +427,7 @@ class database_object {
 
     /* {{{getDeletionReport
      */
-    function &getDeletionReport($cascade) {
+    function getDeletionReport($cascade) {
         global $obj;
         $result = array();
 
@@ -518,24 +461,23 @@ class database_object {
         global $cfg;
         $this->ensureUID(__LINE__, __FILE__);
         $this->allowedActions = array();
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/privilege/select-allowed-object-actions.sql");
         $cmd->addParameter("member", $cfg['user']);
         $cmd->addParameter("groups", $obj['user']->c_group_memberships);
         $cmd->addParameter("object", $this->c_uid);
         $cmd->addParameter("table", $this->table);
-        $cmd->addParameter("applies_to_object", $cfg['flag']['applies_to_object']);
         $cmd->addParameter("root_group", $cfg['root_uid']);
         foreach ($cfg['perm'] as $name => $bitmask) {
             $cmd->addParameter($name, $bitmask);
         }
-        $result =& $cmd->executeReader();
+        $result = $cmd->executeReader();
         while ($row = $result->fetchRow()) {
             $this->allowedActions[$row['c_title']] = $row;
         }
     }
 
-    function &getAllowedActions($refresh = false) {
+    function getAllowedActions($refresh = false) {
         if (!isset($this->allowedActions) or $refresh) {
             $this->initAllowedActions();
         }
@@ -551,11 +493,11 @@ class database_object {
         global $cfg;
         $res = array();
 
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/misc/select-all-foreign-keys.sql");
         $cmd->addParameter("parent", $this->table);
-        $result =& $cmd->executeReader();
-        while ($row =& $result->fetchRow()) {
+        $result = $cmd->executeReader();
+        while ($row = $result->fetchRow()) {
             $row['c_parent_table'] = substr($row['c_parent_table'], strlen($cfg['table_prefix']));
             $row['c_child_table'] = substr($row['c_child_table'], strlen($cfg['table_prefix']));
             $res[] = $row;
@@ -583,7 +525,7 @@ class database_object {
         # and, in case there is more than one relationship between the tables,
         # tells which to use.  Right now this assumes single-column foreign keys.
 
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/misc/select-foreign-key.sql");
         $cmd->addParameter("parent", $this->table);
         $cmd->addParameter("child", $cfg['table_prefix'] . $type);
@@ -598,7 +540,7 @@ class database_object {
         }
 
         $this->children[$type] = array();
-        $result =& $obj['conn']->query("select * from $cfg[table_prefix]$type "
+        $result = $obj['conn']->query("select * from $cfg[table_prefix]$type "
             . "where $col = $this->c_uid and c_deleted <> 1");
         while ($row = $result->fetchRow()) {
             $this->children[$type][$row['c_uid']] =& new $type();
@@ -606,6 +548,23 @@ class database_object {
         }
 
     }
+
+    /* {{{setPrimary
+     * Sets this object as primary and unsets it for every
+     * other object of this type that this member owns.  WARNING:
+     * This function won't work on every object type, only those that
+     * have a c_primary column!  It is only in this class because PHP4
+     * lacks interfaces, and I don't want to duplicate the code.
+     */
+    function setPrimary() {
+        global $obj;
+        $cmd = $obj['conn']->createCommand();
+        $cmd->loadQuery("sql/misc/set-primary.sql");
+        $cmd->addParameter("table", $this->table);
+        $cmd->addParameter("object", $this->c_uid);
+        $cmd->addParameter("member", $this->c_owner);
+        $cmd->executeNonQuery();
+    } //}}}
 
 }
 ?>
