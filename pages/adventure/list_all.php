@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2005/07/15 01:40:55 bps7j Exp $
+ * $Id: list_all.php,v 1.3 2005/08/02 02:47:31 bps7j Exp $
  *
  * This page expects some criteria for what to display: past, joined.
  * This variable comes from $_GET[criteria].
@@ -28,13 +28,14 @@ include_once("location.php");
 $template = file_get_contents("templates/adventure/list_all.php");
 
 # Create a SqlCommand
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 
 # Choose which query to run:
 $dateFormat = "D M j, g:i A";
 switch (getval('criteria')) {
     case "past":
         $cmd->loadQuery("sql/adventure/list_all-past.sql");
+        $cmd->addParameter("active", $cfg['status_id']['active']);
         if (isset($_GET['all'])) {
             $cmd->addParameter("start", "1900-01-01");
         }
@@ -55,10 +56,12 @@ switch (getval('criteria')) {
         break;
     case "inactive":
         $cmd->loadQuery("sql/adventure/list_all-inactive.sql");
+        $cmd->addParameter("inactive", $cfg['status_id']['inactive']);
         $res['title'] = "Inactive Adventures";
         break;
     default:
         $cmd->loadQuery("sql/adventure/list_all.sql");
+        $cmd->addParameter("active", $cfg['status_id']['active']);
         $res['title'] = "All Adventures";
         $dateFormat = "M j, Y";
         # Special case (OK, it's actually the general case): allow
@@ -99,10 +102,10 @@ $template = Template::unhide($template,
         ? strtoupper(getval('criteria'))
         : "ALL");
 
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
 if ($result->numRows()) {
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         # Plug adventures into the template.
         $template = Template::block($template, "ROW", 
             array_change_key_case($row, 1));
