@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: initialize.sql,v 1.4 2005/07/10 18:13:56 bps7j Exp $
+ * $Id: initialize.sql,v 1.5 2005/08/02 03:03:21 bps7j Exp $
  *
  */
 
@@ -27,8 +27,6 @@ insert into [_]configuration
     ('club_admin_email', 'admin@domain.org', 'email', 'Club Administrator'),
     ('club_admin_email_name', 'SocialClub Administrator <admin@domain.org>',
         'string', 'Club Administrator, full email with name'),
-    ('webmaster_email', 'webmaster@domain.org', 'email',
-        'The club webmaster'),
     ('treasurer_email', 'treasurer@domain.org', 'email',
         'The club treasurer'),
     ('send_emails', 'true', 'bool', 'Whether the website should send any email'),
@@ -119,7 +117,6 @@ insert into [_]action (c_title, c_summary, c_label, c_description) values
       ("view_notes", "View Notes", "View &Notes", "View notes on the object"),
       ("view_answers", "View Answers", "View An&swers", "View answers to the questions for this adventure"),
       ("comment", "Comment", "Commen&t", "Comment on this item"),
-      ("set_flags", "Set Flags", "Set &Flags", "Set preference flags on this item"),
       ("cancel", "Cancel", "Cancel", "Cancel"),
       ("add_privilege", "Add Privilege", "Add Pri&vilege", "Add Privilege"),
       ("subscribe", "Subscribe", "Subscribe", "Subscribe"),
@@ -132,17 +129,16 @@ insert into [_]action (c_title, c_summary, c_label, c_description) values
       ('accept', "Accept", '&Accept', 'Accept an Expense Report'),
       ('check_in', "Check In", 'Chec&k In', 'Check in Inventory');
 
--- Set table objects to apply to tables.
+-- Set object actions to apply to objects.
 update [_]action
-    set c_flags = c_flags | 256
+    set c_apply_object = 1
     where c_title not in ('list_all', 'list_owned_by', 'create');
 
 -- Specify which actions should appear on the 'generic' set of tabs, and which
 -- should appear on the tabs specific to the object:
-
-update [_]action set c_flags = c_flags | 2048
+update [_]action set c_generic = 1
 where c_title in ("stat", "chmod", "chmeta", "delete",
-        "view_acl", "chgrp", "chown", "set_flags", "add_privilege");
+        "view_acl", "chgrp", "chown", "add_privilege");
 
 update [_]action set c_row = 1 where c_title in ("chmod", "chgrp", "chown",
         "view_acl", "add_privilege");
@@ -169,9 +165,9 @@ insert into [_]rating
     ("Poor"), ("Fair"), ("Average"), ("Good"), ("Excellent");
 
 insert into [_]address
-    (c_title, c_street, c_city, c_state, c_zip, c_country, c_flags)
+    (c_title, c_street, c_city, c_state, c_zip, c_country, c_primary)
 values
-    ("Main Club Address", "SocialClub", "SomeTown", "VA", 12345, "US", 512);
+    ("Main Club Address", "SocialClub", "SomeTown", "VA", 12345, "US", 1);
 
 insert into [_]phone_number_type
     (c_owner, c_created_date, c_title, c_description, c_abbreviation)
@@ -184,10 +180,10 @@ insert into [_]phone_number_type
 
 insert into [_]phone_number
     (c_title, c_country_code, c_area_code, c_exchange, c_number,
-    c_flags, c_phone_number)
+    c_phone_number, c_primary)
 values (
     "Main Club Phone Number", "1", "123", "456", "7890",
-    512, "(123) 456-7890");
+    "(123) 456-7890", 1);
 
 insert into [_]activity_category
     (c_created_date, c_title)
@@ -222,12 +218,12 @@ insert into [_]item_category
 
 insert into [_]member
     (c_created_date, c_first_name, c_last_name, c_email, c_password,
-    c_gender, c_birth_date, c_full_name, c_flags, c_group_memberships)
+    c_gender, c_birth_date, c_full_name, c_group_memberships, c_hidden)
 values
     (now(), "Club", "Manager", "admin@domain.org", "root",
       "m", '2000-01-01', "Club Manager", 1, 1),
     (now(), "Guest", "User", "guest@domain.org", "guest",
-      "m", '2000-01-01', "Guest User", 1, 64);
+      "m", '2000-01-01', "Guest User", 64, 1);
 
 insert into [_]chat_type
     (c_owner, c_created_date, c_title, c_abbreviation, c_description)
@@ -238,16 +234,15 @@ insert into [_]chat_type
     (1, now(), "ICQ", "ICQ", "ICQ");
 
 insert into [_]membership_type
-    (c_owner, c_created_date, c_title, c_description, c_flags,
+    (c_owner, c_created_date, c_title, c_description,
     c_begin_date, c_expiration_date, c_show_date, c_hide_date,
-    c_units_granted, c_unit, c_unit_cost, c_total_cost)
+    c_units_granted, c_unit, c_unit_cost, c_total_cost, c_hidden)
     values
     ( -- Lifetime membership for system accounts
       1,
       now(),
       "Lifetime membership",
       "Membership for system accounts such as root",
-      1,
       '2000-01-01',
       '2020-01-01',
       '0000-00-00',
@@ -255,7 +250,8 @@ insert into [_]membership_type
       0,
       'month',
       0.00,
-      0.00);
+      0.00,
+      1);
 
 insert into [_]membership
     (c_created_date, c_status, c_member, c_type, c_begin_date,
