@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.sql,v 1.4 2005/06/26 18:46:28 bps7j Exp $
+ * $Id: create.sql,v 1.5 2005/08/02 03:02:40 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -51,9 +51,7 @@
  *      timestamp columns will auto-update in MySql.  Do not assign a value to
  *      this row, and it will take care of itself whenever you update the row.
  *  c_status
- *      is a bitmasked combination of flags defined in includes/setup.php.
- *  c_flags
- *      is a bitmasked combination of flags defined in includes/setup.php.
+ *      is a bitmasked combination of values defined in includes/setup.php.
  *  c_deleted
  *      is a tinyint that is 1 when the record is deleted.
  *
@@ -77,8 +75,7 @@ create table [_]absence (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_attendee        int unsigned    not null, -- > [_]attendee
     c_comment         varchar(100),             -- Short comment on absence
     c_severity        varchar(20),              -- Severity of the incident
@@ -102,7 +99,8 @@ create table [_]action (
     c_label           varchar(25),    -- for UI.  & creates an access key
     c_row             tinyint         not null default 0,   -- for UI
     c_description     varchar(255),   -- a full description of the action
-    c_flags           int unsigned    not null default 0,
+    c_apply_object    bit             not null default 0,
+    c_generic         bit             not null default 0,
     primary key (c_title)
 ) type=MyISAM;
 
@@ -115,8 +113,7 @@ create table [_]activity (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     c_category        int unsigned    not null default 1, -- > [_]activity_category
     primary key  (c_uid)
@@ -132,8 +129,7 @@ create table [_]activity_category (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     primary key  (c_uid)
 ) type=MyISAM;
@@ -147,14 +143,15 @@ create table [_]address (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(60),
     c_street          varchar(60),
     c_city            varchar(60),
     c_state           varchar(60),
     c_zip             varchar(20),
     c_country         varchar(60)     not null default 'US',
+    c_primary         bit             not null default 0,
+    c_hidden          bit             not null default 0,
     index (c_owner),
     primary key  (c_uid)
 ) type=MyISAM;
@@ -168,8 +165,7 @@ create table [_]adventure (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_fee             decimal(6,2)    not null,
     c_max_attendees   int unsigned    not null,
     c_signup_date     datetime        not null,
@@ -197,12 +193,12 @@ create table [_]adventure_comment (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_adventure       int unsigned    not null, -- > [_]adventure
     c_rating          int unsigned    not null, -- > [_]rating
     c_subject         varchar(255),
     c_text            text,
+    c_anonymous       bit             not null default 0,
     unique index(c_owner, c_adventure),
     primary key  (c_uid)
 ) type=MyISAM;
@@ -216,8 +212,7 @@ create table [_]adventure_activity (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_adventure       int unsigned    not null, -- > [_]adventure
     c_activity        int unsigned    not null, -- > [_]activity
     unique index (c_adventure, c_activity),
@@ -233,8 +228,7 @@ create table [_]answer (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_question        int unsigned    not null, -- > [_]question
     c_attendee        int unsigned    not null, -- > [_]attendee
     c_answer_text     text,
@@ -254,8 +248,7 @@ create table [_]attendee (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_adventure       int unsigned    not null, -- > [_]adventure
     c_member          int unsigned    not null, -- > [_]member
     -- Just for record-keeping purposes, so we know how much the adventure fee was
@@ -278,10 +271,11 @@ create table [_]chat (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_screenname      varchar(100)    not null,
     c_type            int unsigned    not null default 1, -- > [_]chat_type
+    c_primary         bit             not null default 0,
+    c_hidden          bit             not null default 0,
     primary key  (c_uid)
 ) type=MyISAM;
 
@@ -294,8 +288,7 @@ create table [_]chat_type (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     c_abbreviation    varchar(5),
     c_description     varchar(255),
@@ -311,8 +304,7 @@ create table [_]checkout (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     -- The owner checks out the items.  The member is who they are checked out TO.
     c_member          int unsigned    not null default 0, -- > [_]member
     -- Generally speaking, what type of checkout is this?
@@ -329,8 +321,7 @@ create table [_]checkout_gear (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_checkout        int unsigned    not null default 0, -- > [_]checkout
     c_type            int unsigned    not null default 0, -- > [_]item_type
     c_qty             int unsigned    not null default 0,
@@ -355,8 +346,7 @@ create table [_]checkout_item (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_checkout        int unsigned    not null default 0, -- > [_]checkout
     c_item            int unsigned    not null default 0, -- > [_]item
     primary key  (c_uid),
@@ -379,8 +369,7 @@ create table [_]classified_ad (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100)    not null,
     c_text            text            not null,
     primary key  (c_uid)
@@ -396,8 +385,7 @@ create table [_]condition (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100)    not null,
     c_rank            int unsigned    not null default 0,
     c_description     varchar(255)    not null,
@@ -408,7 +396,7 @@ create table [_]condition (
 create table [_]configuration (
     c_name            varchar(50)     not null,
     c_value           varchar(255)    not null,
-    -- Value is one of bool integer string number datetime date email
+    -- Value is one of bit  integer string number datetime date email
     c_type            varchar(10)     not null,
     c_description     varchar(255)    not null,
     primary key(c_name)
@@ -423,8 +411,7 @@ create table [_]email_list (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     c_description     varchar(255),
     c_name            varchar(100),   -- name that the list software uses
@@ -447,8 +434,7 @@ create table [_]expense (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_report          int unsigned    not null, -- > [_]expense_report
     c_category        int unsigned    not null, -- > [_]expense_category
     c_expense_date    date            not null,
@@ -456,6 +442,7 @@ create table [_]expense (
     c_merchant        varchar(30)     not null,
     c_description     varchar(60)     not null,
     c_amount          decimal(6,2)    not null,
+    c_reimbursable    bit             not null default 0,
     primary key  (c_uid)
 ) type=MyISAM;
 
@@ -468,8 +455,7 @@ create table [_]expense_category (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(30)     not null,
     primary key  (c_uid)
 ) type=MyISAM;
@@ -486,8 +472,7 @@ create table [_]expense_report (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_member          int unsigned    not null, -- > [_]member
     primary key  (c_uid)
 ) type=MyISAM;
@@ -501,8 +486,7 @@ create table [_]expense_report_note (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_report          int unsigned    not null, -- > [_]expense_report
     c_new_status      int unsigned    not null, -- > status
     primary key  (c_uid)
@@ -517,8 +501,7 @@ create table [_]expense_submission (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     primary key  (c_uid)
 ) type=MyISAM;
 
@@ -531,8 +514,7 @@ create table [_]expense_submission_expense (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_submission      int unsigned    not null, -- > [_]expense_submission
     c_expense         int unsigned    not null, -- > [_]expense
     primary key  (c_uid),
@@ -582,8 +564,7 @@ create table [_]interest (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_member          int unsigned    not null, -- > [_]member
     c_activity        int unsigned    not null, -- > [_]activity
     unique index (c_member, c_activity),
@@ -600,8 +581,7 @@ create table [_]item (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_condition       int unsigned    not null, -- > condition
     c_type            int unsigned    not null, -- > type
     c_description     text            not null,
@@ -621,8 +601,7 @@ create table [_]item_note (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_item            int unsigned    not null, -- > item
     c_condition       int unsigned    not null, -- > condition
     c_note            varchar(255)    not null,
@@ -640,8 +619,7 @@ create table [_]item_feature (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_item            int unsigned    not null, -- > item
     c_name            varchar(10)     not null,
     c_value           varchar(100)    not null,
@@ -659,8 +637,7 @@ create table [_]item_category (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     primary key  (c_uid)
 ) type=MyISAM;
@@ -677,8 +654,7 @@ create table [_]item_type_feature (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_type            int unsigned    not null, -- > item_type
     c_name            varchar(10)     not null,
     primary key  (c_uid),
@@ -697,8 +673,7 @@ create table [_]item_type (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100)    not null,
     c_category        int unsigned    not null default 1, -- > [_]item_category
     c_primary_feature varchar(10)     not null,
@@ -716,8 +691,7 @@ create table [_]location (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     c_description     text,
     c_zip_code        varchar(20),
@@ -733,8 +707,7 @@ create table [_]location_activity (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_location        int unsigned    not null, -- > [_]location
     c_activity        int unsigned    not null, -- > [_]activity
     primary key  (c_uid),
@@ -756,8 +729,7 @@ create table [_]member (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1, -- default
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_email           varchar(60),
     c_password        varchar(30) binary,
     c_first_name      varchar(30),
@@ -769,6 +741,10 @@ create table [_]member (
     c_gender          enum('m','f'),
     -- A bitmask of which groups the member belongs to.
     c_group_memberships int unsigned  not null default 0,
+    c_is_student      bit             not null default 0,
+    c_receive_email   bit             not null default 0,
+    c_hidden          bit             not null default 0,
+    c_email_hidden    bit             not null default 0,
     unique index (c_email),
     primary key  (c_uid)
 ) type=MyISAM;
@@ -782,8 +758,7 @@ create table [_]member_note (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_member          int unsigned    not null, -- > [_]member
     c_note            text,
     primary key(c_uid)
@@ -797,9 +772,8 @@ create table [_]membership (
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 3,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_status          int unsigned    not null default 4,
+    c_deleted         bit             not null default 0,
     c_member          int unsigned    not null, -- > [_]member
     c_type            int unsigned    not null, -- > [_]membership_type
     -- These two are allowed to be null because they are not set until
@@ -819,7 +793,7 @@ create table [_]membership (
     -- The amount the member actually paid for the membership when it was
     -- activated.
     c_amount_paid     decimal(6,2)    not null default 0,
-    index (c_status, c_begin_date, c_expiration_date),
+    index (c_member),
     primary key (c_uid)
 ) type=MyISAM;
 
@@ -832,8 +806,7 @@ create table [_]membership_type (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     c_description     varchar(255),
     -- The following properties only apply if this is not a flexible plan, and describe when
@@ -851,6 +824,8 @@ create table [_]membership_type (
     c_unit_cost       decimal(6,2)    not null default 0,
     -- Total cost of the membership plan
     c_total_cost      decimal(6,2)    not null default 0,
+    c_flexible        bit             not null default 0,
+    c_hidden          bit             not null default 0,
     primary key  (c_uid)
 ) type=MyISAM;
 
@@ -864,8 +839,7 @@ create table [_]optout (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_member          int unsigned    not null, -- > [_]member
     c_category        int unsigned    not null, -- > [_]activity_category
     unique index (c_member, c_category),
@@ -881,8 +855,7 @@ create table [_]phone_number (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_type            int unsigned    not null default 1, -- > [_]phone_number_type
     c_title           varchar(100),
     c_country_code    varchar(5)      not null default "",
@@ -893,6 +866,8 @@ create table [_]phone_number (
     -- This is redundant, but stored here to ease coding, especially automatic
     -- insertion into text
     c_phone_number    varchar(100),
+    c_primary         bit             not null default 0,
+    c_hidden          bit             not null default 0,
     index (c_owner),
     primary key  (c_uid)
 ) type=MyISAM;
@@ -906,8 +881,7 @@ create table [_]phone_number_type (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     c_description     varchar(255),
     c_abbreviation    varchar(10),
@@ -923,8 +897,7 @@ create table [_]privilege (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     -- Whether granted to user, group, owner, owner_group
     c_what_granted_to varchar(30)     not null default 'nothing',
     -- Which user or group it applies to (only needed if c_what_granted_to is
@@ -959,8 +932,7 @@ create table [_]question (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_adventure       int unsigned    not null, -- > [_]adventure
     c_type            enum('bool','text'),
     c_text            text,
@@ -977,8 +949,7 @@ create table [_]rating (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(10),
     primary key  (c_uid)
 ) type=MyISAM;
@@ -994,8 +965,7 @@ create table [_]report (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_title           varchar(100),
     c_description     varchar(255),
     c_query           text,
@@ -1011,8 +981,7 @@ create table [_]subscription (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_list            int unsigned    not null, -- > [_]email_list
     c_email           varchar(60),    -- The address that is subscribed
     c_password        varchar(255),   -- The password used to subscribe
@@ -1033,14 +1002,14 @@ create table [_]transaction (
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
     c_status          int unsigned    not null default 1,
-    c_flags           int unsigned    not null default 0,
-    c_deleted         tinyint         not null default 0,
+    c_deleted         bit             not null default 0,
     c_category        int unsigned    not null default 0, -- > [_]expense_category
     c_amount          decimal(6,2)    not null,
     c_from            int unsigned    not null, -- > [_]member
     c_to              int unsigned    not null, -- > [_]member
     c_description     varchar(100)    not null default '',
     c_expense         int unsigned    not null default 0, -- > [_]expense (optional)
+    c_reimbursable    bit             not null default 0,
     primary key  (c_uid),
     index (c_from, c_to)
 ) type=MyISAM;
