@@ -17,101 +17,78 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:36 bps7j Exp $
+ * $Id: read.php,v 1.2 2005/08/02 02:48:32 bps7j Exp $
  */
 
 include_once("location.php");
 
-# Create a member object that's the leader
-$leader =& new member();
-$leader->select($object->getOwner());
-
-$now = date("Y-m-d H:i:s");
-
 $template = file_get_contents("templates/adventure/read.php");
+
+$cmd = $obj['conn']->createCommand();
+$cmd->loadQuery("sql/adventure/read.sql");
+$cmd->addParameter("adventure", $cfg['object']);
+$cmd->addParameter("member", $cfg['user']);
+$result = $cmd->executeReader();
+$advRow = $result->fetchRow();
 
 # If the member is attending the adventure, show a link to edit/view answers to
 # questions
-if (JoinAdventure::checkIfMemberIsAttending($object, $obj['user'])
-        && $now < $object->getStartDate()) {
-    $obj['attendee'] = JoinAdventure::getAttendee($obj['user'], $object);
-    $template = Template::unhide($template, "VIEW_ANSWERS");
-    $template = Template::replace($template, array(
-        "ATTENDEE" => $obj['attendee']->getUID()));
+if ($advRow['at_uid'] && $advRow['before_deadline']) {
+    $template = Template::unhide($template, "view_answers");
 }
 
 # If the adventure is cancelled, display a message on the page
 if ($object->getStatus() == $cfg['status_id']['cancelled']) {
-    $template = Template::unhide($template, "CANCELLED");
-}
-
-# Get a list of locations so we can show their names instead of their ID
-# numbers in the location field...
-$result =& $obj['conn']->query("select * from [_]location "
-    . "where c_uid in ($object->c_destination, $object->c_departure)");
-$locations = array();
-while ($row =& $result->fetchRow()) {
-    $locations[$row['c_uid']] =& $row;
+    $template = Template::unhide($template, "cancelled");
 }
 
 # If the member is allowed to comment, display links to do so
-if (JoinAdventure::checkIfMemberIsAttending($object, $obj['user']) 
-        && $now > $object->getEndDate()
-        && !JoinAdventure::checkIfMemberCommented($object, $obj['user'])) {
-    $template = Template::unhide($template, "COMMENT_LINK");
+if (!$advRow['co_uid'] && $advRow['trip_over']) {
+    $template = Template::unhide($template, "comment_link");
 }
 
 # Plug in activity types for the adventure:
-$result =& $obj['conn']->query("select ac.* "
-    . "from [_]adventure_activity as aa "
-    . "inner join [_]activity as ac on ac.c_uid = aa.c_activity "
-    . "where aa.c_adventure = " . $cfg['object']);
-while ($row =& $result->fetchRow()) {
-    $template = Template::block($template, "CAT",
-        array_change_key_case($row, 1));
+$cmd = $obj['conn']->createCommand();
+$cmd->loadQuery("sql/adventure/select-activities.sql");
+$cmd->addParameter("adventure", $cfg['object']);
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
+    $template = Template::block($template, "cat", $row);
 }
 
 # If the adventure has any comments, display them
-$comment = Template::extract($template, "COMMENT");
-$cmd =& $obj['conn']->createCommand();
+$comment = Template::extract($template, "comment");
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/adventure/comment-select-for-read.sql");
 $cmd->addParameter("adventure", $cfg['object']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
-    $thisComment = Template::replace($comment,
-        array_change_key_case($row, 1));
-    if ($row['c_flags'] & $cfg['flag']['private']) {
-        $thisComment = Template::unhide($thisComment, "HIDE_NAME");
+while ($row = $result->fetchRow()) {
+    $thisComment = Template::replace($comment, $row);
+    if ($row['c_anonymous']) {
+        $thisComment = Template::unhide($thisComment, "hide_name");
     }
     else {
-        $thisComment = Template::unhide($thisComment, "SHOW_NAME");
+        $thisComment = Template::unhide($thisComment, "show_name");
     }
     $template = Template::replace($template, array(
-        "COMMENT" => $thisComment), true);
+        "comment" => $thisComment), true);
 }
-
 if ($result->numRows()) {
-    $template = Template::unhide($template, "SOME");
+    $template = Template::unhide($template, "some");
 }
 
-if ($object->isFull()) {
-    $template = Template::unhide($template, "FULL");
+if ($advRow['num_atts'] >= $advRow['c_max_attendees']) {
+    $template = Template::unhide($template, "full");
 }
-
-$template = Template::replace($template, array(
-    "DESTINATION_TITLE" => $locations[$object->getDestination()]['c_title'],
-    "DESTINATION_ZIP" => $locations[$object->getDestination()]['c_zip_code'],
-    "DEPARTURE_TITLE" => $locations[$object->getDeparture()]['c_title']));
+$template = Template::replace($template, $advRow);
 
 # Show a link to the weather reports if the destination has a zip code
-if ($locations[$object->getDestination()]['c_zip_code']) {
-    $template = Template::unhide($template, "WEATHER");
+if ($advRow['c_zip_code']) {
+    $template = Template::unhide($template, "weather");
 }
 
-$template = $object->insertIntoTemplate($template);
-$res['content'] = $leader->insertIntoTemplate($template);
-
+$res['content'] = $template;
 $res['title'] = "Adventure : "
     . substr($object->getTitle(), 0, 45)
     . (strlen($object->getTitle()) > 45 ? "..." : "");
