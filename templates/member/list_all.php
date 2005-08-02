@@ -3,7 +3,7 @@
 {form}
 
 {SOME:}
-<p>Click on a member to view details.</p>
+<p>{NUM} members found.</p>
 
 <table class="compact collapsed elbowroom cleanHeaders">
   <tr>
