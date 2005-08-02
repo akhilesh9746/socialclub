@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: auto-unsubscribe-expired-members.php,v 1.1 2005/03/27 19:53:17 bps7j Exp $
+ * $Id: auto-unsubscribe-expired-members.php,v 1.2 2005/08/02 02:42:14 bps7j Exp $
  */
 
 include_once("subscription.php");
@@ -33,9 +33,10 @@ file_get_contents("templates/admin/auto-unsubscribe-expired-members.php");
 
 # Get a list of subscriptions that belong to members that have no memberships 
 # with expiration dates in the future.
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/subscription/select-expired.sql");
-$result =& $cmd->executeReader();
+$cmd->addParameter("active", $cfg['status_id']['active']);
+$result = $cmd->executeReader();
 
 if ($result->numRows()) {
     $template = Template::unhide($template, "SOME");
