@@ -21,7 +21,7 @@ how many memberships you activated:</p>
 
 <p>The following memberships need to be activated.  Check the checkbox next to a
 member to activate that membership.  Be sure to check for an adult's signature
-if the member is underage (bold, red text).</p>
+if the member is underage (red text).</p>
 
 <p>If you have a signed waiver for a membership but don't see that member below,
     try searching for the member and then clicking on the "History" tab.  You
@@ -36,14 +36,21 @@ if the member is underage (bold, red text).</p>
   <tr>
     <th colspan="2">Member</th>
     <th>Membership</th>
-  </tr>{ROW:}
-  <tr{UNDERAGE}>
+    <th>Dates</th>
+  </tr>{row:}
+  <tr{underage}>
     <td>
-      <input type="checkbox" name="membership[]" id="check{MEMBERSHIP_UID}" value="{MEMBERSHIP_UID}">
+      <input type="checkbox" name="membership[]" id="check{membership_uid}" value="{membership_uid}">
     </td>
-    <td><label for="check{MEMBERSHIP_UID}">{C_LAST_NAME}, {C_FIRST_NAME}</label></td>
-    <td>{C_TITLE}</td>
-  </tr>{:ROW}
+    <td>
+      <label for="check{membership_uid}">{c_last_name}, {c_first_name}</label>
+    </td>
+    <td>{c_title}</td>
+    <td>
+      &nbsp;{c_begin_date|_date_format,'n/j/y'}
+      to {c_expiration_date|_date_format,'n/j/y'}
+    </td>
+  </tr>{:row}
 </table>
 
 <input type="submit" value="Activate Selected Members">
