@@ -139,25 +139,22 @@ Please correct the errors marked below and resubmit.</p>
 
 <p class="error" hidden="1" id="membership-plan-error">This field is required.</p>
 
-<p>If a choice is grayed out, you already have a membership of that type in the
-database.</p>
-
 <table width="100%" class="top ruled compact cleanHeaders">
   <tr>
     <th colspan="2">Membership Plan</th>
     <th nowrap="true">Begin/Expire Dates</th>
     <th>Cost</th>
-  </tr>{PLAN:}
-  <tr class="{CLASS}">
+  </tr>{plan:}
+  <tr>
     <td>
-      <input {DISABLED} type="radio" name="membership-plan" id="membership-plan{C_UID}" value="{C_UID}" />
+      <input type="radio" name="membership-plan" id="membership-plan{c_uid}" value="{c_uid}" />
     </td>
     <td>
-      <label for="membership-plan{C_UID}"><b>{C_TITLE|htmlspecialchars}:</b>  {C_DESCRIPTION|htmlspecialchars}</label>
+      <label for="membership-plan{c_uid}"><b>{c_title|htmlspecialchars}:</b>  {c_description|htmlspecialchars}</label>
     </td>
-    <td nowrap="true">{C_BEGIN_DATE|_date_format,'n/j/y'} to {C_EXPIRATION_DATE|_date_format,'n/j/y'}</td>
-    <td>${C_TOTAL_COST}</td>
-  </tr>{:PLAN}
+    <td nowrap="true">{c_begin_date} to {c_expiration_date}</td>
+    <td>${c_total_cost}</td>
+  </tr>{:plan}
 </table>
 
 </fieldset>
