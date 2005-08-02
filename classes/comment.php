@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: comment.php,v 1.1 2005/03/27 19:54:28 bps7j Exp $
+ * $Id: comment.php,v 1.2 2005/08/02 02:28:38 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -25,6 +25,7 @@ include_once("database_object.php");
 class comment extends database_object {
     // {{{declarations
     var $c_text = null; // String
+    var $c_anonymous = null;
     // }}}
 
     /* {{{constructor
@@ -45,6 +46,20 @@ class comment extends database_object {
      */
     function setText($value) {
         $this->c_text = $value;
+    } //}}}
+
+    /* {{{getAnonymous
+     *
+     */
+    function getAnonymous() {
+        return $this->c_anonymous;
+    } //}}}
+
+    /* {{{setAnonymous
+     *
+     */
+    function setAnonymous($value) {
+        $this->c_anonymous = $value;
     } //}}}
 }
 ?>
