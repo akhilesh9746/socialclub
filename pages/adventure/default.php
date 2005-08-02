@@ -17,17 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: default.php,v 1.2 2005/06/05 16:26:42 bps7j Exp $
+ * $Id: default.php,v 1.3 2005/08/02 02:46:31 bps7j Exp $
  */
 
 $template = file_get_contents("templates/adventure/default.php");
 
 # Get the next 5 upcoming adventures
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/adventure/list_all-upcoming.sql");
-$result =& $cmd->executeReader();
+$cmd->addParameter("active", $cfg['status_id']['active']);
+$result = $cmd->executeReader();
 if ($result->numRows()) {
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         $template = Template::block($template, "ROW",
             array_change_key_case($row, 1));
     }

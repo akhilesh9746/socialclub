@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/06/05 16:26:02 bps7j Exp $
+ * $Id: create.php,v 1.3 2005/08/02 02:47:07 bps7j Exp $
  */
 
 include_once("location.php");
@@ -28,7 +28,7 @@ $formTemplate = file_get_contents("forms/adventure/create.xml");
 $template = file_get_contents("templates/adventure/create.php");
 
 # Ensure that the user's contact info isn't private 
-if ($obj['user']->getFlag("private")) {
+if ($obj['user']->getHidden()) {
     $template = Template::unhide($template, "ERROR");
     $res['content'] = $template;
 }
@@ -37,32 +37,32 @@ else {
     $template = Template::unhide($template, "INSTRUCTIONS");
 
     # Get a list of all locations in the DB.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/generic-select.sql");
     $cmd->addParameter("table", "[_]location");
     $cmd->addParameter("orderby", "c_title");
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
 
     # Add the locations to the drop-down menus.
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         $formTemplate = Template::block(
             $formTemplate, array("DEPART","DEST"), 
             array_change_key_case($row, 1));
     }
 
     # Get a list of all activities in the DB.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/generic-select.sql");
     $cmd->addParameter("table", "[_]activity");
     $cmd->addParameter("orderby", "c_title");
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
 
     # Add the activities in $cols columns to the page
     $cols = 3;
     $rowTemplate = Template::extract($formTemplate, "ACTIVITY_ROW");
     for ($i = 0; $i < $result->numRows();) {
         $thisRow = $rowTemplate;
-        for ($j = 0; $j < $cols && $row =& $result->fetchRow(); ++$j, ++$i) {
+        for ($j = 0; $j < $cols && $row = $result->fetchRow(); ++$j, ++$i) {
             $thisRow = Template::block($thisRow, "ACTIVITY",
                 array_change_key_case($row, 1)
                 + array("WIDTH" => (int) (100 / $cols)));
