@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: tabbed-box.php,v 1.2 2005/06/05 16:22:50 bps7j Exp $
+ * $Id: tabbed-box.php,v 1.3 2005/08/02 02:40:34 bps7j Exp $
  *
  * This page looks for an object called $cfg['object'] that it can use to check
  * permissions and so forth.  It then generates a row of tabs, one for each
@@ -34,13 +34,11 @@ if (isset($object)) {
     # Init the object's allowed actions, if needed
     $actions = $object->getAllowedActions();
     # Check if the current action is 'generic' (as defined in the DB)
-    if ($actions[$cfg['action']]['c_flags'] & $cfg['flag']['generic']) {
+    if ($actions[$cfg['action']]['c_generic']) {
         # Add all the 'generic' actions that are allowed, as well as the
         # 'Details' action
         foreach ($actions as $row) {
-            if ($row['c_flags'] & $cfg['flag']['generic']
-                || $row['c_title'] == 'read')
-            {
+            if ($row['c_generic'] || $row['c_title'] == 'read') {
                 $obj['tabbed_box']->addTab($row['c_label'],
                     $row['c_row'],
                     "members/{PAGE}/$row[c_title]/{OBJECT}");
@@ -53,7 +51,7 @@ if (isset($object)) {
     else {
         # Add all the 'specific' actions that are allowed and implemented
         foreach ($actions as $row) {
-            if (($row['c_flags'] & $cfg['flag']['generic']) == 0
+            if (!$row['c_generic']
                 && file_exists("pages/$cfg[page]/$row[c_title].php"))
             {
                 $obj['tabbed_box']->addTab($row['c_label'],
