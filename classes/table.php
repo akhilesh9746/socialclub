@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: table.php,v 1.2 2005/06/05 16:14:34 bps7j Exp $
+ * $Id: table.php,v 1.3 2005/08/02 02:33:27 bps7j Exp $
  */
 
 class table {
@@ -37,7 +37,7 @@ class table {
     /* {{{getVarArray
      *
      */
-    function &getVarArray() {
+    function getVarArray() {
         return array("T_TABLE" => $this->name);
     } //}}}
 
@@ -65,20 +65,19 @@ class table {
         global $obj;
         global $cfg;
         $this->allowedActions = array();
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/privilege/select-allowed-table-actions.sql");
         $cmd->addParameter("member", $cfg['user']);
         $cmd->addParameter("groups", $obj['user']->c_group_memberships);
         $cmd->addParameter("table", $this->name);
-        $cmd->addParameter("applies_to_object", $cfg['flag']['applies_to_object']);
         $cmd->addParameter("root_group", $cfg['root_uid']);
-        $result =& $cmd->executeReader();
+        $result = $cmd->executeReader();
         while ($row = $result->fetchRow()) {
             $this->allowedActions[$row['c_title']] = $row;
         }
     }
 
-    function &getAllowedActions($refresh = false) {
+    function getAllowedActions($refresh = false) {
         if (!isset($this->allowedActions) or $refresh) {
             $this->initAllowedActions();
         }
@@ -93,7 +92,7 @@ class table {
      * Automagically inserts the object into a template.  
      */
     function insertIntoTemplate($templateText, $repeat = FALSE) {
-        $array =& $this->getVarArray();
+        $array = $this->getVarArray();
         return Template::replace($templateText, $array, $repeat);
     } //}}}
 

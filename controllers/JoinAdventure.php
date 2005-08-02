@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: JoinAdventure.php,v 1.2 2005/06/05 16:16:48 bps7j Exp $
+ * $Id: JoinAdventure.php,v 1.3 2005/08/02 02:33:54 bps7j Exp $
  */
 // {{{require statements
 include_once("Email.php");
@@ -39,11 +39,11 @@ class JoinAdventure {
         $bool = Template::extract($formTemplate, "BOOL");
         # Go through the adventure's questions and plug them into the form
         # template
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/question/select-by-adventure.sql");
         $cmd->addParameter("adventure", $adventure->c_uid);
-        $result =& $cmd->executeReader();
-        while ($row =& $result->fetchRow()) {
+        $result = $cmd->executeReader();
+        while ($row = $result->fetchRow()) {
             $whichConfig = "$row[c_type]Config";
             $formTemplate = Template::replace($formTemplate, array(
                 "ELEMENTS" => Template::replace($$row['c_type'],
@@ -59,7 +59,7 @@ class JoinAdventure {
      *
      */
     function checkIfMemberIsAttending(&$adventure, &$member) {
-        $attendees =& $adventure->getChildren("attendee");
+        $attendees = $adventure->getChildren("attendee");
         foreach (array_keys($attendees) as $key) {
             if ($attendees[$key]->getMember() == $member->getUID()) {
                 return true;
@@ -78,7 +78,7 @@ class JoinAdventure {
 
         $leader =& new member();
         $leader->select($adventure->getOwner());
-        $phone =& $leader->getPrimaryPhoneNumber();
+        $phone = $leader->getPrimaryPhoneNumber();
         $departure =& new location();
         $departure->select($adventure->getDeparture());
         $destination =& new location();

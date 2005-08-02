@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: adventure.php,v 1.1 2005/03/27 19:54:29 bps7j Exp $
+ * $Id: adventure.php,v 1.2 2005/08/02 02:27:54 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -210,12 +210,12 @@ class adventure extends database_object {
         global $obj;
         global $cfg;
         $res = array();
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/adventure/select-attendees.sql");
         $cmd->addParameter("adventure", $this->c_uid);
         $cmd->addParameter("status", $cfg['status_id'][$status]);
-        $result =& $cmd->executeReader();
-        while ($row =& $result->fetchRow()) {
+        $result = $cmd->executeReader();
+        while ($row = $result->fetchRow()) {
             $res[$row['c_uid']] =& new Attendee();
             $res[$row['c_uid']]->initFromRow($row);
         }

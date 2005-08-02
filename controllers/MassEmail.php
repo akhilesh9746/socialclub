@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: MassEmail.php,v 1.1 2005/03/27 19:54:04 bps7j Exp $
+ * $Id: MassEmail.php,v 1.2 2005/08/02 02:34:36 bps7j Exp $
  */
 
 include_once("Email.php");
@@ -41,12 +41,13 @@ class MassEmail {
         $email->loadFooter("templates/emails/main-footer.txt");
         $email->setWordWrap(false);
 
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/misc/select-opted-in-emails.sql");
         $cmd->addParameter("category", $category);
+        $cmd->addParameter("active", $cfg['status_id']['active']);
         $cmd->addParameter("member", $user->getUID());
-        $result =& $cmd->executeReader();
-        while ($row =& $result->fetchRow()) {
+        $result = $cmd->executeReader();
+        while ($row = $result->fetchRow()) {
             $email->addBCC($row['c_email']);
         }
 

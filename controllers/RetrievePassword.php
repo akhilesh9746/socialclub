@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: RetrievePassword.php,v 1.1 2005/03/27 19:54:04 bps7j Exp $
+ * $Id: RetrievePassword.php,v 1.2 2005/08/02 02:34:36 bps7j Exp $
  */
 // {{{require declarations
 include_once("Email.php");
@@ -34,12 +34,12 @@ class RetrievePassword {
      */
     function checkForExistence($email) {
         global $obj;
-        $result =& $obj['conn']->query(
+        $result = $obj['conn']->query(
             "select c_password from [_]member where c_email={email,char,30} "
                 . "and c_deleted <> 1",
                 array('email' => $email));
         if ($result->numRows() > 0) {
-            $row =& $result->fetchRow();
+            $row = $result->fetchRow();
             $this->emailAddress = $email;
             $this->password = $row['c_password'];
             return 1;

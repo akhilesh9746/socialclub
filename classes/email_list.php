@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: email_list.php,v 1.1 2005/03/27 19:54:24 bps7j Exp $
+ * $Id: email_list.php,v 1.2 2005/08/02 02:31:34 bps7j Exp $
  *
  * Mailman lists are really stupid with the requirement to have a password.  We
  * auto-generate a random password at subscribe time, then remember it in the DB
@@ -56,7 +56,7 @@ class email_list extends database_object {
      */
     function isSubscribed(&$member) {
         global $obj;
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/email_list/check-subscribed.sql");
         $cmd->addParameter("owner", $member->getUID());
         $cmd->addParameter("list", $this->c_uid);

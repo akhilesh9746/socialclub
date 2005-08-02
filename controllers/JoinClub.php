@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: JoinClub.php,v 1.2 2005/06/05 16:17:34 bps7j Exp $
+ * $Id: JoinClub.php,v 1.3 2005/08/02 02:34:36 bps7j Exp $
  */
 // {{{require statements
 include_once("Email.php");
@@ -53,8 +53,9 @@ class JoinClub {
         $member->setLastName($form->getValue('lastName'));
         $member->setBirthDate($form->getValue('dob'));
         $member->setGender($form->getValue('gender'));
-        $member->setFlag("receive_email", true);
-        $member->setFlag("student", $form->getValue("student"));
+        $member->setReceiveEmail(true);
+        $member->setIsStudent($form->getValue("student"));
+        $member->setInGroup($cfg['group_id']['member'], true);
         $member->insert();
 
         # Set the user's ID
@@ -70,7 +71,7 @@ class JoinClub {
         $address->setState($form->getValue('state'));
         $address->setZIP($form->getValue('zip'));
         $address->setCountry('US');
-        $address->setFlag("primary", true);
+        $address->setPrimary(1);
         $address->insert();
 
         $phone =& new phone_number();
@@ -79,7 +80,7 @@ class JoinClub {
         $phone->setNumber($form->getValue('number'));
         $phone->setTitle($phone->getPhoneNumber());
         $phone->setType($form->getValue("phoneNumberType"));
-        $phone->setFlag("primary", true);
+        $phone->setPrimary(1);
         $phone->insert();
 
         # Insert the chat identity, if it exists
@@ -87,7 +88,7 @@ class JoinClub {
             $chat =& new chat();
             $chat->setType($form->getValue("chatType"));
             $chat->setScreenName($form->getValue("chat"));
-            $chat->setFlag("primary", true);
+            $chat->setPrimary(1);
             $chat->insert();
         }
 
