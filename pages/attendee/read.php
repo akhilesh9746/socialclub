@@ -17,23 +17,20 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.2 2005/06/05 17:07:42 bps7j Exp $
+ * $Id: read.php,v 1.3 2005/08/02 02:49:20 bps7j Exp $
  */
 
 $template = file_get_contents("templates/attendee/read.php");
 
 # Get info about the attendee & adventure
-$member =& new member();
-$adventure =& new adventure();
-$member->select($object->getMember());
-$adventure->select($object->getAdventure());
+$cmd = $obj['conn']->createCommand();
+$cmd->loadQuery("sql/attendee/read.sql");
+$cmd->addParameter("attendee", $cfg['object']);
+$result = $cmd->executeReader();
+$row = $result->fetchRow();
 
 # Plug info into the template template
-$template = $member->insertIntoTemplate(
-    $object->insertIntoTemplate(
-        $adventure->insertIntoTemplate($template)));
-
-$res['content'] = $template;
+$res['content'] = Template::replace($template, $row);
 $res['title'] = "View Attendee Details";
 
 ?>
