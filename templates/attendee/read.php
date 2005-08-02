@@ -8,23 +8,23 @@
 <table class="collapsed elbowroom verticalHeaders">
   <tr>
     <th>Member</th>
-    <td><a href="members/member/read/{T_MEMBER}">{C_FULL_NAME}</a></td>
+    <td><a href="members/member/read/{me_uid}">{c_full_name}</a></td>
   </tr>
   <tr>
     <th>Adventure</th>
-    <td><a href="members/adventure/read/{T_ADVENTURE}">{C_TITLE}</a></td>
+    <td><a href="members/adventure/read/{ad_uid}">{c_title}</a></td>
   </tr>
   <tr>
     <th>Amount Paid</th>
-    <td>${C_AMOUNT_PAID}</td>
+    <td>${c_amount_paid}</td>
   </tr>
   <tr>
     <th>Date Joined</th>
-    <td>{C_JOINED_DATE}</td>
+    <td>{c_joined_date}</td>
   </tr>
   <tr>
     <th>Status</th>
-    <td>{STATUS}</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>
 </table>
 
