@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: XmlFormDocument.php,v 1.2 2005/06/11 13:11:17 bps7j Exp $
+ * $Id: XmlFormDocument.php,v 1.3 2005/08/02 23:46:18 bps7j Exp $
  */
 /* 
  * Purpose:  Represents an HTML form object that is derived from a DOM tree that
@@ -37,7 +37,8 @@ class XMLFormDocument extends Document {
 
     // {{{setValue
     function setValue($name, $value) {
-        $configElements =& $this->getElementByID("config");
+        $value = "$value";
+        @$configElements =& $this->getElementByID("config");
         $els = $configElements->selectElements(array("name" => $name), "element");
         if (!count($els)) {
             // Could not find any config element with the attribute "name" equal
@@ -84,7 +85,7 @@ class XMLFormDocument extends Document {
                 // element, we need to get all child elements of type
                 // <option> and set the "selected" option on those that there's
                 // data for.
-                $el =& $this->getElementByID($configEl->getAttribute("element-id"));
+                @$el =& $this->getElementByID($configEl->getAttribute("element-id"));
                 if (is_array($value)) {
                     foreach (array_keys($el->childNodes) as $key) {
                         $option =& $el->childNodes[$key];
@@ -148,7 +149,7 @@ class XMLFormDocument extends Document {
             }
             else {
                 // Need to identify the element by the element-id
-                $el =& $this->getElementByID($configEl->getAttribute("element-id"));
+                @$el =& $this->getElementByID($configEl->getAttribute("element-id"));
                 if (!$el) {
                     trigger_error("Element with ID '" . $configEl->getAttribute("element-id")
                         . "' not found in the XML document.", E_USER_ERROR);
@@ -194,7 +195,7 @@ class XMLFormDocument extends Document {
                     // Find the correct child node of the element with a value
                     // of whatever value it is, and set its "selected" attribute
                     // to "1".
-                    $options =& $el->getElementsByTagName("option");
+                    @$options =& $el->getElementsByTagName("option");
                     foreach (array_keys($options) as $key) {
                         if ($options[$key]->getAttribute("value") === $value) {
                             $options[$key]->setAttribute("selected", "1");
@@ -232,7 +233,7 @@ class XMLFormDocument extends Document {
             return;
         }
         $method = $form->getAttribute("method");
-        $sanityCheck =& $this->getElementByID(
+        @$sanityCheck =& $this->getElementByID(
             $config->getAttribute("sanity-check"));
         if (is_null($form) || is_null($sanityCheck)) {
             trigger_error("You have not specified form elements correctly in "
@@ -261,10 +262,10 @@ class XMLFormDocument extends Document {
     // {{{preProcess
     function preProcess() {
         // Get the config element...
-        $config =& $this->getElementByID("config");
-        $form =& $this->getElementByID($config->getAttribute("form-id"));
+        @$config =& $this->getElementByID("config");
+        @$form =& $this->getElementByID($config->getAttribute("form-id"));
         $method = $form->getAttribute("method");
-        $sanityCheck =& $this->getElementByID(
+        @$sanityCheck =& $this->getElementByID(
             $config->getAttribute("sanity-check"));
         if (is_null($form) || is_null($sanityCheck)) {
             trigger_error("You have not specified form elements correctly in "
@@ -276,7 +277,7 @@ class XMLFormDocument extends Document {
             if ($config->childNodes[$key]->nodeType == DOM_ELEMENT_NODE) {
                 // Call functions as defined in the "pre-processing" attribute.
                 $str = $config->childNodes[$key]->getAttribute("pre-processing");
-                $el =& $this->getElementByID($config->childNodes[$key]->getAttribute("element-id"));
+                @$el =& $this->getElementByID($config->childNodes[$key]->getAttribute("element-id"));
                 if (!is_null($el) && $str) {
                     foreach (explode(",", $str) as $func) {
                         if (function_exists($func)) {
@@ -305,9 +306,9 @@ class XMLFormDocument extends Document {
     // {{{validate
     function validate() {
         // Get the configuration information for the form
-        $config =& $this->getElementByID("config");
+        @$config =& $this->getElementByID("config");
         // The form is not valid unless it has been submitted.
-        $formEl =& $this->getElementByID(
+        @$formEl =& $this->getElementByID(
             $config->getAttribute("form-id"));
         if (is_null($formEl)) {
             trigger_error("There is no element with id "
@@ -371,7 +372,7 @@ class XMLFormDocument extends Document {
         if ($config->getAttribute("type") == "array") {
             if ($config->getAttribute("element-id")) {
                 // It's a SelectMultiple.  Requires that the element be identified by ID.
-                $el =& $this->getElementByID($config->getAttribute("element-id"));
+                @$el =& $this->getElementByID($config->getAttribute("element-id"));
                 foreach (array_keys($el->childNodes) as $key) {
                     $option =& $el->childNodes[$key];
                     if ($option->nodeType == DOM_ELEMENT_NODE
@@ -405,7 +406,7 @@ class XMLFormDocument extends Document {
             // The type is scalar (this is the default).  There are 3 kinds of
             // scalar elements: <input>, <textarea> and <select>
             if ($config->getAttribute("element-id")) {
-                $el =& $this->getElementByID($config->getAttribute("element-id"));
+                @$el =& $this->getElementByID($config->getAttribute("element-id"));
                 if ($el->tagName == "input") {
                     // There are two kinds of <input> elements: checkbox and
                     // everything else.  There may be multiple HTML elements
@@ -435,7 +436,7 @@ class XMLFormDocument extends Document {
                     // At least one of the element's childNodes needs to be
                     // selected.  Elements with an empty value count as not
                     // selected.
-                    $options =& $el->getElementsByTagName("option");
+                    @$options =& $el->getElementsByTagName("option");
                     foreach (array_keys($options) as $key) {
                         if ($options[$key]->getAttribute("selected") == "1"
                             && $options[$key]->getAttribute("value") !== "")
@@ -472,7 +473,7 @@ class XMLFormDocument extends Document {
 
     // {{{validateDataType
     function validateDataType(&$config) {
-        $el =& $this->getElementByID($config->getAttribute("element-id"));
+        @$el =& $this->getElementByID($config->getAttribute("element-id"));
         $val = "";
         switch($el->tagName) {
             case "input": // password, text
@@ -531,8 +532,8 @@ class XMLFormDocument extends Document {
     function validateComparison(&$config) {
         // As usual, advanced validation can only be done on textbox, password,
         // and textarea
-        $el1 =& $this->getElementByID($config->getAttribute("element-id"));
-        $el2 =& $this->getElementByID($config->getAttribute("compare-to-id"));
+        @$el1 =& $this->getElementByID($config->getAttribute("element-id"));
+        $el2 = $this->getElementByID($config->getAttribute("compare-to-id"));
         $datatype = $config->getAttribute("data-type");
         // Fetch the data from both elements
         $thisValue = "";
@@ -589,7 +590,7 @@ class XMLFormDocument extends Document {
             return;
         }
         // Get the configuration information for the form
-        $config =& $this->getElementByID("config");
+        @$config =& $this->getElementByID("config");
         foreach (array_keys($config->childNodes) as $key) {
             // $el is the configuration information element
             $el =& $config->childNodes[$key];
@@ -625,15 +626,15 @@ class XMLFormDocument extends Document {
                 // Try to find the error element to unhide
                 if (isset($errorElement)
                         && $this->getElementByID($errorElement)) {
-                    $node =& $this->getElementByID($errorElement);
+                    @$node =& $this->getElementByID($errorElement);
                 }
                 if (!isset($node) && isset($default) && $default) {
                     // Try to find the explicitly specified default error
                     // element
-                    $node =& $this->getElementByID($default);
+                    @$node =& $this->getElementByID($default);
                 }
                 if (!isset($node)) {
-                    $node =& $this->getElementByID($el->getAttribute("name") . "-error");
+                    @$node =& $this->getElementByID($el->getAttribute("name") . "-error");
                 }
                 if (isset($node)) {
                     // If we found an error element, unhide it
@@ -643,7 +644,7 @@ class XMLFormDocument extends Document {
         }
         // Look for an error element for the *whole form* and unhide that if it
         // exists.
-        $overall =& $this->getElementByID(
+        @$overall =& $this->getElementByID(
             $config->getAttribute("error-element"));
         if (!is_null($overall)) {
             $overall->removeAttribute("hidden");
@@ -653,7 +654,7 @@ class XMLFormDocument extends Document {
     // {{{disableErrorMessages
     function disableErrorMessages() {
         // Get the configuration information for the form
-        $config =& $this->getElementByID("config");
+        @$config =& $this->getElementByID("config");
         foreach (array_keys($config->childNodes) as $key) {
             // $el is the configuration information element
             $el =& $config->childNodes[$key];
@@ -662,17 +663,17 @@ class XMLFormDocument extends Document {
             }
             if ($el->getAttribute("failed-required")) {
                 $errorElement = $el->getAttribute("element-id" . "-error");
-                $node =& $this->getElementByID($errorElement);
+                @$node =& $this->getElementByID($errorElement);
                 $node->setAttribute("hidden", "1");
             }
             if ($el->getAttribute("failed-data-type")) {
                 $errorElement = $el->getAttribute("element-id" . "-data-error");
-                $node =& $this->getElementByID($errorElement);
+                @$node =& $this->getElementByID($errorElement);
                 $node->setAttribute("hidden", "1");
             }
             if ($el->getAttribute("failed-comparison")) {
                 $errorElement = $el->getAttribute("element-id" . "-comparison-error");
-                $node =& $this->getElementByID($errorElement);
+                @$node =& $this->getElementByID($errorElement);
                 $node->setAttribute("hidden", "1");
             }
         }

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Node.php,v 1.1 2005/03/27 19:54:14 bps7j Exp $
+ * $Id: Node.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
  */
 
 define("DOM_ELEMENT_NODE",                    1);
@@ -344,7 +344,7 @@ class Node {
             }
         }
         foreach (array_keys($this->childNodes) as $key) {
-            $result =& $this->childNodes[$key]->getElementByID($elementID);
+            @$result =& $this->childNodes[$key]->getElementByID($elementID);
             if (!is_null($result)) {
                 return $result;
             }

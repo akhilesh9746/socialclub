@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: MySqlConnection.php,v 1.1 2005/03/27 19:54:17 bps7j Exp $
+ * $Id: MySqlConnection.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
  *
  * Represents a connection to a MySQL database.
  */
@@ -62,7 +62,7 @@ class MySqlConnection extends SqlConnection {
         return true;
     }
 
-    function &query($query, $params = null) {
+    function query($query, $params = null) {
         # Array of errors that happen while executing the query
         $errors = array();
 
@@ -78,7 +78,7 @@ class MySqlConnection extends SqlConnection {
         # again with the result, which this function will pass right through to
         # the database.
         if ($params) {
-            $cmd =& $this->createCommand();
+            $cmd = $this->createCommand();
             $cmd->setCommandText($query);
             return $cmd->executeReader($params);
         }
@@ -146,7 +146,7 @@ class MySqlConnection extends SqlConnection {
         }
     }
 
-    function &createCommand() {
+    function createCommand() {
         return new SqlCommand(&$this);
     }
 

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Element.php,v 1.1 2005/03/27 19:54:16 bps7j Exp $
+ * $Id: Element.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
  */
 
 include_once("Node.php");
@@ -29,7 +29,7 @@ class Element extends Node {
     function Element() {
         $this->Node();
         $this->nodeType = DOM_ELEMENT_NODE;
-    $this->attributes = array();
+        $this->attributes = array();
     }
 
     function getAttribute($name) {
@@ -43,10 +43,10 @@ class Element extends Node {
         if ($this->isReadOnly()) {
             trigger_error("DOM_NO_MODIFICATION_ALLOWED_ERR", E_USER_ERROR);
         }
-        $this->attributes[$name] = $value;
+        $this->attributes[$name] = "$value";
     }
 
-    function &removeAttribute($name) {
+    function removeAttribute($name) {
         if ($this->isReadOnly()) {
             trigger_error("DOM_NO_MODIFICATION_ALLOWED_ERR", E_USER_ERROR);
         }

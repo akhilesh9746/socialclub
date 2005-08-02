@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: SqlCommand.php,v 1.1 2005/03/27 19:54:18 bps7j Exp $
+ * $Id: SqlCommand.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
  *
  * Represents a command to execute against a SQL database, using a
  * SqlConnection.  There should be no need to subclass SqlCommand, as it's
@@ -43,7 +43,7 @@ class SqlCommand {
     var $preparedQuery = "";
 
     function SqlCommand(&$conn, $cmd = null) {
-        $this->cmdText =& $cmd;
+        $this->cmdText = $cmd;
         $this->conn =& $conn;
         $this->params = array();
     }
@@ -85,16 +85,16 @@ class SqlCommand {
             $this->addParameters($params);
         }
         $this->prepare();
-        $res =& $this->conn->query($this->preparedQuery);
+        $res = $this->conn->query($this->preparedQuery);
         return $res->rowsAffected();
     }
 
-    function &executeReader($params = null) {
+    function executeReader($params = null) {
         if ($params) {
             $this->addParameters($params);
         }
         $this->prepare();
-        $res =& $this->conn->query($this->preparedQuery);
+        $res = $this->conn->query($this->preparedQuery);
         if ($this->conn->getOption('dump')) {
             echo $res->dumpResults();
         }
@@ -106,7 +106,7 @@ class SqlCommand {
             $this->addParameters($params);
         }
         $this->prepare();
-        $res =& $this->conn->query($this->preparedQuery);
+        $res = $this->conn->query($this->preparedQuery);
         return $res->fetchScalar();
     }
 
@@ -186,7 +186,7 @@ class SqlCommand {
         if ($nullable) {
             return "null";
         }
-        elseif ($nullval) {
+        elseif ($nullval !== '') {
             return $nullval;
         }
         else {

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: XmlForm.php,v 1.1 2005/03/27 19:54:18 bps7j Exp $
+ * $Id: XmlForm.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
  */
 include_once("XmlFormParser.php");
 include_once("XmlSerializer.php");
@@ -41,7 +41,7 @@ class XMLForm {
             trigger_error("The file is empty", E_USER_ERROR);
         }
         $parser =& new XMLFormParser();
-        $this->form =& $parser->parse($file);
+        @$this->form =& $parser->parse($file);
     } //}}}
 
     // {{{getValue
@@ -102,7 +102,7 @@ class XMLForm {
             if ($element->tagName == "select") {
                 // Select
                 // Find the correct child node of the element and get its value
-                $options =& $element->getElementsByTagName("option");
+                @$options =& $element->getElementsByTagName("option");
                 foreach (array_keys($options) as $key) {
                     if ($options[$key]->getAttribute("selected")) {
                         return $options[$key]->getAttribute("value");
@@ -145,11 +145,11 @@ class XMLForm {
     // {{{toString
     function toString() {
         // Set the form's action, by default, to post back to itself.
-        $config =& $this->form->getElementByID("config");
+        @$config =& $this->form->getElementByID("config");
         if (is_null($config)) {
             trigger_error("Invalid <config> specification in the form", E_USER_ERROR);
         }
-        $form =& $this->form->getElementByID($config->getAttribute("form-id"));
+        @$form =& $this->form->getElementByID($config->getAttribute("form-id"));
         if (is_null($form)) {
             trigger_error("Invalid <config> specification in the form", E_USER_ERROR);
             return;
@@ -173,8 +173,8 @@ class XMLForm {
     function validate() {
         $result = $this->form->validate();
         // Only enable error messages if the form has been submitted
-        $config =& $this->form->getElementByID("config");
-        $formEl =& $this->form->getElementByID(
+        @$config =& $this->form->getElementByID("config");
+        @$formEl =& $this->form->getElementByID(
             $config->getAttribute("form-id"));
         if (is_null($formEl)) {
             trigger_error("There is no element with id "

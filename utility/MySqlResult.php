@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: MySqlResult.php,v 1.1 2005/03/27 19:54:13 bps7j Exp $
+ * $Id: MySqlResult.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
  *
  * Represents a result-set from a MySQL query.
  */
@@ -44,7 +44,7 @@ class MySqlResult extends SqlResult {
         return 0;
     }
 
-    function &fetchRow($fetchMode = null) {
+    function fetchRow($fetchMode = null) {
         $mode = is_null($fetchMode) ? DB_FETCHMODE_ASSOC : $fetchMode;
         if ($this->sth) {
             switch ($mode) {
@@ -59,7 +59,7 @@ class MySqlResult extends SqlResult {
 
     function fetchScalar() {
         if ($this->numRows() && $this->numCols()) {
-            $row =& $this->fetchRow(DB_FETCHMODE_ORDERED);
+            $row = $this->fetchRow(DB_FETCHMODE_ORDERED);
             return $row[0];
         }
         return FALSE;
