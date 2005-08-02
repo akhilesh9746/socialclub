@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: phone_number.php,v 1.1 2005/03/27 19:54:22 bps7j Exp $
+ * $Id: phone_number.php,v 1.2 2005/08/02 02:33:14 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -32,6 +32,8 @@ class phone_number extends database_object {
     var $c_number = null;
     var $c_extension = null;
     var $c_phone_number = null;
+    var $c_primary = null;
+    var $c_hidden = null;
     // }}}
 
     /* {{{constructor
@@ -168,21 +170,33 @@ class phone_number extends database_object {
         return $this->c_phone_number;
     } //}}}
     
-    /* {{{setPrimary
-     * Sets the 'primary' flag on this phone number and removes it for every
-     * other phone number that this member owns
+    /* {{{getIsPrimary
+     *
      */
-    function setPrimary() {
-        global $obj;
-        global $cfg;
-        $cmd =& $obj['conn']->createCommand();
-        $cmd->loadQuery("sql/misc/set-primary.sql");
-        $cmd->addParameter("table", $this->table);
-        $cmd->addParameter("object", $this->c_uid);
-        $cmd->addParameter("primary", $cfg['flag']['primary']);
-        $cmd->addParameter("member", $this->c_owner);
-        $cmd->executeNonQuery();
+    function getIsPrimary() {
+        return $this->c_is_primary;
     } //}}}
-    
+
+    /* {{{setIsPrimary
+     *
+     */
+    function setIsPrimary($value) {
+        $this->c_is_primary = $value;
+    } //}}}
+
+    /* {{{getHidden
+     *
+     */
+    function getHidden() {
+        return $this->c_hidden;
+    } //}}}
+
+    /* {{{setHidden
+     *
+     */
+    function setHidden($value) {
+        $this->c_hidden = $value;
+    } //}}}
+
 }
 ?>
