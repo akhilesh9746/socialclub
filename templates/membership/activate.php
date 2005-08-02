@@ -9,12 +9,7 @@
 <p class="notice">You have successfully activated this membership.</p>
 {:SUCCESS}
 
-{ACTIVE:}
-<p class="notice">This membership is already active.</p>
-{:ACTIVE}
-
-{INACTIVE:}
-
+{inactive:}
 <p>You are about to activate a <b>{C_TITLE}</b> membership for {C_FULL_NAME}.  Here is
 some information about this member and membership:</p>
 
@@ -40,7 +35,6 @@ some information about this member and membership:</p>
 </ol>
 
 {FORM}
-
-{:INACTIVE}
+{:inactive}
 
 </div>
