@@ -17,18 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:10 bps7j Exp $
+ * $Id: create.php,v 1.2 2005/08/02 02:49:46 bps7j Exp $
  */
 
 $template = file_get_contents("templates/chat/create.php");
 $formTemplate = file_get_contents("forms/chat/create.xml");
 
 # Add all chat types to the form
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]chat_type");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "TYPE",
         array_change_key_case($row, 1));
 }
@@ -44,9 +44,8 @@ if ($form->isValid()) {
     $object =& new chat();
     $object->setType($form->getValue("type"));
     $object->setScreenName($form->getValue("screen-name"));
+    $object->setIsPrimary(1);
     $object->insert();
-    $object->setFlag("primary", 1);
-    $object->update();
     redirect("$cfg[base_url]/members/chat/read/$object->c_uid");
 }
 

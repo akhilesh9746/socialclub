@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:23 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/08/02 02:52:22 bps7j Exp $
  */
 
 $res['title'] = "List All Expenses";
@@ -26,12 +26,12 @@ $template = file_get_contents("templates/expense/list_all.php");
 # Create the filter for category and type
 
 $formTemplate = file_get_contents("forms/expense/list_all.xml");
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]expense_category");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "cat", $row);
 }
 
@@ -41,9 +41,8 @@ $form->snatch();
 $template = Template::replace($template, array("FORM" => $form->toString()));
 
 if (!$form->getValue("category")) {
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/expense/summarize.sql");
-    $cmd->addParameter("reimbursable_flag", $cfg['flag']['reimbursable']);
     if ($form->getValue("begin")) {
         $cmd->addParameter("begin", date("Y-m-d", strtotime($form->getValue("begin"))));
     }
@@ -56,7 +55,7 @@ if (!$form->getValue("category")) {
     if ($form->getValue("status") !== "") {
         $cmd->addParameter("status", $form->getValue("status"));
     }
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     if ($result->numRows()) {
         $template = Template::unhide($template, "GENERIC");
         $template = Template::delete($template, "BY_TYPE");
@@ -64,10 +63,9 @@ if (!$form->getValue("category")) {
 }
 else {
     # Exec the query.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/expense/select-by-category.sql");
     $cmd->addParameter("category", $form->getValue('category'));
-    $cmd->addParameter("reimbursable_flag", $cfg['flag']['reimbursable']);
     if ($form->getValue("reimbursable") !== "") {
         $cmd->addParameter("reimbursable", $form->getValue("reimbursable"));
     }
@@ -80,7 +78,7 @@ else {
     if ($form->getValue("end")) {
         $cmd->addParameter("end", date("Y-m-d", strtotime($form->getValue("end"))));
     }
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     if ($result->numRows()) {
         $template = Template::unhide($template, "BY_TYPE");
         $template = Template::delete($template, "GENERIC");
@@ -89,7 +87,7 @@ else {
 
 
 if ($result->numRows()) {
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         $template = Template::block($template, "row", $row);
     }
 }

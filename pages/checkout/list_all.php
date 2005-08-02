@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2005/07/15 01:41:00 bps7j Exp $
+ * $Id: list_all.php,v 1.3 2005/08/02 02:52:09 bps7j Exp $
  */
 
 # Create a template 
@@ -28,17 +28,17 @@ foreach (array("default", "checked_out", "checked_in") as $status) {
     $formTemplate = Template::block($formTemplate, "STATUS",
         array("id" => $cfg['status_id'][$status], "c_title" => $status));
 }
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/checkout/select-members.sql");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "member", $row);
 }
 $form =& new XmlForm(Template::finalize($formTemplate), true);
 $form->setValue("status", $cfg['status_id']['checked_out']);
 $form->snatch();
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/checkout/list_all.sql");
 if ($form->getValue("status")) {
     $cmd->addParameter("status", $form->getValue("status"));
@@ -46,11 +46,10 @@ if ($form->getValue("status")) {
 if ($form->getValue("member")) {
     $cmd->addParameter("member", $form->getValue("member"));
 }
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
-    $template = Template::block($template, "checkout", $row
-        + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
+while ($row = $result->fetchRow()) {
+    $template = Template::block($template, "checkout", $row);
 }
 
 if ($result->numRows()) {
