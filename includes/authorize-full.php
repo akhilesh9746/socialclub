@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: authorize-full.php,v 1.1 2005/03/27 19:54:21 bps7j Exp $
+ * $Id: authorize-full.php,v 1.2 2005/08/02 02:36:28 bps7j Exp $
  */
 
 # If the browser sent auth, we can authenticate against the database.  The user
@@ -26,11 +26,13 @@
 # non-obvious.
 
 if ($cfg['auth']['user'] && $cfg['auth']['pass']) {
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/misc/login-full.sql");
+    $cmd->addParameter("active", $cfg['status_id']['active']);
+    $cmd->addParameter("inactive", $cfg['status_id']['inactive']);
     $cmd->addParameter("email", $cfg['auth']['user']);
     $cmd->addParameter("password", $cfg['auth']['pass']);
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
 
     # If there are any rows, the email address exists in the database.
     if ($result->numRows()) {
