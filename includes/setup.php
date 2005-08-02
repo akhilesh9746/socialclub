@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: setup.php,v 1.3 2005/06/11 13:12:23 bps7j Exp $
+ * $Id: setup.php,v 1.4 2005/08/02 02:40:16 bps7j Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -77,32 +77,6 @@ define("ERROR_EMAILING", E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR
     | E_CORE_WARNING | E_COMPILE_ERROR | E_COMPILE_WARNING | E_USER_ERROR);
 define("ERROR_LOGGING", E_ALL);
 
-# Define a function to handle errors.  This will only handle user-defined
-# errors.  The built-in errors must be handled by the output buffering.
-function userErrorHandler($errno, $errstr, $errfile, $errline) {
-    global $cfg;
-    $logMessage = "{$cfg['error_types'][$errno]} at line $errline "
-        ."in $errfile: $errstr"
-        . "\r\non page $_SERVER[REQUEST_URI]"
-        . "\r\nbrowser: $_SERVER[HTTP_USER_AGENT]";
-    if (isset($_SERVER['HTTP_REFERER'])) {
-        $logMessage .= "\r\nreferred from $_SERVER[HTTP_REFERER]";
-    }
-    if (isset($cfg['user'])) {
-        $logMessage .= "\r\nuser: $cfg[user]";
-    }
-    if ((intval($errno) & ERROR_EMAILING) != 0) {
-        error_log($logMessage, 1, $cfg['webmaster_email']);
-    }
-    if (isset($cfg['error_log'])
-        && $cfg['error_log']
-        && (intval($errno) & ERROR_LOGGING) != 0)
-    {
-        error_log(date("Y-m-d h:i:s ", time()) . $logMessage . "\r\n", 3, $cfg['error_log']);
-    }
-}
-set_error_handler("userErrorHandler");
-
 # -----------------------------------------------------------------------------
 # Check for GET variables and store them in the $cfg array so there will be no
 # attempts to access undefined variables.  The 'object' is initialized from the
@@ -147,10 +121,31 @@ $cfg['page_file'] = "$cfg[base_path]/pages/$cfg[page].php";
 require("includes/config.php");
 
 # ------------------------------------------------------------------------------
-# Start output buffering and name a function to be called when the buffer is
-# ready for output to the browser.
+# Define a function to handle errors.  This will only handle user-defined
+# errors.  The built-in errors must be handled by the output buffering.
 # ------------------------------------------------------------------------------
-ob_start('fatalErrorHandler');
+if ($cfg['error_log'] || $cfg['error_email']) {
+    function userErrorHandler($errno, $errstr, $errfile, $errline) {
+        global $cfg;
+        $logMessage = "{$cfg['error_types'][$errno]} at line $errline "
+            ."in $errfile: $errstr"
+            . "\r\non page $_SERVER[REQUEST_URI]";
+        if (isset($_SERVER['HTTP_REFERER'])) {
+            $logMessage .= "\r\nreferred from $_SERVER[HTTP_REFERER]";
+        }
+        if (isset($cfg['user'])) {
+            $logMessage .= "\r\nuser: $cfg[user]";
+        }
+        if ($cfg['error_log'] && (intval($errno) & ERROR_EMAILING) != 0) {
+            error_log($logMessage, 1, $cfg['error_email']);
+        }
+        if ($cfg['error_log'] && (intval($errno) & ERROR_LOGGING) != 0) {
+            error_log(date("Y-m-d h:i:s ", time()) . $logMessage
+                . "\r\n", 3, $cfg['error_log']);
+        }
+    }
+    set_error_handler("userErrorHandler");
+}
 
 # ------------------------------------------------------------------------------
 # Define an error handling function.  This gets called in case the buffer, which
@@ -159,40 +154,45 @@ ob_start('fatalErrorHandler');
 # didn't catch, and is just an intervention to make sure *something* gets done
 # with the error besides just barfing all sorts of stuff out to the user.
 # ------------------------------------------------------------------------------
-function fatalErrorHandler(&$buffer) {
-    global $cfg;
+if ($cfg['error_log'] || $cfg['error_email']) {
+    function fatalErrorHandler(&$buffer) {
+        global $cfg;
 
-    if (ereg("error</b>:(.+)<br", $buffer, $regs)) {
+        if (ereg("error</b>:(.+)<br", $buffer, $regs)) {
 
-        # Build error message
-        $time = date("Y-m-d H:i:s");
-        $userid = serialize($cfg['auth']);
+            # Build error message
+            $time = date("Y-m-d H:i:s");
+            $userid = serialize($cfg['auth']);
 
-        $logMessage = "
-            [$time] $regs[1]
-            URL:           $_SERVER[REQUEST_URI]
-            Referring URL: $_SERVER[HTTP_REFERER]
-            User Cookie:   $userid
-            ";
-        # Trim leading space off the message and log it
-        $logMessage = preg_replace('/(?m)^\s*/', "", $logMessage);
-        error_log($logMessage . "\r\n", 1, $cfg['webmaster_email']);
-        if (isset($cfg['error_log']) && $cfg['error_log']) {
-            error_log($logMessage, 3, $cfg['error_log']);
+            $logMessage = "
+                [$time] $regs[1]
+                URL:           $_SERVER[REQUEST_URI]
+                Referring URL: $_SERVER[HTTP_REFERER]
+                User Cookie:   $userid
+                ";
+            # Trim leading space off the message and log it
+            $logMessage = preg_replace('/(?m)^\s*/', "", $logMessage);
+            if ($cfg['error_email']) {
+                error_log($logMessage . "\r\n", 1, $cfg['error_email']);
+            }
+            if ($cfg['error_log']) {
+                error_log($logMessage, 3, $cfg['error_log']);
+            }
+            
+            # Display a friendly error message
+            return "<html><head><title>Error</title></head><body>
+            <h1>Fatal Error</h1>
+            <p>We're sorry, but there was a fatal error while processing your 
+            request.  You don't need to do anything.  The website has already
+            emailed the error to the webmasters.</p></body></html>";
         }
-        
-        # Display a friendly error message
-        return "<html><head><title>Error</title></head><body>
-        <h1>Fatal Error</h1>
-        <p>We're sorry, but there was a fatal error while processing your 
-        request.  You don't need to do anything.  The website has already
-        emailed the error to the webmasters.</p></body></html>";
+        else {
+            # All is well, so return the buffer itself; the buffer is safe to
+            # display to the user.
+            return $buffer;
+        }
     }
-    else {
-        # All is well, so return the buffer itself; the buffer is safe to
-        # display to the user.
-        return $buffer;
-    }
+    ob_start('fatalErrorHandler');
 }
 
 # ------------------------------------------------------------------------------
@@ -257,25 +257,6 @@ $res['help'] = "";
 # ------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------
-# Flags, set in an object's c_flags value.  Use getFlag($flagName) and
-# setFlag($flagName, bool) on any DatabaseObject class.
-# ------------------------------------------------------------------------------
-$cfg['flag'] = array(
-    "private" => 1,
-    "email_private" => 2,
-    "unused_1" => 4,
-    "student" => 8,
-    "flexible" => 16,
-    "has_photo" => 32,
-    "receive_email" => 64,
-    "reimbursable" => 128,
-    "applies_to_object" => 256,
-    "primary" => 512,
-    "unused_2" => 1024,
-    "generic" => 2048
-    );
-
-# ------------------------------------------------------------------------------
 # User Groups
 # ------------------------------------------------------------------------------
 $cfg['group_id'] = array(
@@ -291,8 +272,8 @@ $cfg['group_id'] = array(
     );
 
 # ------------------------------------------------------------------------------
-# Unix permission bitmasks, set in an object's c_unixperms and used the same as
-# flags.  These are the rightmost 9 bits, as you would see in UNIX files.
+# Unix permission bitmasks, set in an object's c_unixperms.  These are the
+# rightmost 9 bits, as you would see in UNIX files.
 # ------------------------------------------------------------------------------
 $cfg['perm'] = array(
     "owner_read" => 256,
@@ -312,17 +293,16 @@ $cfg['perm'] = array(
 # ------------------------------------------------------------------------------
 $cfg['status_id'] = array(
     "default" => 1,
-    "deleted" => 2,
-    "inactive" => 4,
-    "active" => 8,
-    "waitlisted" => 16,
-    "cancelled" => 32,
-    "pending" => 64,
-    "paid" => 128,
-    "checked_out" => 256,
-    "checked_in" => 512,
-    "missing" => 1024,
-    "submitted" => 2048
+    "inactive" => 2,
+    "active" => 4,
+    "waitlisted" => 8,
+    "cancelled" => 16,
+    "pending" => 32,
+    "paid" => 64,
+    "checked_out" => 128,
+    "checked_in" => 256,
+    "missing" => 512,
+    "submitted" => 1024
     );
 
 # ------------------------------------------------------------------------------
@@ -330,15 +310,14 @@ $cfg['status_id'] = array(
 # ------------------------------------------------------------------------------
 $cfg['actions'] = array();
 
-# This is a list of actions that simply can't be done without an object.  It is
-# initialized from the c_flags field on [_]action in the database.
+# This is a list of actions that simply can't be done without an object.
 $cfg['require_object_actions'] = array();
 
 # Set up the actions.
-$result =& $obj['conn']->query("select * from [_]action order by c_title");
-while ($row =& $result->fetchRow()) {
+$result = $obj['conn']->query("select * from [_]action order by c_title");
+while ($row = $result->fetchRow()) {
     $cfg['actions'][$row['c_title']] = $row;
-    if (intval($row['c_flags']) & $cfg['flag']['applies_to_object']) {
+    if ($row['c_apply_object']) {
         $cfg['require_object_actions'][] = $row['c_title'];
     }
 }
@@ -349,17 +328,17 @@ while ($row =& $result->fetchRow()) {
 # uniform way.
 # ------------------------------------------------------------------------------
 $cfg['tables'] = array();
-$result =& $obj['conn']->query("select c_name from [_]table order by c_name");
-while ($row =& $result->fetchRow()) {
+$result = $obj['conn']->query("select c_name from [_]table order by c_name");
+while ($row = $result->fetchRow()) {
     $cfg['tables'][] = $row['c_name'];
 }
 
 # ------------------------------------------------------------------------------
 # Configuration that is stored in the database.
 # ------------------------------------------------------------------------------
-$result =& $obj['conn']->query(
+$result = $obj['conn']->query(
     "select c_name, c_value, c_type from [_]configuration");
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     switch ($row['c_type']) {
     case "integer":
         $cfg[$row['c_name']] = intval($row['c_value']);
