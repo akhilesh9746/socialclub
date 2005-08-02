@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: membership_type.php,v 1.1 2005/03/27 19:54:23 bps7j Exp $
+ * $Id: membership_type.php,v 1.2 2005/08/02 02:32:55 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -34,6 +34,8 @@ class membership_type extends database_object {
     var $c_unit = null;
     var $c_unit_cost = null;
     var $c_total_cost = null;
+    var $c_flexible = null;
+    var $c_hidden = null;
     // }}}
 
     /* {{{constructor
@@ -167,6 +169,34 @@ class membership_type extends database_object {
      */
     function setUnitCost($value) {
         $this->c_unit_cost = $value;
+    } //}}}
+
+    /* {{{getFlexible
+     *
+     */
+    function getFlexible() {
+        return $this->c_flexible;
+    } //}}}                             
+
+    /* {{{setFlexible
+     *
+     */
+    function setFlexible($value) {
+        $this->c_flexible = $value;
+    } //}}}
+
+    /* {{{getHidden
+     *
+     */
+    function getHidden() {
+        return $this->c_hidden;
+    } //}}}                             
+
+    /* {{{setHidden
+     *
+     */
+    function setHidden($value) {
+        $this->c_hidden = $value;
     } //}}}
 
     /* {{{getTotalCost
