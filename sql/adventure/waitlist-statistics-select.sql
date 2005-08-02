@@ -1,13 +1,11 @@
 select
     count(*) as num_attendees,
     ad.c_max_attendees,
-    sum(
-        case when (at.c_status & 16 <> 0) then 1 else 0 end
-    ) as num_waitlisted,
+    sum(if(at.c_status & {waitlisted,int} = {waitlisted,int}, 1, 0)) as num_waitlisted,
     sum(
         case
         when at.c_uid <> {member,int,,,0}
-            and (at.c_status & 16 <> 0)
+            and (at.c_status & {waitlisted,int} = {waitlisted,int})
             and at.c_joined_date < {joined,date,,,0}
         then 1
         else 0

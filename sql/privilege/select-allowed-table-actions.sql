@@ -3,7 +3,6 @@
 --      member: The UID of the member.
 --      groups: The member's c_group_memberships bit field
 --      table:  The table in question.
---      applies_to_object: flag
 --      root_group: The UID of the root group
 select ac.*
 from
@@ -21,7 +20,7 @@ from
             and pr.c_what_relates_to = 'table'
 where
     -- The action must apply to tables (NOT apply to objects)
-    (ac.c_flags & {applies_to_object,int} = 0) and (
+    (ac.c_apply_object = 0) and (
         -- Members of the 'root' group are always allowed to do everything
         ({groups,int} & {root_group,int} <> 0)
         -- user privileges

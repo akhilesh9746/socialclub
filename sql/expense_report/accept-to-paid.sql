@@ -1,10 +1,9 @@
--- Copy the c_flags from the expenses into the transactions to preserve the fact
--- that they are reimbursable
+-- Preserve the fact that the expenses are reimbursable
 insert into [_]transaction
-    (c_owner, c_creator, c_created_date, c_flags, c_category,
+    (c_owner, c_creator, c_created_date, c_reimbursable, c_category,
      c_amount, c_from, c_to, c_expense)
 select
-    {member,int}, {member,int}, now(), ex.c_flags, ex.c_category,
+    {member,int}, {member,int}, now(), ex.c_reimbursable, ex.c_category,
     abs(ex.c_amount), 
     case when (c_amount >= 0) then {from,int} else re.c_member end,
     case when (c_amount >= 0) then re.c_member else {from,int} end,

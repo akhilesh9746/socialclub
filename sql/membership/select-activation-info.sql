@@ -1,10 +1,10 @@
 select ms.c_uid, mt.c_title, ms.c_total_cost,
     case 
-        when (mt.c_flags & {flexible,int}) then {start,date}
+        when mt.c_flexible then {start,date}
         else ms.c_begin_date
     end as c_begin_date,
     case
-        when (mt.c_flags & {flexible,int}) then case
+        when mt.c_flexible then case
             when ms.c_unit = 'day' then date_add({start,date}, interval ms.c_units_granted day)
             when ms.c_unit = 'month' then date_add({start,date}, interval ms.c_units_granted month)
             when ms.c_unit = 'year' then date_add({start,date}, interval ms.c_units_granted year)

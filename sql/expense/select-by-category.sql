@@ -17,7 +17,7 @@ where
     and ({end,date} is null or ex.c_expense_date <= {end,date})
     and ex.c_category = {category,int}
     and ({reimbursable,int} is null
-        or (ex.c_flags & {reimbursable_flag,int} = {reimbursable,int}))
+        or ex.c_reimbursable)
     and ({status,int} is null or ex.c_status = {status,int})
     and ex.c_deleted <> 1
     and rep.c_deleted <> 1

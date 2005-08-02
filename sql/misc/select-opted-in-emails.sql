@@ -4,7 +4,7 @@ from [_]member as me
     left outer join [_]optout as op on op.c_member = me.c_uid
         and op.c_category = {category,int}
         and op.c_deleted <> 1
-where (c_status & 8 <> 0)
+where (ms.c_status & {active,int} = {active,int})
     and ms.c_begin_date <= current_date
     and ms.c_expiration_date >= current_date
     and ms.c_deleted <> 1

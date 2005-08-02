@@ -8,8 +8,7 @@ from [_]expense_category as ec
         and ex.c_deleted <> 1
 where ({begin,date} is null or ex.c_expense_date >= {begin,date})
     and ({end,date} is null or ex.c_expense_date <= {end,date})
-    and ({reimbursable,int} is null or ex.c_flags is null
-        or (ex.c_flags & {reimbursable_flag,int} = {reimbursable,int}))
+    and ({reimbursable,int} is null or ex.c_reimbursable)
     and ({status,int} is null or ex.c_status is null
         or (ex.c_status = {status,int}))
     and ec.c_deleted <> 1

@@ -12,7 +12,7 @@ from [_]location as lo
     inner join [_]activity as ac on ac.c_uid = aa.c_activity
 where
     ir.c_member = {member,int}
-    and (ad.c_status & 8 <> 0)
+    and (ad.c_status & {active,int} = {active,int})
     and lo.c_deleted <> 1
     and ad.c_deleted <> 1
     and aa.c_deleted <> 1
