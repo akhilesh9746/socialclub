@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: chown.php,v 1.1 2005/03/27 19:53:24 bps7j Exp $
+ * $Id: chown.php,v 1.2 2005/08/02 03:05:06 bps7j Exp $
  */
 
 # Create templates
@@ -33,11 +33,11 @@ if ($newOwner) {
 }
 
 # Get a list of all the members in the database, the non-OO way
-$result =& $obj['conn']->query("select c_uid, c_first_name, c_last_name "
+$result = $obj['conn']->query("select c_uid, c_first_name, c_last_name "
     . "from [_]member order by c_last_name");
 
 # Plug the members into the template, selecting the correct one
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "OWNER", array(
         "C_UID" => $row['c_uid'],
         "C_FIRST_NAME" => $row['c_first_name'],

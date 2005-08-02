@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:31 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/08/02 03:05:26 bps7j Exp $
  */
 
 $res['title'] = "List All Transactions";
@@ -26,12 +26,12 @@ $template = file_get_contents("templates/transaction/list_all.php");
 # Create the filter for category and type
 
 $formTemplate = file_get_contents("forms/transaction/list_all.xml");
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]expense_category");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "cat", $row);
 }
 
@@ -41,7 +41,7 @@ $form->snatch();
 $template = Template::replace($template, array("FORM" => $form->toString()));
 
 if (!$form->getValue("category")) {
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/transaction/summarize.sql");
     $cmd->addParameter("us", $cfg['root_uid']);
     if ($form->getValue("begin")) {
@@ -53,7 +53,7 @@ if (!$form->getValue("category")) {
     if ($form->getValue("name")) {
         $cmd->addParameter("name", $form->getValue("name"));
     }
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     if ($result->numRows()) {
         $template = Template::unhide($template, "GENERIC");
         $template = Template::delete($template, "BY_TYPE");
@@ -61,7 +61,7 @@ if (!$form->getValue("category")) {
 }
 else {
     # Exec the query.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/transaction/select-by-category.sql");
     $cmd->addParameter("category", $form->getValue('category'));
     if ($form->getValue("begin")) {
@@ -73,7 +73,7 @@ else {
     if ($form->getValue("name")) {
         $cmd->addParameter("name", $form->getValue("name"));
     }
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     if ($result->numRows()) {
         $template = Template::unhide($template, "BY_TYPE");
         $template = Template::delete($template, "GENERIC");
@@ -82,7 +82,7 @@ else {
 
 
 if ($result->numRows()) {
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         $template = Template::block($template, "row", $row);
     }
 }

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:31 bps7j Exp $
+ * $Id: create.php,v 1.2 2005/08/02 03:05:03 bps7j Exp $
  */
 
 # Create templates
@@ -25,12 +25,12 @@ $template = file_get_contents("templates/activity/create.php");
 
 # Create and validate the form.
 $formTemplate = file_get_contents("forms/activity/create.xml");
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]activity_category");
 $cmd->addParameter("orderby", "c_uid");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "option", $row);
 }
 

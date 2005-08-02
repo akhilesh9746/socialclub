@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: check-orphaned-rows.php,v 1.2 2005/06/05 16:23:56 bps7j Exp $
+ * $Id: check-orphaned-rows.php,v 1.3 2005/08/02 03:05:04 bps7j Exp $
  *
  * This page checks for objects that don't have broken references, but may be
  * "stranded" because nothing points to them.  For example, an Interest that no
@@ -78,7 +78,7 @@ $queries["[_]phone_number_type"] =
 $numBadTables = 0;
 $numBadRows = 0;
 foreach ($queries as $table => $query) {
-    $result =& $obj['conn']->query($query);
+    $result = $obj['conn']->query($query);
 
     if ($result->numRows() > 0) {
         $numBadTables++;

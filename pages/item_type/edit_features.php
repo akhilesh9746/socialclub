@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: edit_features.php,v 1.1 2005/03/27 19:53:26 bps7j Exp $
+ * $Id: edit_features.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
  */
 
 include_once("item_type_feature.php");
@@ -53,7 +53,7 @@ if (postval("delete")) {
     $attr->select(postval("delete"));
     $attr->delete(true);
     # Delete the features from all the items of this type, too
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item_feature/delete-by-item-type.sql");
     $cmd->addParameter("item_type", $cfg['object']);
     $cmd->addParameter("attr_name", $attr->getName());

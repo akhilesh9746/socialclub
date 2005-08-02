@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:11 bps7j Exp $
+ * $Id: create.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
  */
 
 # Create templates
@@ -26,14 +26,14 @@ $template = file_get_contents("templates/item/create.php");
 # Create the form and populate the condition, status, and type menu
 $formTemplate = file_get_contents("forms/item/create.xml");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item_type/select-by-category.sql");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 $thisCat = "";
 $groupTemplate = Template::extract($formTemplate, "GROUP");
 $formTemplate = Template::delete($formTemplate, "GROUP");
 $thisGroup = "";
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     if ($thisCat != $row['cat_title']) {
         $thisCat = $row['cat_title'];
         $formTemplate = Template::replace($formTemplate, array(
@@ -53,12 +53,12 @@ foreach (array("checked_out", "checked_in", "missing") as $status) {
         "C_UID" => $cfg['status_id'][$status]));
 }
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]condition");
 $cmd->addParameter("orderby", "c_uid");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "OPTION",
         array_change_key_case($row, 1));
 }

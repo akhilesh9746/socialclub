@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: configuration.php,v 1.1 2005/06/11 13:12:23 bps7j Exp $
+ * $Id: configuration.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
  */
 
 # Check that the user has correct permissions
@@ -33,8 +33,8 @@ $formT = file_get_contents("forms/main/configuration.xml");
 # ------------------------------------------------------------------------------
 # Get the configuration variables from the database.
 # ------------------------------------------------------------------------------
-$result =& $obj['conn']->query("select * from [_]configuration");
-while ($row =& $result->fetchRow()) {
+$result = $obj['conn']->query("select * from [_]configuration");
+while ($row = $result->fetchRow()) {
     if (isset($_GET['edit']) && $_GET['edit'] == $row['c_name']) {
         # Build an edit form for the variable, inline.
         $formT = Template::replace($formT, array("type" => $row['c_type']));

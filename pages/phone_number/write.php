@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:19 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/08/02 03:05:25 bps7j Exp $
  */
 
 $template = file_get_contents("templates/phone_number/write.php");
@@ -28,11 +28,11 @@ $owner =& new member();
 $owner->select($object->getOwner());
 
 # Add all phone number types to the form
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]phone_number_type");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "TYPE",
         array_change_key_case($row, 1));
 }

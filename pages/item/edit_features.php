@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: edit_features.php,v 1.1 2005/03/27 19:53:11 bps7j Exp $
+ * $Id: edit_features.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
  */
 
 # Create templates
@@ -29,7 +29,7 @@ $option = Template::extract($attr, "OPTION");
 $attr = Template::unhide($attr, "OPTION");
 
 # Get the next and last items in the list
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/next-by-type.sql");
 $cmd->addParameter("type", $object->getType());
 $cmd->addParameter("item", $cfg['object']);
@@ -39,7 +39,7 @@ if ($next) {
     $template = Template::replace($template,
         array ("NEXT_ID" => $next));
 }
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/last-by-type.sql");
 $cmd->addParameter("type", $object->getType());
 $cmd->addParameter("item", $cfg['object']);
@@ -53,13 +53,13 @@ if ($last) {
 # If the form has been submitted, update and create as necessary
 if (postval('edit_features')) {
     # Select the features that this type of item is supposed to have
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item/select-features.sql");
     $cmd->addParameter("item", $cfg['object']);
-    $result =& $cmd->executeReader();
-    while ($row =& $result->fetchRow()) {
+    $result = $cmd->executeReader();
+    while ($row = $result->fetchRow()) {
         if ($row['c_uid']) {
-            $cmd =& $obj['conn']->createCommand();
+            $cmd = $obj['conn']->createCommand();
             $cmd->loadQuery("sql/item_feature/update.sql");
             $cmd->addParameter("uid", $row['c_uid']);
             $cmd->addParameter("value", $_POST[$row['c_name']]);
@@ -77,23 +77,23 @@ if (postval('edit_features')) {
 }
 
 # Re-select the features that this type of item is supposed to have
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/select-features.sql");
 $cmd->addParameter("item", $cfg['object']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $thisAttr = Template::replace($attr, array(
         "C_NAME" => $row['c_name'],
         "C_VALUE" => ($row['c_value'] ? $row['c_value'] : "")));
     # Get a list of possible values for this feature & item type, and
     # pre-populate the select menu
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item_feature/select-existing-values.sql");
     $cmd->addParameter("item_type", $object->getType());
     $cmd->addParameter("name", $row['c_name']);
     $cmd->addParameter("value", $row['c_value']);
-    $result2 =& $cmd->executeReader();
-    while ($row2 =& $result2->fetchRow()) {
+    $result2 = $cmd->executeReader();
+    while ($row2 = $result2->fetchRow()) {
         $thisAttr = Template::replace($thisAttr, array(
             "OPTIONS" => "<option>$row2[c_value]</option>"), true);
     }

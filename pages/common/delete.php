@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: delete.php,v 1.1 2005/03/27 19:53:24 bps7j Exp $
+ * $Id: delete.php,v 1.2 2005/08/02 03:05:06 bps7j Exp $
  */
 
 $template = file_get_contents("templates/common/delete.php");
@@ -40,7 +40,7 @@ if ($continue &&isset($delete) && isset($delete)) {
 else {
     $template = Template::unhide($template, "CONFIRM");
     $template = Template::unhide($template, "FORM");
-    $objs =& $object->getDeletionReport(TRUE);
+    $objs = $object->getDeletionReport(TRUE);
     $template = Template::replace($template, array(
         "OBJECTS" => implode("</li><li>", $objs)));
     $template = Template::unhide($template, "TODELETE");

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: execute.php,v 1.2 2005/06/05 18:04:27 bps7j Exp $
+ * $Id: execute.php,v 1.3 2005/08/02 03:05:26 bps7j Exp $
  */
 
 $template = file_get_contents("templates/report/execute.php");
@@ -27,7 +27,7 @@ $result =& $object->execute();
 # print out headers and rows.
 $header = true;
 $count = 0;
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     if ($header) {# This only happens once... print out a header row
         $header = false;
         $template = Template::replace($template, array(

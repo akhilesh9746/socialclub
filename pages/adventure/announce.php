@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: announce.php,v 1.2 2005/06/05 16:26:02 bps7j Exp $
+ * $Id: announce.php,v 1.3 2005/08/02 03:05:04 bps7j Exp $
  */
 
 include_once("MassEmail.php");
@@ -52,7 +52,7 @@ if (!$error && getval('continue')) {
 
     # Find the main category of the adventure, and use that as the email's
     # category for opt-out purposes.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/adventure/select-main-category.sql");
     $cmd->addParameter("adventure", $cfg['object']);
     $category = $cmd->executeScalar();

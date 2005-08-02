@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:28 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
  */
 
 # Create a template 
@@ -28,16 +28,16 @@ foreach (array("default", "pending", "paid") as $status) {
     $formTemplate = Template::block($formTemplate, "STATUS",
         array("id" => $cfg['status_id'][$status], "c_title" => $status));
 }
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/expense_report/select-leaders.sql");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "leader", $row);
 }
 $form =& new XmlForm(Template::finalize($formTemplate), true);
 $form->snatch();
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/expense_report/list_all.sql");
 if ($form->getValue("begin")) {
     $cmd->addParameter("begin", date("Y-m-d", strtotime($form->getValue("begin"))));
@@ -51,9 +51,9 @@ if ($form->getValue("status")) {
 if ($form->getValue("leader")) {
     $cmd->addParameter("leader", $form->getValue("leader"));
 }
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "report", $row);
 }
 

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:30 bps7j Exp $
+ * $Id: read.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
  */
 
 $template = file_get_contents("templates/member/read.php");
@@ -34,7 +34,7 @@ $showMost = $showAll
     || $obj['user']->isInGroup("officer");
 
 # The ultimate decision: whether to show anything at all
-if ($showMost || !$object->getFlag("private")) {
+if ($showMost || !$object->getHidden()) {
     $template = Template::unhide($template, "ALL");
 
     # Insert the member's information into the template
@@ -42,8 +42,8 @@ if ($showMost || !$object->getFlag("private")) {
         $object->getVarArray(), false);
 
     # Insert the member's address into the template
-    $addr =& $object->getPrimaryAddress();
-    if ($addr && ($showMost || !$addr->getFlag("private"))) {
+    $addr = $object->getPrimaryAddress();
+    if ($addr && ($showMost || !$addr->getHidden())) {
         $template = Template::block($template, "ADDRESS",
             $addr->getVarArray(), false);
         $template = Template::unhide($template, array("ADDRESS"));
@@ -55,7 +55,7 @@ if ($showMost || !$object->getFlag("private")) {
     # Insert the member's phone numbers into the template
     $showPhones = false;
     foreach ($object->getChildren("phone_number", "c_owner") as $num) {
-        if ($showMost || !$num->getFlag("private")) {
+        if ($showMost || !$num->getHidden()) {
             $template = Template::block($template, "PHONE",
                 $num->getVarArray());
             $showPhones = true;
@@ -71,15 +71,15 @@ if ($showMost || !$object->getFlag("private")) {
     }
 
     # Get a list of adventures the member participated in
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/adventure/select-by-member.sql");
     $cmd->addParameter("member", $cfg['object']);
     $cmd->addParameter("status", $cfg['status_id']['default']);
     $cmd->addParameter("end", date('Y-m-d', time()));
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     $count = 0;
     if ($result->numRows()) {
-        while ($row =& $result->fetchRow()) {
+        while ($row = $result->fetchRow()) {
             $template = Template::block($template, "ROW",
                 array_change_key_case($row, 1)
                 + array("CLASS" => (($count++ % 2) ? "odd" : "even")));
@@ -89,12 +89,12 @@ if ($showMost || !$object->getFlag("private")) {
 
     # Insert the member's chat identities into the template
     $showChats = false;
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/chat/select.sql");
     $cmd->addParameter("member", $cfg['object']);
-    $result =& $cmd->executeReader();
-    while ($row =& $result->fetchRow()) {
-        if ($showMost || !$row["private"]) {
+    $result = $cmd->executeReader();
+    while ($row = $result->fetchRow()) {
+        if ($showMost || !$row["c_private"]) {
             $template = Template::block($template, "CHAT", $row);
             $showChats = true;
         }
@@ -116,7 +116,7 @@ if ($showMost || !$object->getFlag("private")) {
         $template = Template::unhide($template, array(
             "PASSWORD"));
     }
-    if ($showAll || !$object->getFlag("email_private")) {
+    if ($showAll || !$object->getEmailHidden()) {
         $template = Template::unhide($template, array(
             "EMAIL"));
     }

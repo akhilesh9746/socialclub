@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:36 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
  */
 
 $template = file_get_contents("templates/location/list_all.php");
@@ -25,15 +25,15 @@ $template = file_get_contents("templates/location/list_all.php");
 $form =& new XmlForm("forms/location/list_all.xml");
 $form->snatch();
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/location/list_all.sql");
 $critTitle = $form->getValue("title");
 if ($critTitle != "" && $critTitle != "[title]") {
     $cmd->addParameter("title", "%$critTitle%");
 }
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "item", $row);
 }
 

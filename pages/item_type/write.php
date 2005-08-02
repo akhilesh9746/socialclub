@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:26 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
  */
 
 # Create templates
@@ -26,12 +26,12 @@ $template = $object->insertIntoTemplate($template);
 
 # Create the form.
 $formT = file_get_contents("forms/item_type/write.xml");
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]item_category");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formT = Template::block($formT, "CAT",
         array_change_key_case($row, 1));
 }

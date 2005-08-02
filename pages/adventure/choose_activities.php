@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: choose_activities.php,v 1.1 2005/03/27 19:53:34 bps7j Exp $
+ * $Id: choose_activities.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
  */
 
 include_once("adventure_activity.php");
@@ -26,12 +26,12 @@ $template = file_get_contents("templates/adventure/choose_activities.php");
 
 # Get a list of all activities
 $activities = array();
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]activity");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $activities[$row['c_uid']] =& array_change_key_case($row, 1);
 }
 

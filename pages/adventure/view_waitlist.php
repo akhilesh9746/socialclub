@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_waitlist.php,v 1.1 2005/03/27 19:53:36 bps7j Exp $
+ * $Id: view_waitlist.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
  *
  * This page gives a report of your own status as an attendee and where you are
  * on the waitlist, if you are on the waitlist.
@@ -41,12 +41,13 @@ if (count($attendees)) {
 if ($found) {
     if ($attendee->getStatus() == $cfg['status_id']['waitlisted']) {
         # Get the waitlist stats
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/adventure/waitlist-statistics-select.sql");
         $cmd->addParameter("member", $cfg['user']);
+        $cmd->addParameter("waitlisted", $cfg['status_id']['waitlisted']);
         $cmd->addParameter("joined", $attendee->getJoinedDate());
         $cmd->addParameter("adventure", $cfg['object']);
-        $result =& $cmd->executeReader();
+        $result = $cmd->executeReader();
         $row = $result->fetchRow();
         $template = $object->insertIntoTemplate($template);
         $template = Template::replace($template,

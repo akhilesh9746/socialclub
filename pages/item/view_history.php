@@ -17,22 +17,21 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_history.php,v 1.2 2005/07/16 01:08:30 bps7j Exp $
+ * $Id: view_history.php,v 1.3 2005/08/02 03:05:23 bps7j Exp $
  *
  * Purpose: view all checkouts for an item.
  */
 
 $template = file_get_contents("templates/item/view_history.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/view_history.sql");
 $cmd->addParameter("item", $cfg['object']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
 if ($result->numRows()) {
-    while ($row =& $result->fetchRow()) {
-        $template = Template::block($template, "checkout", $row
-            + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
+    while ($row = $result->fetchRow()) {
+        $template = Template::block($template, "checkout", $row);
     }
     $template = Template::unhide($template, "some");
 }

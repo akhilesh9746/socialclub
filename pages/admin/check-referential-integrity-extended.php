@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: check-referential-integrity-extended.php,v 1.1 2005/03/27 19:53:17 bps7j Exp $
+ * $Id: check-referential-integrity-extended.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
  *
  * This page checks referential integrity for "fake" foreign keys that are built
  * out of a combination of two columns (sometimes three) that specify a table,
@@ -39,8 +39,8 @@ $contents = "";
 
 # Query the database for a list of all tables to check.
 $tables = array();
-$result =& $obj['conn']->query("select * from [_]table");
-while ($row =& $result->fetchRow(DB_FETCHMODE_ORDERED)) {
+$result = $obj['conn']->query("select * from [_]table");
+while ($row = $result->fetchRow(DB_FETCHMODE_ORDERED)) {
     $tables[$row[0]] =& $row[0];
 }
 
@@ -69,7 +69,7 @@ $specialTablesColumns = array(
 # Check that each table actually refers correctly to another table, and while
 # we're at it, prepare for the next step.
 foreach ($specialTablesColumns as $key => $arr) {
-    $result =& $obj['conn']->query("select distinct $arr[name] from $key");
+    $result = $obj['conn']->query("select distinct $arr[name] from $key");
     while ($row = $result->fetchRow(DB_FETCHMODE_ORDERED)) {
         if (!isset($tables[$row[0]])) {
             $stepOneErrors .= "<li><tt>$key.$arr[name]</tt> contains an "

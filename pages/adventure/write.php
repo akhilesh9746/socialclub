@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.2 2005/06/05 16:27:02 bps7j Exp $
+ * $Id: write.php,v 1.3 2005/08/02 03:05:04 bps7j Exp $
  */
 
 include_once("location.php");
@@ -41,13 +41,13 @@ if ($object->getStatus() === $cfg['status_id']['deleted']
 $formTemplate = file_get_contents("forms/adventure/write.xml");
 
 # Get a list of all locations in the DB.
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]location");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 # Add the locations to the drop-down menus.
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block(
         $formTemplate, array("DEPART","DEST"), 
         array_change_key_case($row, 1));

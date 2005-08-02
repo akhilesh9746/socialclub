@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: update.php,v 1.1 2005/03/27 19:53:37 bps7j Exp $
+ * $Id: update.php,v 1.2 2005/08/02 03:05:26 bps7j Exp $
  */
 
 include_once("JoinClub.php");
@@ -32,7 +32,7 @@ $form =& new XMLForm("forms/profile/update.xml");
 $form->setValue("firstName", $obj['user']->getFirstName());
 $form->setValue("lastName", $obj['user']->getLastName());
 $form->setValue("gender", $obj['user']->getGender());
-$form->setValue("student", $obj['user']->getFlag("student"));
+$form->setValue("student", $obj['user']->getIsStudent());
 $form->setValue("emailAddress", $obj['user']->getEmail());
 
 # Now overwrite this data with whatever the user submitted
@@ -52,7 +52,7 @@ if ($form->isValid()) {
         $obj['user']->setFirstName($form->getValue("firstName"));
         $obj['user']->setLastName($form->getValue("lastName"));
         $obj['user']->setGender($form->getValue("gender"));
-        $obj['user']->setFlag("student", $form->getValue("student"));
+        $obj['user']->setIsStudent($form->getValue("student"));
         $obj['user']->setEmail($form->getValue("emailAddress"));
         $obj['user']->update();
         $wrapper = Template::unhide($wrapper, "SUCCESS");

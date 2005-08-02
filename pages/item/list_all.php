@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.3 2005/07/14 01:47:00 bps7j Exp $
+ * $Id: list_all.php,v 1.4 2005/08/02 03:05:23 bps7j Exp $
  */
 
 $res['title'] = "List All Items";
@@ -65,27 +65,27 @@ $otherSortCols = array("ID", "qty", "condition", "status");
 # #############################################################################
 # Create the filter for category, type, and status
 $formTemplate = file_get_contents("forms/item/list_all.xml");
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]item_category");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "CAT",
         array_change_key_case($row, 1));
 }
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item_type/select-by-category.sql");
 if (isset($_GET['category']) && $_GET['category']) {
     $cmd->addParameter("cat", intval($_GET['category']));
 }
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 $thisCat = "";
 $groupTemplate = Template::extract($formTemplate, "GROUP");
 $formTemplate = Template::delete($formTemplate, "GROUP");
 $thisGroup = "";
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     if ($thisCat != $row['cat_title']) {
         $thisCat = $row['cat_title'];
         $formTemplate = Template::replace($formTemplate, array(
@@ -117,7 +117,7 @@ if (!$crit["type"]) {
     }
 
     # Figure out how many results there are total.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item/count.sql");
     if ($crit['category']) {
         $cmd->addParameter("cat", $crit['category']);
@@ -131,7 +131,7 @@ if (!$crit["type"]) {
     }
 
     # Retrieve the results that we're going to display.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item/list_all.sql");
     $cmd->addParameter("offset", ($crit['thisPage'] - 1) * $crit['count']);
     $cmd->addParameter("limit", $crit['count']);
@@ -142,7 +142,7 @@ if (!$crit["type"]) {
     if ($crit['status']) {
         $cmd->addParameter("status", $crit['status']);
     }
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     if ($result->numRows()) {
         $template = Template::unhide($template, "GENERIC");
         $template = Template::delete($template, "BY_TYPE");
@@ -152,7 +152,7 @@ if (!$crit["type"]) {
 else {
 
     # Figure out how many results there are total.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item/count.sql");
     $cmd->addParameter("type", $crit['type']);
     if ($crit['status']) {
@@ -196,7 +196,7 @@ else {
     }
 
     # Exec the query.
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->setCommandText($queryTemplate);
     $cmd->addParameter("itemtype", $crit['type']);
     $cmd->addParameter("orderby", $crit['sort'] . "_table");
@@ -205,7 +205,7 @@ else {
     if ($crit['status']) {
         $cmd->addParameter("status", $crit['status']);
     }
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
 
     if ($result->numRows()) {
         $template = Template::unhide($template, "BY_TYPE");
@@ -218,8 +218,7 @@ else {
 # ########################################################################
 
 if ($result->numRows()) {
-    while ($row =& $result->fetchRow()) {
-        $row['c_status'] = bitmaskString($row['c_status'], "status_id");
+    while ($row = $result->fetchRow()) {
         $template = Template::block($template, "item", $row);
     }
 }
@@ -245,7 +244,7 @@ for ($i = 1; $i <= $crit['numPages']; ++$i) {
 }
 
 # Insert statuses into the status menu
-foreach (array("checked_out", "checked_in", "missing", "deleted") as $stat) {
+foreach (array("checked_out", "checked_in", "missing") as $stat) {
     $formTemplate = Template::block($formTemplate, "status",
         array("c_title" => $stat, "c_uid" => $cfg['status_id'][$stat]));
 }

@@ -17,19 +17,19 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:31 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/08/02 03:05:03 bps7j Exp $
  */
 
 # Create template
 $template = file_get_contents("templates/activity/list_all.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]activity");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "ITEM",
         array_change_key_case($row, 1));
 }

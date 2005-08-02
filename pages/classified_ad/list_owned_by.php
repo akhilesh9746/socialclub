@@ -17,20 +17,20 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_owned_by.php,v 1.1 2005/03/27 19:53:27 bps7j Exp $
+ * $Id: list_owned_by.php,v 1.2 2005/08/02 03:05:05 bps7j Exp $
  */
 
 # Create template
 $template = file_get_contents("templates/classified_ad/list_owned_by.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/classified_ad/list_owned_by.sql");
 $cmd->addParameter("member", $cfg['user']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
 if ($result->numRows()) {
     $template = Template::unhide($template, "SOME");
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         $template = Template::block($template, "ROW",
             array_change_key_case($row, 1));
     }

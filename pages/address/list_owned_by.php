@@ -17,18 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_owned_by.php,v 1.1 2005/03/27 19:53:31 bps7j Exp $
+ * $Id: list_owned_by.php,v 1.2 2005/08/02 03:05:03 bps7j Exp $
  */
 
 # Create a template
 $template = file_get_contents("templates/address/list_owned_by.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/address/select-by-owner.sql");
 $cmd->addParameter("owner", $cfg['user']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "ITEM",
         array_change_key_case($row, 1));
 }

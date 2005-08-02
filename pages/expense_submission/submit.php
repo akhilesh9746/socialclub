@@ -17,13 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: submit.php,v 1.1 2005/03/27 19:53:22 bps7j Exp $
+ * $Id: submit.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
  */
 
 $template = file_get_contents("templates/expense_submission/submit.php");
 
 if (isset($_POST['submitted'])) {
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/expense_submission/submit.sql");
     $cmd->addParameter("submission", $cfg['object']);
     $cmd->addParameter("submitted", $cfg['status_id']['submitted']);

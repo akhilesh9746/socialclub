@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:36 bps7j Exp $
+ * $Id: create.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
  */
 
 include_once("location.php");
@@ -31,11 +31,11 @@ $formTemplate = file_get_contents("forms/location/create.xml");
 
 # Create a list of activities that this location could be associated with.
 # These go into the form, not the page template
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]activity");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
 # Print the activites out in columnar format -- NOT all in one column.  How
 # many columns?
@@ -43,7 +43,7 @@ $cols = 2;
 $rowTemplate = Template::extract($formTemplate, "ACTIVITY_ROW");
 for ($i = 0; $i < $result->numRows();) {
     $thisRow = $rowTemplate;
-    for ($j = 0; $j < $cols && $row =& $result->fetchRow(); ++$j, ++$i) {
+    for ($j = 0; $j < $cols && $row = $result->fetchRow(); ++$j, ++$i) {
         $thisRow = Template::block($thisRow, "ACTIVITY",
             array_change_key_case($row, 1)
             + array("WIDTH" => (int) (100 / $cols)));
@@ -78,13 +78,13 @@ if ($form->isValid()) {
 }
 
 # Create a list of locations and print it out for the user's handy reference.
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]location");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "LOCATIONS",
         array_change_key_case($row, 1));
 }

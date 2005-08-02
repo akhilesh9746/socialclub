@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: accept.php,v 1.1 2005/03/27 19:53:22 bps7j Exp $
+ * $Id: accept.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
  */
 
 if ($object->getStatus() == $cfg['status_id']['submitted']
@@ -30,7 +30,7 @@ if ($object->getStatus() == $cfg['status_id']['submitted']
     # Add transactions to record that the expenses were reimbursed.
     if (isset($_POST['expense']) && is_array($_POST['expense'])) {
         foreach ($_POST['expense'] as $exp) {
-            $cmd =& $obj['conn']->createCommand();
+            $cmd = $obj['conn']->createCommand();
             $cmd->loadQuery("sql/expense_submission/accept.sql");
             $cmd->addParameter("member", $cfg['user']);
             $cmd->addParameter("expense", $exp);
@@ -50,17 +50,17 @@ if ($object->getStatus() != $cfg['status_id']['submitted']
 # If we didn't get redirected, we need to display some info about the expenses
 $template = file_get_contents("templates/expense_submission/accept.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/expense_submission/select-expenses.sql");
 $cmd->addParameter("submission", $cfg['object']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 if ($result->numRows()) {
     $template = Template::unhide($template, "some");
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         $template = Template::block($template, "expense", $row);
     }
     # Add total
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/expense_submission/select-total.sql");
     $cmd->addParameter("submission", $cfg['object']);
     $total = $cmd->executeScalar();

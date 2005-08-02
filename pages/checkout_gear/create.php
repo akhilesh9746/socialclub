@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/06/05 17:08:23 bps7j Exp $
+ * $Id: create.php,v 1.3 2005/08/02 03:05:05 bps7j Exp $
  */
 
 # Create templates
@@ -29,13 +29,13 @@ if (isset($_POST['multiple'])) {
     # Add the commonly checked-out gear form, and fill it with the form
     # submission
     $multiTemplate = file_get_contents("forms/checkout_gear/create-multiple.xml");
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/checkout/select-common-gear.sql");
     $cmd->addParameter("activity", $_POST['activity']);
     $cmd->addParameter("checked_out", $cfg['status_id']['checked_out']);
     $cmd->addParameter("missing", $cfg['status_id']['missing']);
-    $result =& $cmd->executeReader();
-    while ($row =& $result->fetchRow()) {
+    $result = $cmd->executeReader();
+    while ($row = $result->fetchRow()) {
         $multiTemplate = Template::block($multiTemplate, array("common", "config"), $row);
     }
     $multiForm =& new XmlForm(Template::finalize($multiTemplate), true);
@@ -69,14 +69,14 @@ if (isset($_POST['multiple'])) {
 }
 else {
     $avail = array();
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item_type/select-by-category.sql");
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     $thisCat = "";
     $groupTemplate = Template::extract($formTemplate, "group");
     $formTemplate = Template::delete($formTemplate, "group");
     $thisGroup = "";
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         # Save the qty available for later
         $avail[$row['c_uid']] = $row['available'];
         if ($thisCat != $row['cat_title']) {

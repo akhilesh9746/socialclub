@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:37 bps7j Exp $
+ * $Id: read.php,v 1.2 2005/08/02 03:05:26 bps7j Exp $
  */
 
 $template = file_get_contents("templates/question/read.php");
@@ -29,12 +29,12 @@ $template = Template::replace($template, array(
     "ADVENTURE" => $adventure->c_title));
 
 # Insert a list of answers for the question
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/question/select-answers.sql");
 $cmd->addParameter("question", $cfg['object']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "ITEM",
         array_change_key_case($row, 1));
 }

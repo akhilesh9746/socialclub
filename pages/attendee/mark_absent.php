@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: mark_absent.php,v 1.1 2005/03/27 19:53:14 bps7j Exp $
+ * $Id: mark_absent.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
  *
  * Allows a leader to mark an attendee as absent.
  */
@@ -36,7 +36,7 @@ $adventure =& new adventure();
 $adventure->select($object->getAdventure());
 
 # Check to see if this member is already marked as absent from this adventure.
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/absence/count-by-attendee.sql");
 $cmd->addParameter("attendee", $cfg['object']);
 $already = $cmd->executeScalar();
@@ -65,7 +65,7 @@ else {
             $emailTemplate = file_get_contents("templates/emails/absence.txt");
 
             # Get a count of this member's absences
-            $cmd =& $obj['conn']->createCommand();
+            $cmd = $obj['conn']->createCommand();
             $cmd->loadQuery("sql/absence/count-by-member.sql");
             $cmd->addParameter("member", $object->getMember());
             $num = $cmd->executeScalar();

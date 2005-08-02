@@ -17,17 +17,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_notes.php,v 1.1 2005/03/27 19:53:28 bps7j Exp $
+ * $Id: view_notes.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/expense_report/view_notes.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/expense_report/select-notes.sql");
 $cmd->addParameter("report", $cfg['object']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "note", $row);
 }
 

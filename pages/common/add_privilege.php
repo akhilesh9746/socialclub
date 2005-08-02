@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: add_privilege.php,v 1.2 2005/06/05 17:10:17 bps7j Exp $
+ * $Id: add_privilege.php,v 1.3 2005/08/02 03:05:06 bps7j Exp $
  */
 
 include_once("privilege.php");
@@ -32,8 +32,8 @@ foreach ($cfg['action'] as $key => $val) {
         "C_UID" => $key,
         "C_SUMMARY" => $val['c_summary']));
 }
-$result =& $obj['conn']->query("select * from [_]table");
-while ($row =& $result->fetchRow()) {
+$result = $obj['conn']->query("select * from [_]table");
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "TABLE",
         array_change_key_case($row, 1));
 }

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: delete-object.php,v 1.1 2005/03/27 19:53:15 bps7j Exp $
+ * $Id: delete-object.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
  *
  * This page deletes objects from the database.  It expects parameters in arrays
  * of the form [_]table_name[].  It will delete every c_uid from [_]table_name.
@@ -38,8 +38,8 @@ $contents = "";
 
 # Query the database for a list of all tables that we can delete things from
 $tables = array();
-$result =& $obj['conn']->query("select * from [_]table");
-while ($row =& $result->fetchRow(DB_FETCHMODE_ORDERED)) {
+$result = $obj['conn']->query("select * from [_]table");
+while ($row = $result->fetchRow(DB_FETCHMODE_ORDERED)) {
     $tables[$row[0]] = $row[0];
 }
 

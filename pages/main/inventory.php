@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: inventory.php,v 1.2 2005/06/05 18:02:11 bps7j Exp $
+ * $Id: inventory.php,v 1.3 2005/08/02 03:05:24 bps7j Exp $
  */
 
 include_once("includes/authorize.php");
@@ -59,12 +59,12 @@ if ($obj['user']->isInGroup("quartermaster")
 }
 
 # Display an inventory report.
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/summarize.sql");
 $cmd->addParameter("checked_out", $cfg['status_id']['checked_out']);
 $cmd->addParameter("missing", $cfg['status_id']['missing']);
-$reader =& $cmd->executeReader();
-while ($row =& $reader->fetchRow()) {
+$reader = $cmd->executeReader();
+while ($row = $reader->fetchRow()) {
     $template = Template::block($template, "row", $row);
 }
 

@@ -17,18 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2005/06/05 18:05:00 bps7j Exp $
+ * $Id: list_all.php,v 1.3 2005/08/02 03:05:26 bps7j Exp $
  */
 
 $template = file_get_contents("templates/report/list_all.php");
 
 # Plug all reports into the template
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]report");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     # Only list reports that the member is allowed to execute
     $report =& new report();
     $report->initFromRow($row);

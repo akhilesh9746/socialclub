@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: accept.php,v 1.1 2005/03/27 19:53:28 bps7j Exp $
+ * $Id: accept.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
  */
 
 # The lifecycle of an expense report is in its statuses.  It goes from default
@@ -28,7 +28,7 @@
 
 if (isset($_POST['submitted'])) {
     if (isset($_POST['expense']) && is_array($_POST['expense'])) {
-        $cmd =& $obj['conn']->createCommand();
+        $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/expense/mark-reimbursable.sql");
         foreach ($_POST['expense'] as $id) {
             $cmd->addParameter("expense", $id);
@@ -37,7 +37,7 @@ if (isset($_POST['submitted'])) {
     }
 
     # Add transactions to record that the expenses were paid
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/expense_report/accept-to-paid.sql");
     $cmd->addParameter("report", $cfg['object']);
     $cmd->addParameter("member", $cfg['user']);
@@ -56,11 +56,11 @@ if ($object->getStatus() != $cfg['status_id']['pending']
 }
 
 $template = file_get_contents("templates/expense_report/accept.php");
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/expense_report/select-expenses.sql");
 $cmd->addParameter("report", $cfg['object']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "expense", $row);
 }
 

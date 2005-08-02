@@ -17,19 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_notes.php,v 1.2 2005/07/16 01:08:30 bps7j Exp $
+ * $Id: view_notes.php,v 1.3 2005/08/02 03:05:23 bps7j Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/item/view_notes.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item_note/select-all.sql");
 $cmd->addParameter("item", $cfg['object']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
-    $template = Template::block($template, "note", $row
-        + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
+    $template = Template::block($template, "note", $row);
 }
 
 # Auto-link to items when they are in the format "item XYZ"

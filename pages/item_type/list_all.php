@@ -17,17 +17,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:26 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
  */
 
 # Create template
 $template = file_get_contents("templates/item_type/list_all.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item_type/select-by-category.sql");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "ITEM",
         array_change_key_case($row, 1));
 }

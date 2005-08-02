@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:10 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
  */
 
 include_once("item_note.php");
@@ -27,7 +27,7 @@ $template = file_get_contents("templates/item/write.php");
 $template = $object->insertIntoTemplate($template);
 
 # Get the next and last items in the list
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/next-by-type.sql");
 $cmd->addParameter("type", $object->getType());
 $cmd->addParameter("item", $cfg['object']);
@@ -37,7 +37,7 @@ if ($next) {
     $template = Template::replace($template,
         array ("NEXT_ID" => $next));
 }
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/last-by-type.sql");
 $cmd->addParameter("type", $object->getType());
 $cmd->addParameter("item", $cfg['object']);
@@ -51,13 +51,13 @@ if ($last) {
 # Create the form and populate the condition menu
 $formTemplate = file_get_contents("forms/item/write.xml");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]condition");
 $cmd->addParameter("orderby", "c_rank");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "OPTION",
         array_change_key_case($row, 1));
 }

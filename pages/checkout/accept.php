@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: accept.php,v 1.1 2005/03/27 19:53:21 bps7j Exp $
+ * $Id: accept.php,v 1.2 2005/08/02 03:05:05 bps7j Exp $
  */
 
 # Accepting a checkout means that you're satisfied with it.  It sets the status
@@ -26,12 +26,12 @@
 if ($object->getStatus() == $cfg['status_id']['default']) {
     $object->setStatus($cfg['status_id']['checked_out']);
     $object->update();
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/checkout/accept.sql");
     $cmd->addParameter("checkout", $cfg['object']);
     $cmd->addParameter("checked_out", $cfg['status_id']['checked_out']);
     $cmd->executeNonQuery();
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/checkout/add-item-notes.sql");
     $cmd->addParameter("checkout", $cfg['object']);
     $cmd->executeNonQuery();

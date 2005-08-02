@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: subscribe.php,v 1.1 2005/03/27 19:53:26 bps7j Exp $
+ * $Id: subscribe.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
  */
 
 $template = file_get_contents("templates/email_list/subscribe.php");
@@ -26,7 +26,7 @@ $error = false;
 
 # Ensure that the member is not already subscribed to this email list with the
 # same email address as s/he currently has
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/email_list/check-subscribed.sql");
 $cmd->addParameter("owner", $cfg['user']);
 $cmd->addParameter("list", $cfg['object']);

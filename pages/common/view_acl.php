@@ -17,21 +17,21 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_acl.php,v 1.2 2005/06/05 17:12:44 bps7j Exp $
+ * $Id: view_acl.php,v 1.3 2005/08/02 03:05:06 bps7j Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/common/view_acl.php");
 
 # Query for a list of the object's privileges
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/privilege/select-by-object.sql");
 $cmd->addParameter("object", $cfg['object']);
 $cmd->addParameter("table", "$cfg[table_prefix]$cfg[page]");
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 if ($result->numRows()) {
     $template = Template::unhide($template, "SOME");
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         if ($row['c_who_type'] == 'group'
             || $row['c_who_type'] == 'group_owner')
         {

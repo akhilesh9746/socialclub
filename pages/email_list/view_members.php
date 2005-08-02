@@ -17,15 +17,15 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_members.php,v 1.1 2005/03/27 19:53:26 bps7j Exp $
+ * $Id: view_members.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
  */
 
 $template = file_get_contents("templates/email_list/view_members.php");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/email_list/select-subscribers.sql");
 $cmd->addParameter("email_list", $cfg['object']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
 if (!$result->numRows()) {
     $template = Template::unhide($template, "NONE");
@@ -34,7 +34,7 @@ else {
     $template = Template::unhide($template, "SOME");
 }
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "ROW",
         array_change_key_case($row, 1));
 }

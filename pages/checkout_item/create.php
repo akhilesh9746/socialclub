@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:19 bps7j Exp $
+ * $Id: create.php,v 1.2 2005/08/02 03:05:05 bps7j Exp $
  */
 
 # Create templates
@@ -30,7 +30,7 @@ $form->validate();
 $found = false;
 
 if ($form->isValid()) {
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item/check-can-checkout.sql");
     $cmd->addParameter("item", $form->getValue("item"));
     $cmd->addParameter("checkout", $form->getValue("checkout"));

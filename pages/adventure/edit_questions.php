@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: edit_questions.php,v 1.1 2005/03/27 19:53:35 bps7j Exp $
+ * $Id: edit_questions.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
  */
 
 include_once("question.php");
@@ -48,20 +48,20 @@ if ($form->isValid()) {
 }
 
 # Add the most popular questions into the page for instant copying
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/question/select-most-popular.sql");
 $cmd->addParameter("adventure", $cfg['object']);
 $cmd->addParameter("limit", 15);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 if (!$result->numRows()) {
     # There were no questions for this type of adventure.  Get the most
     # popular overall
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/question/select-most-popular-overall.sql");
     $cmd->addParameter("limit", 15);
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
 }
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "POPULAR", array(
         "A" => $cfg['object'],
         "Q" => $row['c_uid'],
@@ -69,11 +69,11 @@ while ($row =& $result->fetchRow()) {
 }
 
 # Add existing questions into the page for reference
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/question/select-by-adventure.sql");
 $cmd->addParameter("adventure", $cfg['object']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "EXISTING", array(
         "Q" => $row['c_uid'],
         "TYPE" => $row['c_type'],

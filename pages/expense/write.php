@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.2 2005/06/05 17:13:24 bps7j Exp $
+ * $Id: write.php,v 1.3 2005/08/02 03:05:22 bps7j Exp $
  */
 
 # Create templates
@@ -26,20 +26,20 @@ $template = file_get_contents("templates/expense/write.php");
 # Create the form and populate the category and adventure menus
 $formTemplate = file_get_contents("forms/expense/write.xml");
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/adventure/list_all-joined.sql");
 $cmd->addParameter("member", $cfg['user']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "adventure", $row);
 }
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]expense_category");
 $cmd->addParameter("orderby", "c_title");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "category", $row);
 }
 

@@ -17,18 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:09 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/08/02 03:05:05 bps7j Exp $
  */
 
 $template = file_get_contents("templates/chat/write.php");
 $formTemplate = file_get_contents("forms/chat/write.xml");
 
 # Add all chat types to the form
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/generic-select.sql");
 $cmd->addParameter("table", "[_]chat_type");
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "TYPE",
         array_change_key_case($row, 1));
 }

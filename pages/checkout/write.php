@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.2 2005/06/05 17:08:23 bps7j Exp $
+ * $Id: write.php,v 1.3 2005/08/02 03:05:05 bps7j Exp $
  */
 
 # Create templates
@@ -27,13 +27,13 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     $template = Template::unhide($template, "good");
 
     # Display information about the current checkout
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/checkout/select-items.sql");
     $cmd->addParameter("checkout", $cfg['object']);
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     if ($result->numRows()) {
         $template = Template::unhide($template, "someitems");
-        while ($row =& $result->fetchRow()) {
+        while ($row = $result->fetchRow()) {
             $template = Template::block($template, "item", $row);
         }
     }
@@ -41,13 +41,13 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
         $template = Template::unhide($template, "noitems");
     }
 
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/checkout/select-gear.sql");
     $cmd->addParameter("checkout", $cfg['object']);
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     if ($result->numRows()) {
         $template = Template::unhide($template, "somegear");
-        while ($row =& $result->fetchRow()) {
+        while ($row = $result->fetchRow()) {
             $template = Template::block($template, "gear", $row);
         }
     }
@@ -58,12 +58,12 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     # Add a menu of activity categories for selecting commonly checked
     # out gear
     $activityMenu = file_get_contents("forms/checkout/select-activity.xml");
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/generic-select.sql");
     $cmd->addParameter("table", "[_]activity_category");
     $cmd->addParameter("orderby", "c_title");
-    $result =& $cmd->executeReader();
-    while ($row =& $result->fetchRow()) {
+    $result = $cmd->executeReader();
+    while ($row = $result->fetchRow()) {
         $activityMenu = Template::block($activityMenu, "option", $row);
     }
     $activityMenu = Template::replace($activityMenu, array(
@@ -74,14 +74,14 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
 
     # Add the commonly checked-out gear to the page
     $multiTemplate = file_get_contents("forms/checkout_gear/create-multiple.xml");
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/checkout/select-common-gear.sql");
     $cmd->addParameter("activity", $activityForm->getValue("activity"));
     $cmd->addParameter("checked_out", $cfg['status_id']['checked_out']);
     $cmd->addParameter("missing", $cfg['status_id']['missing']);
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     $someFreq = false;
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         if ($row['available'] > 0) {
             $someFreq = true;
             $multiTemplate = Template::block($multiTemplate,
@@ -100,15 +100,15 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
 
     # Add the one-gear-at-a-time form to the page
     $formTemplate = file_get_contents("forms/checkout_gear/create.xml");
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item_type/select-by-category.sql");
-    $result =& $cmd->executeReader();
+    $result = $cmd->executeReader();
     $thisCat = "";
     # Extract two templates from this template, and use them instead.
     $groupTemplate = Template::extract($formTemplate, "group");
     $gearTemplate = Template::delete($formTemplate, "group");
     $thisGroup = "";
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
         if ($thisCat != $row['cat_title']) {
             $thisCat = $row['cat_title'];
             $gearTemplate = Template::replace($gearTemplate, array(

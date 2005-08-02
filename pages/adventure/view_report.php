@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_report.php,v 1.1 2005/03/27 19:53:35 bps7j Exp $
+ * $Id: view_report.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
  *
  */
 
@@ -29,14 +29,14 @@ $template = file_get_contents("templates/adventure/view_report.php");
 $form =& new XmlForm("forms/adventure/view_report.xml");
 $form->snatch();
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/adventure/view_report.sql");
 $cmd->addParameter("adventure", $cfg['object']);
 $cmd->addParameter("waitlisted", $cfg['status_id']['waitlisted']);
 if ($form->getValue("status")) {
     $cmd->addParameter("status", intval($form->getValue("status")));
 }
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
 if ($result->numRows()) {
 
@@ -45,16 +45,16 @@ if ($result->numRows()) {
     $template = Template::unhide($template, "SOME");
 
     # Prepare to get the member's phone numbers
-    $cmd2 =& $obj['conn']->createCommand();
+    $cmd2 = $obj['conn']->createCommand();
     $cmd2->loadQuery("sql/phone_number/select-by-owner.sql");
 
-    while ($row =& $result->fetchRow()) {
+    while ($row = $result->fetchRow()) {
 
         # Get an array of the member's phone numbers
         $cmd2->addParameter("owner", $row['c_member']);
-        $result2 =& $cmd2->executeReader();
+        $result2 = $cmd2->executeReader();
         $phones = array();
-        while ($row2 =& $result2->fetchRow()) {
+        while ($row2 = $result2->fetchRow()) {
             $phones[] = $row2['c_phone_number']
                 . ($row2['c_abbreviation'] ? $row2['c_abbreviation'] : "");
         }
@@ -75,11 +75,11 @@ if ($result->numRows()) {
         $rowTemplate = Template::extract($template, "QUESTION");
         $template = Template::delete($template, "QUESTION");
         $result->seekRow(0);
-        while ($row =& $result->fetchRow()) {
+        while ($row = $result->fetchRow()) {
             $thisRow = $rowTemplate;
             $attendee =& new attendee();
             $attendee->select($row['c_uid']);
-            $answers =& $attendee->getChildren("answer");
+            $answers = $attendee->getChildren("answer");
             # Re-key the answers by question ID
             $a = array();
             foreach ($answers as $answer) {

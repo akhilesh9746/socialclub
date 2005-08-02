@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: submit.php,v 1.1 2005/03/27 19:53:28 bps7j Exp $
+ * $Id: submit.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
  */
 
 require_once("Email.php");
@@ -34,7 +34,7 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     $object->update();
 
     # Chown root all the expenses
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/expense_report/accept-to-pending.sql");
     $cmd->addParameter("report", $cfg['object']);
     $cmd->addParameter("owner", $cfg['root_uid']);

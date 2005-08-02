@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: check-foreign-keys.php,v 1.1 2005/03/27 19:53:16 bps7j Exp $
+ * $Id: check-foreign-keys.php,v 1.2 2005/08/02 03:05:03 bps7j Exp $
  *
  * This page checks referential integrity for the common attributes of all
  * database objects, such as owner and creator.
@@ -37,20 +37,20 @@ $numBadTables = 0;
 $numBadRows = 0;
 
 # Create a command to use repeatedly when checking for bad rows
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/misc/check-foreign-keys.sql");
 
 # Query the database for a list of all keys to check.
 $keys = array();
-$result =& $obj['conn']->query("select * from [_]foreign_key");
-while ($row =& $result->fetchRow()) {
+$result = $obj['conn']->query("select * from [_]foreign_key");
+while ($row = $result->fetchRow()) {
 
     # Check the key
     $cmd->addParameter("parent", $row['c_parent_table']);
     $cmd->addParameter("child", $row['c_child_table']);
     $cmd->addParameter("primary", $row['c_parent_col']);
     $cmd->addParameter("foreign", $row['c_child_col']);
-    $result2 =& $cmd->executeReader();
+    $result2 = $cmd->executeReader();
 
     if ($result2->numRows()) {
         $numBadTables++;

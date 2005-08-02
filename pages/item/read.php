@@ -17,25 +17,25 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.2 2005/06/05 17:20:29 bps7j Exp $
+ * $Id: read.php,v 1.3 2005/08/02 03:05:23 bps7j Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/item/read.php");
 
 # Add all the features to the template
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/select-features.sql");
 $cmd->addParameter("item", $cfg['object']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "ATTR", array(
         "C_NAME" => $row['c_name'],
         "C_VALUE" => ($row['c_value'] ? $row['c_value'] : "")));
 }
 
 # Get the next and last items in the list
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/next-by-type.sql");
 $cmd->addParameter("type", $object->getType());
 $cmd->addParameter("item", $cfg['object']);
@@ -45,7 +45,7 @@ if ($next) {
     $template = Template::replace($template,
         array ("NEXT_ID" => $next));
 }
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/item/last-by-type.sql");
 $cmd->addParameter("type", $object->getType());
 $cmd->addParameter("item", $cfg['object']);

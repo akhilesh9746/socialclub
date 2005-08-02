@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: chmeta.php,v 1.1 2005/03/27 19:53:25 bps7j Exp $
+ * $Id: chmeta.php,v 1.2 2005/08/02 03:05:06 bps7j Exp $
  */
 
 # Create and populate the form.  Create the form as a template.  Create a
@@ -26,7 +26,7 @@ $formTemplate = file_get_contents("forms/common/chmeta.xml");
 $template = file_get_contents("templates/common/chmeta.php");
 
 # Fill in choices for the creator
-$result =& $obj['conn']->query("select c_uid, c_first_name, c_last_name from [_]member"
+$result = $obj['conn']->query("select c_uid, c_first_name, c_last_name from [_]member"
     . " order by c_last_name");
 while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate,

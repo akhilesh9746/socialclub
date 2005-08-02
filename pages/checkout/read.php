@@ -17,34 +17,32 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.2 2005/07/15 01:41:06 bps7j Exp $
+ * $Id: read.php,v 1.3 2005/08/02 03:05:05 bps7j Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/checkout/read.php");
 
 # Display information about the current checkout
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/checkout/select-gear.sql");
 $cmd->addParameter("checkout", $cfg['object']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 if ($result->numRows()) {
     $template = Template::unhide($template, "somegear");
-    while ($row =& $result->fetchRow()) {
-        $template = Template::block($template, "gear", $row
-            + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
+    while ($row = $result->fetchRow()) {
+        $template = Template::block($template, "gear", $row);
     }
 }
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/checkout/select-items.sql");
 $cmd->addParameter("checkout", $cfg['object']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 if ($result->numRows()) {
     $template = Template::unhide($template, "someitems");
-    while ($row =& $result->fetchRow()) {
-        $template = Template::block($template, "item", $row
-            + array("st_title" => bitmaskString($row['c_status'], 'status_id')));
+    while ($row = $result->fetchRow()) {
+        $template = Template::block($template, "item", $row);
     }
 }
 

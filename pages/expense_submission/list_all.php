@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/03/27 19:53:22 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
  */
 
 # Create a template 
@@ -31,7 +31,7 @@ foreach (array("default", "submitted", "paid") as $status) {
 $form =& new XmlForm(Template::finalize($formTemplate), true);
 $form->snatch();
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/expense_submission/list_all.sql");
 if ($form->getValue("begin")) {
     $cmd->addParameter("begin", date("Y-m-d", strtotime($form->getValue("begin"))));
@@ -42,9 +42,9 @@ if ($form->getValue("end")) {
 if ($form->getValue("status")) {
     $cmd->addParameter("status", $form->getValue("status"));
 }
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "report", $row);
 }
 
