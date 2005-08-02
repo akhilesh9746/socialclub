@@ -30,7 +30,7 @@
   </tr>
   <tr>
     <th>Groups</th>
-    <td>{C_GROUP_MEMBERSHIPS_STRING}</td>
+    <td>{C_GROUP_MEMBERSHIPS|bitmaskString,'group_id'}</td>
   </tr>{:PASSWORD}{:MEMBER}{ADDRESS:}
   <tr>
     <td></td>
