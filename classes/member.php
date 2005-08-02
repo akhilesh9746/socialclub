@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: member.php,v 1.2 2005/06/05 16:13:17 bps7j Exp $
+ * $Id: member.php,v 1.3 2005/08/02 02:32:35 bps7j Exp $
  */
 
 include_once("member_note.php");
@@ -33,6 +33,10 @@ class member extends database_object {
     var $c_password = null;
     var $c_birth_date = null;
     var $c_group_memberships = null;
+    var $c_receive_email = null;
+    var $c_is_student = null;
+    var $c_hidden = null;
+    var $c_email_hidden = null;
     // }}}
 
     /* {{{constructor
@@ -80,9 +84,9 @@ class member extends database_object {
      */
     function selectFromEmail($email) {
         global $obj;
-        $result =& $obj['conn']->query("select * from $this->table where c_email='$email'");
+        $result = $obj['conn']->query("select * from $this->table where c_email='$email'");
         if ($result->numRows() > 0) {
-            $row =& $result->fetchRow();
+            $row = $result->fetchRow();
             $this->initFromRow($row);
             return $this->c_uid;
         }
@@ -162,6 +166,34 @@ class member extends database_object {
         $this->c_email = $value;
     } //}}}
 
+    /* {{{getReceiveEmail
+     *
+     */
+    function getReceiveEmail() {
+        return $this->c_receive_email;
+    } //}}}
+
+    /* {{{setReceiveEmail
+     *
+     */
+    function setReceiveEmail($value) {
+        $this->c_receive_email = $value;
+    } //}}}
+
+    /* {{{getIsStudent
+     *
+     */
+    function getIsStudent() {
+        return $this->c_is_student;
+    } //}}}
+
+    /* {{{setIsStudent
+     *
+     */
+    function setIsStudent($value) {
+        $this->c_is_student = $value;
+    } //}}}
+
     /* {{{getPassword
      *
      */
@@ -193,13 +225,13 @@ class member extends database_object {
     /* {{{getPrimaryAddress
      * May return null if there is no primary address.
      */
-    function &getPrimaryAddress() {
+    function getPrimaryAddress() {
         require_once("address.php");
         global $obj;
         global $cfg;
-        $result =& $obj['conn']->query("select * from [_]address "
+        $result = $obj['conn']->query("select * from [_]address "
             . "where c_owner = $this->c_uid and c_deleted <> 1 "
-            . "and c_flags & {$cfg['flag']['primary']}");
+            . "and c_primary = 1");
         if ($result->numRows()) {
             $address =& new address();
             $address->initFromRow($result->fetchRow());
@@ -211,13 +243,13 @@ class member extends database_object {
     /* {{{getPrimaryPhoneNumber
      * May return null if there is no primary phone number.
      */
-    function &getPrimaryPhoneNumber() {
+    function getPrimaryPhoneNumber() {
         require_once("phone_number.php");
         global $obj;
         global $cfg;
-        $result =& $obj['conn']->query("select * from [_]phone_number "
-          . "where c_owner = $this->c_uid and c_deleted <> 1 "
-          . "and c_flags & {$cfg['flag']['primary']}");
+        $result = $obj['conn']->query("select * from [_]phone_number "
+            . "where c_owner = $this->c_uid and c_deleted <> 1 "
+            . "and c_primary = 1");
         if ($result->numRows()) {
             $num =& new phone_number();
             $num->initFromRow($result->fetchRow());
@@ -229,13 +261,13 @@ class member extends database_object {
     /* {{{getPrimaryChat
      * May return null if there is no primary chat
      */
-    function &getPrimaryChat() {
+    function getPrimaryChat() {
         require_once("chat.php");
         global $obj;
         global $cfg;
-        $result =& $obj['conn']->query("select * from [_]chat "
-          . "where c_owner = $this->c_uid and c_deleted <> 1 "
-          . "and c_flags & {$cfg['flag']['primary']}");
+        $result = $obj['conn']->query("select * from [_]chat "
+            . "where c_owner = $this->c_uid and c_deleted <> 1 "
+            . "and c_primary = 1");
         if ($result->numRows()) {
             $chat =& new chat();
             $chat->initFromRow($result->fetchRow());
@@ -285,12 +317,33 @@ class member extends database_object {
             : $this->c_group_memberships & (~ $group);
     } //}}}
 
-    function &getVarArray() {
-        $result =& parent::getVarArray();
-        // The bitmask fields need to be converted to strings
-        $result['C_GROUP_MEMBERSHIPS_STRING'] = bitmaskString($this->c_group_memberships, 'group_id');
-        return $result;
-    }
+    /* {{{getEmailHidden
+     *
+     */
+    function getEmailHidden() {
+        return $this->c_email_hidden;
+    } //}}}                             
+
+    /* {{{setEmailHidden
+     *
+     */
+    function setEmailHidden($value) {
+        $this->c_email_hidden = $value;
+    } //}}}
+
+    /* {{{getHidden
+     *
+     */
+    function getHidden() {
+        return $this->c_hidden;
+    } //}}}
+
+    /* {{{setHidden
+     *
+     */
+    function setHidden($value) {
+        $this->c_hidden = $value;
+    } //}}}
 
 }
 ?>
