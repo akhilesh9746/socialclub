@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2005/06/05 18:03:36 bps7j Exp $
+ * $Id: list_all.php,v 1.3 2005/08/02 02:55:55 bps7j Exp $
  */
 
 $template = file_get_contents("templates/member/list_all.php");
@@ -33,45 +33,80 @@ $form->snatch();
 
 # Show the members in a list.  Don't show information that the user isn't
 # supposed to see if it's private (email address, primary phone number).  Also
-# don't show members that don't have an active membership.
+# don't show members that don't have an active membership.  Create two SQL
+# command objects, one for the result set, another to get a count of the results
+# that would be returned if there were no pagination.
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
+$numCmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/member/list_all.sql");
+$numCmd->loadQuery("sql/member/count.sql");
 
 # Add filter criteria.
 $nameCrit = $form->getValue("name");
 $emailCrit = $form->getValue("email");
-if ($nameCrit != '' && $nameCrit != '[name]') {
+if ($nameCrit) {
     $cmd->addParameter("name", "%$nameCrit%");
+    $numCmd->addParameter("name", "%$nameCrit%");
 }
-if ($emailCrit != '' && $emailCrit != '[email]') {
+if ($emailCrit) {
     $cmd->addParameter("email", "%$emailCrit%");
+    $numCmd->addParameter("email", "%$emailCrit%");
 }
 if ($obj['user']->isInGroup('root') || $obj['user']->isInGroup('officer')) {
     if ($form->getValue("view_inactive")) {
         $cmd->addParameter("view_inactive", 1);
+        $numCmd->addParameter("view_inactive", 1);
     }
     if ($form->getValue("view_private")) {
         $cmd->addParameter("view_private", 1);
+        $numCmd->addParameter("view_private", 1);
     }
 }
 
 # Add constants.
-$cmd->addParameter("email_private", $cfg['flag']['email_private']);
-$cmd->addParameter("private", $cfg['flag']['private']);
-$cmd->addParameter("primary", $cfg['flag']['primary']);
 $cmd->addParameter("active", $cfg['status_id']['active']);
+$numCmd->addParameter("active", $cfg['status_id']['active']);
 $cmd->addParameter("hide_info", 
     (($obj['user']->isRootUser() || $obj['user']->isInGroup("leader")) ? 0 : 1));
 
-$result =& $cmd->executeReader();
+$form->setValue("limit", max(10, min(100, intval($form->getValue("limit")))));
 
-while ($row =& $result->fetchRow()) {
+# Now we can find out how many results there will be, and build form elements
+# to allow the user to select which page to show.
+$numRows = $numCmd->executeScalar();
+$numPages = ceil($numRows / $form->getValue("limit"));
+$select =& $form->form->getElementByID("offset");
+for ($i = 1; $i <= $numPages; ++$i) {
+    $option =& $select->ownerDocument->createElement("option");
+    $text =& $select->ownerDocument->createTextNode("page $i of $numPages");
+    $option->appendChild($text);
+    $option->setAttribute("value", $i);
+    $select->appendChild($option);
+}
+if (isset($_GET['offset'])) {
+    $form->setValue("offset", intval($_GET['offset']));
+}
+$form->setValue("offset", max(1, $form->getValue("offset")));
+if (!$form->getValue("sort")) {
+    $form->setValue("sort", "last_name");
+}
+
+# Add pagination parameters
+$cmd->addParameter("offset", $form->getValue("limit")
+    * ($form->getValue("offset") - 1));
+$cmd->addParameter("limit", $form->getValue("limit"));
+$cmd->addParameter("orderby", "c_" . $form->getValue("sort"));
+
+$result = $cmd->executeReader();
+
+while ($row = $result->fetchRow()) {
     $template = Template::block($template, "ROW", $row);
 }
 
 if ($result->numRows()) {
     $template = Template::unhide($template, "SOME");
+    $template = Template::replace($template, array("NUM" => $numRows));
 }
 else {
     $template = Template::unhide($template, "NONE");
