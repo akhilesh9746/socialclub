@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: activate-members.php,v 1.2 2005/06/05 16:23:22 bps7j Exp $
+ * $Id: activate-members.php,v 1.3 2005/08/02 02:41:45 bps7j Exp $
  */
 
 include_once("membership.php");
@@ -38,14 +38,16 @@ $wrapper = file_get_contents("templates/admin/activate-members.php");
 # membership type hasn't expired already (so activating the membership would do
 # some good).
 
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/membership/select-for-activation.sql");
-$result =& $cmd->executeReader();
+$cmd->addParameter("inactive", $cfg['status_id']['inactive']);
+$cmd->addParameter("active", $cfg['status_id']['active']);
+$result = $cmd->executeReader();
 
 if (isset($_POST['submitted']) && isset($_POST['membership'])) {
 
     # Get the correct category for the transactions
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->setCommandText("select c_uid from [_]expense_category "
         . "where c_title = 'Membership Dues'");
     $cat = $cmd->executeScalar();
@@ -60,6 +62,8 @@ if (isset($_POST['submitted']) && isset($_POST['membership'])) {
             $member =& new member();
             $member->select($row['c_uid']);
             $membership->setStatus($cfg['status_id']['active']);
+            $membership->setBeginDate($row['c_begin_date']);
+            $membership->setExpirationDate($row['c_expiration_date']);
             $membership->setAmountPaid($membership->getTotalCost());
             $membership->update();
 
@@ -117,11 +121,8 @@ else {
     # No post data; display the list.
     $wrapper = Template::unhide($wrapper, "SOME");
     while ($row = $result->fetchRow()) {
-        $wrapper = Template::block($wrapper, "ROW",
-            array_change_key_case($row, 1)
-            + array("UNDERAGE" => ($row['c_underage'] 
-                ? " class='underage'" 
-                : "")));
+        $wrapper = Template::block($wrapper, "row", $row + array(
+            "underage" => ($row['c_underage'] ? " class='underage'" : "")));
     }
 }
 
