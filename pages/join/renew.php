@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: renew.php,v 1.1 2005/03/27 19:53:12 bps7j Exp $
+ * $Id: renew.php,v 1.2 2005/08/02 02:54:24 bps7j Exp $
  *
  * Purpose: allows a current member (who may be expired) to renew his/her
  * membership.
@@ -37,27 +37,20 @@ $wrapper = file_get_contents("templates/join/renew.php");
 $formTemplate = file_get_contents("forms/join/renew.xml");
 
 # Plug membership-type choices into the form template.
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/membership_type/select-for-renewal.sql");
-$cmd->addParameter("private", $cfg['flag']['private']);
-$cmd->addParameter("flexible", $cfg['flag']['flexible']);
 $cmd->addParameter("member", $cfg['user']);
-$result =& $cmd->executeReader();
-while ($row =& $result->fetchRow()) {
-    $formTemplate = Template::block($formTemplate, "PLAN",
-        array_change_key_case($row, 1)
-        + array(
-            "CLASS" => (($row['already_has'] == "0") ? "" : "disabled"),
-            "DISABLED" => (($row['already_has'] == "0") ? "" : 'disabled="true"')
-            ));
+$result = $cmd->executeReader();
+while ($row = $result->fetchRow()) {
+    $formTemplate = Template::block($formTemplate, "plan", $row);
 }
 
 $form =& new XMLForm(Template::finalize($formTemplate), true);
 
 # Plug the member's phone and address information into the form, then overwrite
 # it with whatever the member submits:
-$address =& $obj['user']->getPrimaryAddress();
-$phone =& $obj['user']->getPrimaryPhoneNumber();
+$address = $obj['user']->getPrimaryAddress();
+$phone = $obj['user']->getPrimaryPhoneNumber();
 if (is_object($address)) {
     $form->setValue("street", $address->getStreet());
     $form->setValue("city", $address->getCity());
@@ -99,7 +92,7 @@ if ($form->isValid()) {
     else {
         $phone =& new phone_number();
         $phone->setTitle("Phone Number");
-        $phone->setFlag("primary", true);
+        $phone->setIsPrimary(1);
         $phone->setAreaCode($form->getValue('areaCode'));
         $phone->setExchange($form->getValue('exchange'));
         $phone->setNumber($form->getValue('number'));
@@ -120,7 +113,7 @@ if ($form->isValid()) {
         $address->setState($form->getValue('state'));
         $address->setZIP($form->getValue('zip'));
         $address->setCountry('US');
-        $address->setFlag("primary", true);
+        $address->setIsPrimary(1);
         $address->insert();
     }
 

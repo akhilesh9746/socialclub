@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: join.php,v 1.1 2005/03/27 19:53:12 bps7j Exp $
+ * $Id: join.php,v 1.2 2005/08/02 02:54:11 bps7j Exp $
  *
  * Purpose: the main join page.
  */
@@ -37,27 +37,22 @@ $wrapper = file_get_contents("templates/join/join.php");
 $formTemplate = file_get_contents("forms/join/join.xml");
 
 # Plug in some things from the database, such as IM types
-$result =& $obj['conn']->query("select * from [_]chat_type");
-while ($row =& $result->fetchRow()) {
-    $formTemplate = Template::block($formTemplate, "CHAT",
-        array_change_key_case($row, 1));
+$result = $obj['conn']->query("select * from [_]chat_type");
+while ($row = $result->fetchRow()) {
+    $formTemplate = Template::block($formTemplate, "chat", $row);
 }
-$result =& $obj['conn']->query("select * from [_]phone_number_type");
-while ($row =& $result->fetchRow()) {
-    $formTemplate = Template::block($formTemplate, "PHONE_TYPES",
-        array_change_key_case($row, 1));
+$result = $obj['conn']->query("select * from [_]phone_number_type");
+while ($row = $result->fetchRow()) {
+    $formTemplate = Template::block($formTemplate, "phone_types", $row);
 }
 
 # Plug membership-type choices into the form template.
-$cmd =& $obj['conn']->createCommand();
+$cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/membership_type/select-current-options.sql");
-$cmd->addParameter("flexible", $cfg['flag']['private']);
-$cmd->addParameter("private", $cfg['flag']['private']);
-$result =& $cmd->executeReader();
+$result = $cmd->executeReader();
 
-while ($row =& $result->fetchRow()) {
-    $formTemplate = Template::block($formTemplate, "PLAN",
-        array_change_key_case($row, 1));
+while ($row = $result->fetchRow()) {
+    $formTemplate = Template::block($formTemplate, "plan", $row);
 }
 
 $form =& new XMLForm(Template::finalize($formTemplate), true);
