@@ -17,15 +17,16 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: config.php,v 1.3 2005/07/14 01:46:36 bps7j Exp $
+ * $Id: config.php,v 1.4 2005/08/02 02:38:19 bps7j Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
  */
 
 # Where the system should log error messages.  Leave blank if you don't want to
-# log any messages.
+# log any messages to that particular source.
 $cfg['error_log'] = "";
+$cfg['error_email'] = "";
 
 # The prefix for database table names.
 $cfg['table_prefix'] = "t_";
