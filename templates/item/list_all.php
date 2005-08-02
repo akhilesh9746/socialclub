@@ -4,10 +4,10 @@
 .sort{SORT_COL} {
     background: #EEE;
 }
-tr.checked_out td {
+tr.status256 td {
     color:#008080;
 }
-tr.missing td {
+tr.status1024 td {
     color:#808080;
     text-decoration: line-through;
 }
@@ -34,7 +34,7 @@ line-through">missing</span></p>
     <th>Details 1</th>
     <th>Details 2</th>
   </tr>{item:}
-  <tr class="{status}">
+  <tr class="status{c_status}">
     <td class="sortID">
       <a href="members/item/read/{ID}">{ID}</a>
     </td>
@@ -60,7 +60,7 @@ text-decoration: line-through">missing</span>.</p>
     <th>Condition</th>{header:}
     <th>{c_name}</th>{:header}
   </tr>{item:}
-  <tr class="{status_table}">
+  <tr class="status{status_table}">
     <td class="sortID">
       <a href="members/item/read/{ID_table}">{ID_table}</a>
     </td>

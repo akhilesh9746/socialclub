@@ -25,7 +25,7 @@
 for which we can seek Student Council reimbursement.</p>
 
 <style type="text/css">
-tr.expense128 td {
+tr.expense1 td {
     background: #dfe4ee;
 }
 </style>
@@ -39,7 +39,7 @@ tr.expense128 td {
     <th>Merchant</th>
     <th>Amount</th>
   </tr>{expense:}
-  <tr class="expense{c_flags}">
+  <tr class="expense{c_reimbursable}">
     <td>{cat_title}</td>
     <td nowrap>{c_expense_date}</td>
     <td>{c_adventure}</td>
