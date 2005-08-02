@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: default.php,v 1.2 2005/07/15 01:41:06 bps7j Exp $
+ * $Id: default.php,v 1.3 2005/08/02 03:00:29 bps7j Exp $
  */
 
 require_once("chat.php");
@@ -40,7 +40,7 @@ if (isset($_GET['privateAddress'])) {
     $privAddr =& new address();
     $privAddr->select($_GET['privateAddress']);
     if ($privAddr->getOwner() == $cfg['user']) {
-        $privAddr->setFlag("private", !$privAddr->getFlag("private"));
+        $privAddr->setHidden(!$privAddr->getHidden());
         $privAddr->update();
     }
 }
@@ -59,7 +59,7 @@ if (isset($_GET['privateChat'])) {
     $privChat =& new chat();
     $privChat->select($_GET['privateChat']);
     if ($privChat->getOwner() == $cfg['user']) {
-        $privChat->setFlag("private", !$privChat->getFlag("private"));
+        $privChat->setHidden(!$privChat->getHidden());
         $privChat->update();
     }
 }
@@ -78,25 +78,25 @@ if (isset($_GET['privatePhone'])) {
     $privPhone =& new phone_number();
     $privPhone->select($_GET['privatePhone']);
     if ($privPhone->getOwner() == $cfg['user']) {
-        $privPhone->setFlag("private", !$privPhone->getFlag("private"));
+        $privPhone->setHidden(!$privPhone->getHidden());
         $privPhone->update();
     }
 }
 
 # Update the member's own privacy settings and add them to the page
 if (isset($_GET['meHidden'])) {
-    $obj['user']->setFlag("private", $_GET['meHidden']);
+    $obj['user']->setHidden($_GET['meHidden']);
     $obj['user']->update();
 }
 if (isset($_GET['hideEmail'])) {
-    $obj['user']->setFlag("email_private", $_GET['hideEmail']);
+    $obj['user']->setEmailPrivate($_GET['hideEmail']);
     $obj['user']->update();
 }
-if (!$obj['user']->getFlag("private")) {
+if (!$obj['user']->getHidden()) {
     $wrapper = Template::replace($wrapper, array("HIDDEN" => "NOT"));
 }
 $wrapper = Template::replace($wrapper, array(
-    "EMAIL_PRIVATE" => $obj['user']->getFlag("email_private") ? "NO" : "YES"));
+    "EMAIL_PRIVATE" => $obj['user']->getEmailPrivate() ? "NO" : "YES"));
 
 
 # Add objects to the page.
@@ -112,7 +112,7 @@ foreach ($addresses as $key => $addr) {
         $addr->getVarArray()
         + array(
             "PRIMARY" => (is_object($address) && $key == $address->getUID()) ? "Yes" : "No",
-            "PRIVATE" => $addr->getFlag("private") ? "Yes" : "No"
+            "PRIVATE" => $addr->getHidden() ? "Yes" : "No"
         ));
 }
 
@@ -121,7 +121,7 @@ foreach ($phones as $key => $pho) {
         $pho->getVarArray()
         + array(
             "PRIMARY" => (is_object($phone) && $key == $phone->getUID()) ? "Yes" : "No",
-            "PRIVATE" => $pho->getFlag("private") ? "Yes" : "No"
+            "PRIVATE" => $pho->getHidden() ? "Yes" : "No"
         ));
 }
 
@@ -130,7 +130,7 @@ foreach ($chats as $key => $cha) {
         $cha->getVarArray()
         + array(
             "PRIMARY" => (is_object($chat) && $key == $chat->getUID()) ? "Yes" : "No",
-            "PRIVATE" => $cha->getFlag("private") ? "Yes" : "No"
+            "PRIVATE" => $cha->getHidden() ? "Yes" : "No"
         ));
 }
 

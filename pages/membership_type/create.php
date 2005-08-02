@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:18 bps7j Exp $
+ * $Id: create.php,v 1.2 2005/08/02 02:59:31 bps7j Exp $
  */
 
 $template = file_get_contents("templates/membership_type/create.php");
@@ -30,10 +30,12 @@ if ($form->isValid()) {
     $object =& new membership_type();
     $object->setTitle($form->getValue("title"));
     $object->setDescription($form->getValue("description"));
-    $object->setFlag("private", $form->getValue("private"));
-    $object->setFlag("flexible", $form->getValue("flexible"));
-    $object->setBeginDate($form->getValue("begin-date"));
-    $object->setExpirationDate($form->getValue("expiration-date"));
+    $object->setHidden(intval($form->getValue("private")));
+    $object->setFlexible(intval($form->getValue("flexible")));
+    if (!$object->getFlexible()) {
+        $object->setBeginDate($form->getValue("begin-date"));
+        $object->setExpirationDate($form->getValue("expiration-date"));
+    }
     $object->setShowDate($form->getValue("show-date"));
     $object->setHideDate($form->getValue("hide-date"));
     $object->setUnitsGranted($form->getValue("units-granted"));

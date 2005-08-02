@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:17 bps7j Exp $
+ * $Id: write.php,v 1.2 2005/08/02 02:59:47 bps7j Exp $
  */
 
 $template = file_get_contents("templates/membership_type/write.php");
@@ -33,12 +33,8 @@ $form->setValue("units-granted", $object->getUnitsGranted());
 $form->setValue("unit", $object->getUnit());
 $form->setValue("unit-cost", $object->getUnitCost());
 $form->setValue("total-cost", $object->getTotalCost());
-if ($object->getFlag("private")) {
-    $form->setValue("private", 1);
-}
-if ($object->getFlag("flexible")) {
-    $form->setValue("flexible", 1);
-}
+$form->setValue("private", $object->getHidden());
+$form->setValue("flexible", $object->getFlexible());
 
 # Now overwrite it with any data the user submitted.
 $form->snatch();
@@ -49,8 +45,8 @@ if ($form->isValid()) {
     # Update the object
     $object->setTitle($form->getValue("title"));
     $object->setDescription($form->getValue("description"));
-    $object->setFlag("private", intval($form->getValue("private")));
-    $object->setFlag("flexible", intval($form->getValue("flexible")));
+    $object->setHidden(intval($form->getValue("private")));
+    $object->setFlexible(intval($form->getValue("flexible")));
     $object->setBeginDate($form->getValue("begin-date"));
     $object->setExpirationDate($form->getValue("expiration-date"));
     $object->setShowDate($form->getValue("show-date"));
