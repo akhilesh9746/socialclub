@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: comment.php,v 1.1 2005/03/27 19:53:35 bps7j Exp $
+ * $Id: comment.php,v 1.2 2005/08/02 02:45:56 bps7j Exp $
  *
  * Allows an attendee to comment on the adventure
  */
@@ -34,11 +34,11 @@ if ($allowed) {
 
     # Create the form.  Generate a list of options:
     $formTemplate = file_get_contents("forms/adventure/comment.xml");
-    $cmd =& $obj['conn']->createCommand();
+    $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/generic-select.sql");
     $cmd->addParameter("table", "[_]rating");
-    $result =& $cmd->executeReader();
-    while ($row =& $result->fetchRow()) {
+    $result = $cmd->executeReader();
+    while ($row = $result->fetchRow()) {
         $formTemplate = Template::block($formTemplate, "OPTION",
             array_change_key_case($row, 1));
     }
@@ -52,7 +52,7 @@ if ($allowed) {
         $ac->setText($form->getValue("comment"));
         $ac->setSubject($form->getValue("subject"));
         $ac->setRating($form->getValue("rating"));
-        $ac->setFlag("private", $form->getValue("anonymous"));
+        $ac->setAnonymous($form->getValue("anonymous"));
         $ac->setAdventure($cfg['object']);
         $ac->insert();
         $template = Template::unhide($template, "THANKS");
