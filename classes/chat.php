@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: chat.php,v 1.1 2005/03/27 19:54:24 bps7j Exp $
+ * $Id: chat.php,v 1.2 2005/08/02 02:28:14 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -26,6 +26,8 @@ class chat extends database_object {
     // {{{declarations
     var $c_screenname = null;
     var $c_type = null;
+    var $c_primary = null;
+    var $c_hidden = null;
     // }}}
 
     /* {{{constructor
@@ -49,6 +51,20 @@ class chat extends database_object {
         $this->c_screenname = $value;
     } //}}}
 
+    /* {{{getIsPrimary
+     *
+     */
+    function getIsPrimary() {
+        return $this->c_is_primary;
+    } //}}}
+
+    /* {{{setIsPrimary
+     *
+     */
+    function setIsPrimary($value) {
+        $this->c_is_primary = $value;
+    } //}}}
+
     /* {{{getType
      *
      */
@@ -63,21 +79,19 @@ class chat extends database_object {
         $this->c_type = $value;
     } //}}}
 
-    /* {{{setPrimary
-     * Sets the 'primary' flag on this chat and removes it for every
-     * other chat that this member owns
+    /* {{{getHidden
+     *
      */
-    function setPrimary() {
-        global $obj;
-        global $cfg;
-        $cmd =& $obj['conn']->createCommand();
-        $cmd->loadQuery("sql/misc/set-primary.sql");
-        $cmd->addParameter("table", $this->table);
-        $cmd->addParameter("object", $this->c_uid);
-        $cmd->addParameter("primary", $cfg['flag']['primary']);
-        $cmd->addParameter("member", $this->c_owner);
-        $cmd->executeNonQuery();
+    function getHidden() {
+        return $this->c_hidden;
     } //}}}
-    
+
+    /* {{{setHidden
+     *
+     */
+    function setHidden($value) {
+        $this->c_hidden = $value;
+    } //}}}
+
 }
 ?>

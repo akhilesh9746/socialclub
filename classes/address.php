@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: address.php,v 1.1 2005/03/27 19:54:25 bps7j Exp $
+ * $Id: address.php,v 1.2 2005/08/02 02:27:21 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -30,6 +30,8 @@ class address extends database_object {
     var $c_state = null;
     var $c_zip = null;
     var $c_country = null;
+    var $c_primary = null;
+    var $c_hidden = null;
     var $phoneNumbers;
     // }}}
 
@@ -138,21 +140,33 @@ class address extends database_object {
         $this->c_country = $value;
     } //}}}
 
-    /* {{{setPrimary
-     * Sets the 'primary' flag on this address and removes it for every other
-     * address that this member owns
+    /* {{{getIsPrimary
+     *
      */
-    function setPrimary() {
-        global $obj;
-        global $cfg;
-        $cmd =& $obj['conn']->createCommand();
-        $cmd->loadQuery("sql/misc/set-primary.sql");
-        $cmd->addParameter("table", $this->table);
-        $cmd->addParameter("object", $this->c_uid);
-        $cmd->addParameter("primary", $cfg['flag']['primary']);
-        $cmd->addParameter("member", $this->c_owner);
-        $cmd->executeNonQuery();
+    function getIsPrimary() {
+        return $this->c_is_primary;
     } //}}}
-    
+
+    /* {{{setIsPrimary
+     *
+     */
+    function setIsPrimary($value) {
+        $this->c_is_primary = $value;
+    } //}}}
+
+    /* {{{getHidden
+     *
+     */
+    function getHidden() {
+        return $this->c_hidden;
+    } //}}}
+
+    /* {{{setHidden
+     *
+     */
+    function setHidden($value) {
+        $this->c_hidden = $value;
+    } //}}}
+
 }
 ?>
