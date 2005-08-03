@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: setup.php,v 1.4 2005/08/02 02:40:16 bps7j Exp $
+ * $Id: setup.php,v 1.5 2005/08/03 00:30:36 bps7j Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -289,7 +289,7 @@ $cfg['perm'] = array(
 
 # ------------------------------------------------------------------------------
 # Status values.  You can set statuses on any database_object with the xxxStatus
-# functions. TODO: implement more xxxStatus functions.
+# functions.
 # ------------------------------------------------------------------------------
 $cfg['status_id'] = array(
     "default" => 1,
