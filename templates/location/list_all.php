@@ -13,5 +13,5 @@
 {:SOME}
 
 {NONE:}
-<p class="notice">There are no locations in the database.</p>
+<p class="notice">No matches found.</p>
 {:NONE}
