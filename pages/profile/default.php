@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: default.php,v 1.3 2005/08/02 03:00:29 bps7j Exp $
+ * $Id: default.php,v 1.4 2005/08/03 01:06:03 bps7j Exp $
  */
 
 require_once("chat.php");
@@ -89,23 +89,23 @@ if (isset($_GET['meHidden'])) {
     $obj['user']->update();
 }
 if (isset($_GET['hideEmail'])) {
-    $obj['user']->setEmailPrivate($_GET['hideEmail']);
+    $obj['user']->setEmailHidden($_GET['hideEmail']);
     $obj['user']->update();
 }
 if (!$obj['user']->getHidden()) {
     $wrapper = Template::replace($wrapper, array("HIDDEN" => "NOT"));
 }
 $wrapper = Template::replace($wrapper, array(
-    "EMAIL_PRIVATE" => $obj['user']->getEmailPrivate() ? "NO" : "YES"));
+    "EMAIL_PRIVATE" => $obj['user']->getEmailHidden() ? "NO" : "YES"));
 
 
 # Add objects to the page.
-$addresses =& $obj['user']->getChildren("address", "c_owner");
-$address =& $obj['user']->getPrimaryAddress();
-$phones =& $obj['user']->getChildren("phone_number", "c_owner");
-$phone =& $obj['user']->getPrimaryPhoneNumber();
-$chats =& $obj['user']->getChildren("chat", "c_owner");
-$chat =& $obj['user']->getPrimaryChat();
+$addresses = $obj['user']->getChildren("address", "c_owner");
+$address = $obj['user']->getPrimaryAddress();
+$phones = $obj['user']->getChildren("phone_number", "c_owner");
+$phone = $obj['user']->getPrimaryPhoneNumber();
+$chats = $obj['user']->getChildren("chat", "c_owner");
+$chat = $obj['user']->getPrimaryChat();
 
 foreach ($addresses as $key => $addr) {
     $wrapper = Template::block($wrapper, "ADDRESS",
