@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: initialize.sql,v 1.5 2005/08/02 03:03:21 bps7j Exp $
+ * $Id: initialize.sql,v 1.6 2005/08/03 01:29:52 bps7j Exp $
  *
  */
 
@@ -122,7 +122,6 @@ insert into [_]action (c_title, c_summary, c_label, c_description) values
       ("subscribe", "Subscribe", "Subscribe", "Subscribe"),
       ("su", "Switch User", "&Switch User", "Become another member"),
       ("edit_features", "Edit Features", "Edit Feat&ures", "Edit the object's features"),
-      ('add_xref', "Add X-Ref", 'Add &X-Ref', 'Add a cross-reference'),
       ("unsubscribe", "Unsubscribe", "&Unsubscribe", "Unsubscribe"),
       ('optout', "Opt Out", '&Opt Out', 'Opt out of emails'),
       ('submit', "Submit", '&Submit', 'Submit an Expense Report'),
