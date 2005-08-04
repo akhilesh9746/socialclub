@@ -42,7 +42,7 @@ queries require table scans.  Don't run them casually.</p>
   <li><a href="members/admin/check-foreign-keys">
       Check the integrity of foreign keys in the database
     </a></li>
-  <li><a href="members/admin/action=check-orphaned-rows">
+  <li><a href="members/admin/?action=check-orphaned-rows">
       Check the database for orphaned rows
     </a></li>
   <li><a href="members/admin/dedupe-questions">
