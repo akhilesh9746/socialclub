@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: submit.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
+ * $Id: submit.php,v 1.3 2005/08/04 21:23:57 bps7j Exp $
  */
 
 require_once("Email.php");
@@ -45,7 +45,7 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     $email->setBody($obj['user']->getFullName(). " has entered a new expense "
         . "report for you to review and accept at $cfg[site_url]$cfg[base_url]"
         . "/members/expense_report/read/$cfg[object]");
-    foreach($cfg['treasurer_email'] as $e) {
+    foreach(explode(',', $cfg['treasurer_email']) as $e) {
         $email->addTo($e);
     }
     $email->addHeader("X-Expense-Report", 1);

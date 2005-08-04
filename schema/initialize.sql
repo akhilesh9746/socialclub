@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: initialize.sql,v 1.6 2005/08/03 01:29:52 bps7j Exp $
+ * $Id: initialize.sql,v 1.7 2005/08/04 21:24:00 bps7j Exp $
  *
  */
 
@@ -28,7 +28,7 @@ insert into [_]configuration
     ('club_admin_email_name', 'SocialClub Administrator <admin@domain.org>',
         'string', 'Club Administrator, full email with name'),
     ('treasurer_email', 'treasurer@domain.org', 'email',
-        'The club treasurer'),
+        'The club treasurer, comma-separated'),
     ('send_emails', 'true', 'bool', 'Whether the website should send any email'),
     ('root_uid', '1', 'integer', 'The "root" user for the system'),
     ('expense_from_uid', '2', 'integer', 'The user from whom expenses come');
