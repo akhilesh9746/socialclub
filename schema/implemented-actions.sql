@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: implemented-actions.sql,v 1.3 2005/08/02 03:02:49 bps7j Exp $
+ * $Id: implemented-actions.sql,v 1.4 2005/08/04 21:25:05 bps7j Exp $
  *
  * Create correspondences between tables and actions to say which actions apply
  * to which tables.
@@ -56,7 +56,7 @@ where c_table = "[_]expense_submission" and c_action = "write";
 
 insert into [_]implemented_action (c_table, c_action, c_status)
 values
-    ("[_]adventure", "join", @ns_default | @ns_active),
+    ("[_]adventure", "join", @ns_default | @ns_active | @ns_inactive),
     ("[_]adventure", "withdraw", @ns_active),
     ("[_]adventure", "edit_questions", 0),
     ("[_]adventure", "choose_activities", 0),
