@@ -16,21 +16,22 @@ href="members/{PAGE}/add_privilege/{OBJECT}">define
 a new privilege for this object</a>.</p>
 
 {SOME:}
-<table class="cleanHeaders">
+<table class="cleanHeaders top">
   <tr>
     <th>ID</th>
     <th>Who</th>
     <th>What Action</th>
     <th>Granted on What</th>
+    <th>Statuses</th>
   </tr>
   {ROWS:}
   <tr>
-    <td>{c_uid}</td>
-    <td>{c_who_type} {c_who_uid} ({c_who})</td>
-    <td>{c_action_title}</td>
-    <td><b>{c_granted_on}</b> {c_table}({c_related_uid})</td>
+    <td nowrap>{c_uid}</td>
+    <td nowrap>{c_who_type} {c_who_uid} ({c_who})</td>
+    <td nowrap>{c_action_title}</td>
+    <td nowrap><b>{c_granted_on}</b> {c_table}({c_related_uid})</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>
-    </tr>
   {:ROWS}
 </table>
 {:SOME}

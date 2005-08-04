@@ -12,10 +12,13 @@ select
     ac.c_title as c_action_title,
     pr.c_what_relates_to as c_granted_on,
     pr.c_related_table as c_table,
-    pr.c_related_uid
+    pr.c_related_uid,
+    ia.c_status
 from [_]privilege as pr
     inner join [_]action as ac on ac.c_title = pr.c_action
     inner join {table,none} as ob on ob.c_uid = {object,int}
+    inner join [_]implemented_action as ia on ia.c_table = {table,varchar}
+        and ia.c_action = ac.c_title
     left outer join [_]member as me
         on pr.c_what_granted_to = 'user'
         and pr.c_who_granted_to = me.c_uid
