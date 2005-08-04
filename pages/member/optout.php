@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: optout.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
+ * $Id: optout.php,v 1.3 2005/08/04 21:24:16 bps7j Exp $
  */
 
 $template = file_get_contents("templates/member/optout.php");
@@ -30,7 +30,7 @@ $cmd->addParameter("table", "[_]activity_category ");
 $cmd->addParameter("orderby", "c_uid");
 $result = $cmd->executeReader();
 while ($row = $result->fetchRow()) {
-    $cats[$row['c_uid']] =& $row;
+    $cats[$row['c_uid']] = $row;
 }
 
 # Get a list of the opts and re-key them by CATEGORY not by the c_uid
