@@ -16,8 +16,8 @@ properties:</p>
 <tr><th>Time Granted:</th> <td>{C_UNITS_GRANTED} {C_UNIT}(s)</td</tr>
 <tr><th>Unit Cost:</th> <td>${C_UNIT_COST}</td</tr>
 <tr><th>Total Cost:</th> <td>${C_TOTAL_COST}</td</tr>
-<tr><th>Hidden:</th> <td>${C_HIDDEN}</td</tr>
-<tr><th>Flexible:</th> <td>${C_FLEXIBLE}</td</tr>
+<tr><th>Hidden:</th> <td>{C_HIDDEN}</td</tr>
+<tr><th>Flexible:</th> <td>{C_FLEXIBLE}</td</tr>
 </table>
 
 {actions,{PAGE},{OBJECT},default}
