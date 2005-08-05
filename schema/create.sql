@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.sql,v 1.5 2005/08/02 03:02:40 bps7j Exp $
+ * $Id: create.sql,v 1.6 2005/08/05 20:36:21 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -257,7 +257,6 @@ create table [_]attendee (
     -- Again, for record-keeping purposes
     c_joined_date     datetime        not null,
     index (c_adventure, c_member),
-    index (c_status),
     index (c_joined_date),
     primary key  (c_uid)
 ) type=MyISAM;
@@ -772,7 +771,7 @@ create table [_]membership (
     c_unixperms       int unsigned    not null default 500,
     c_created_date    datetime        not null,
     c_last_modified   timestamp       not null,
-    c_status          int unsigned    not null default 4,
+    c_status          int unsigned    not null default 2, -- inactive
     c_deleted         bit             not null default 0,
     c_member          int unsigned    not null, -- > [_]member
     c_type            int unsigned    not null, -- > [_]membership_type
