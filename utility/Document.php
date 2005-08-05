@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Document.php,v 1.1 2005/03/27 19:54:18 bps7j Exp $
+ * $Id: Document.php,v 1.2 2005/08/05 00:47:29 bps7j Exp $
  */
 
 include_once("Node.php");
@@ -66,7 +66,6 @@ class Document extends Node {
         if (isset($this->idCache[$elementID])) {
             return $this->idCache[$elementID];
         }
-        return null;
     }
 
     function addNodeToLookupCache(&$node) {
