@@ -17,13 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: execute.php,v 1.3 2005/08/02 03:05:26 bps7j Exp $
+ * $Id: execute.php,v 1.4 2005/08/05 20:27:12 bps7j Exp $
  */
 
 $template = file_get_contents("templates/report/execute.php");
 
 $template = Template::unhide($template, "RESULTS");
-$result =& $object->execute();
+$result = $object->execute();
 # print out headers and rows.
 $header = true;
 $count = 0;

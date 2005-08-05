@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: choose_activities.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
+ * $Id: choose_activities.php,v 1.3 2005/08/05 20:27:12 bps7j Exp $
  */
 
 $template = file_get_contents("templates/member/choose_activities.php");
@@ -30,7 +30,7 @@ $cmd->addParameter("table", "[_]activity");
 $cmd->addParameter("orderby", "c_title");
 $result = $cmd->executeReader();
 while ($row = $result->fetchRow()) {
-    $activities[$row['c_uid']] =& array_change_key_case($row, 1);
+    $activities[$row['c_uid']] = array_change_key_case($row, 1);
 }
 
 # Get a list of the interests and re-key them by ACTIVITY not by the c_uid
