@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: check-referential-integrity-extended.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
+ * $Id: check-referential-integrity-extended.php,v 1.3 2005/08/05 20:40:38 bps7j Exp $
  *
  * This page checks referential integrity for "fake" foreign keys that are built
  * out of a combination of two columns (sometimes three) that specify a table,
@@ -41,7 +41,7 @@ $contents = "";
 $tables = array();
 $result = $obj['conn']->query("select * from [_]table");
 while ($row = $result->fetchRow(DB_FETCHMODE_ORDERED)) {
-    $tables[$row[0]] =& $row[0];
+    $tables[$row[0]] = $row[0];
 }
 
 # ------------------------------------------------------------------------------
