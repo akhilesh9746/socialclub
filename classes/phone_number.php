@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: phone_number.php,v 1.2 2005/08/02 02:33:14 bps7j Exp $
+ * $Id: phone_number.php,v 1.3 2005/08/05 00:46:09 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -170,18 +170,18 @@ class phone_number extends database_object {
         return $this->c_phone_number;
     } //}}}
     
-    /* {{{getIsPrimary
+    /* {{{getPrimary
      *
      */
-    function getIsPrimary() {
-        return $this->c_is_primary;
+    function getPrimary() {
+        return $this->c_primary;
     } //}}}
 
-    /* {{{setIsPrimary
+    /* {{{setPrimary
      *
      */
-    function setIsPrimary($value) {
-        $this->c_is_primary = $value;
+    function setPrimary($value) {
+        $this->c_primary = $value;
     } //}}}
 
     /* {{{getHidden

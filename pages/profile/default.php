@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: default.php,v 1.4 2005/08/03 01:06:03 bps7j Exp $
+ * $Id: default.php,v 1.5 2005/08/05 00:46:27 bps7j Exp $
  */
 
 require_once("chat.php");
@@ -31,7 +31,7 @@ if (isset($_GET['primaryAddress'])) {
     $newAddr =& new address();
     $newAddr->select($_GET['primaryAddress']);
     if ($newAddr->getOwner() == $cfg['user']) {
-        $newAddr->setPrimary();
+        $newAddr->makePrimary();
     }
 }
 
@@ -50,7 +50,7 @@ if (isset($_GET['primaryChat'])) {
     $newChat =& new chat();
     $newChat->select($_GET['primaryChat']);
     if ($newChat->getOwner() == $cfg['user']) {
-        $newChat->setPrimary();
+        $newChat->makePrimary();
     }
 }
 
@@ -69,7 +69,7 @@ if (isset($_GET['primaryPhone'])) {
     $newPhone =& new phone_number();
     $newPhone->select($_GET['primaryPhone']);
     if ($newPhone->getOwner() == $cfg['user']) {
-        $newPhone->setPrimary();
+        $newPhone->makePrimary();
     }
 }
 

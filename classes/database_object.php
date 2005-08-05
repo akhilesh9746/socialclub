@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: database_object.php,v 1.3 2005/08/02 02:30:47 bps7j Exp $
+ * $Id: database_object.php,v 1.4 2005/08/05 00:46:09 bps7j Exp $
  */
 
 include_once("DateTime.php");
@@ -549,14 +549,14 @@ class database_object {
 
     }
 
-    /* {{{setPrimary
+    /* {{{makePrimary
      * Sets this object as primary and unsets it for every
      * other object of this type that this member owns.  WARNING:
      * This function won't work on every object type, only those that
      * have a c_primary column!  It is only in this class because PHP4
      * lacks interfaces, and I don't want to duplicate the code.
      */
-    function setPrimary() {
+    function makePrimary() {
         global $obj;
         $cmd = $obj['conn']->createCommand();
         $cmd->loadQuery("sql/misc/set-primary.sql");
