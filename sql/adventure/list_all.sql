@@ -17,4 +17,4 @@ where (ad.c_status & {active,int} = {active,int})
     and ({leader,char} is null or me.c_full_name like {leader,char})
     and ({start,date} is null or ad.c_start_date >= {start,date})
     and ({end,date} is null or ad.c_start_date <= {end,date})
-order by ad.c_start_date
+order by ad.c_start_date desc
