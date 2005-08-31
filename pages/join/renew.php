@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: renew.php,v 1.2 2005/08/02 02:54:24 bps7j Exp $
+ * $Id: renew.php,v 1.3 2005/08/31 00:40:05 bps7j Exp $
  *
  * Purpose: allows a current member (who may be expired) to renew his/her
  * membership.
@@ -92,7 +92,7 @@ if ($form->isValid()) {
     else {
         $phone =& new phone_number();
         $phone->setTitle("Phone Number");
-        $phone->setIsPrimary(1);
+        $phone->setPrimary(1);
         $phone->setAreaCode($form->getValue('areaCode'));
         $phone->setExchange($form->getValue('exchange'));
         $phone->setNumber($form->getValue('number'));
@@ -113,7 +113,7 @@ if ($form->isValid()) {
         $address->setState($form->getValue('state'));
         $address->setZIP($form->getValue('zip'));
         $address->setCountry('US');
-        $address->setIsPrimary(1);
+        $address->setPrimary(1);
         $address->insert();
     }
 
