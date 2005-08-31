@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: activate.php,v 1.2 2005/08/02 02:59:13 bps7j Exp $
+ * $Id: activate.php,v 1.3 2005/08/31 00:41:53 bps7j Exp $
  */
 
 require_once("membership_type.php");
@@ -64,7 +64,9 @@ $maxExpire =& new DateTime($cmd->executeScalar());
 $begin =& new DateTime();
 $expire =& new DateTime();
 if ($type->getFlexible()) {
-    $begin = $maxExpire;
+    if ($begin->compareTo($maxExpire) < 0) {
+        $begin = $maxExpire;
+    }
     switch ($type->getUnit()) {
     case "year":
         $expire = $begin->addYears($object->getUnitsGranted());
