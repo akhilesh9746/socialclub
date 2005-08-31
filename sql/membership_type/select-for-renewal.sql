@@ -4,11 +4,11 @@
 -- Parameters: private, flexible, member
 select
     mt.c_uid, mt.c_title, mt.c_description,
-    case when mt.c_flexible
+    case when mt.c_flexible = 0
         then mt.c_begin_date
         else 'Activation'
     end as c_begin_date,
-    case when mt.c_flexible
+    case when mt.c_flexible = 0
         then mt.c_expiration_date
         else concat(mt.c_units_granted, ' ', mt.c_unit,
             case when mt.c_units_granted > 1 then 's' else '' end,
