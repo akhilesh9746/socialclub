@@ -26,7 +26,7 @@
   </tr>
   <tr>
     <th>Status</th>
-    <td>{C_STATUS}</td>
+    <td>{C_STATUS|bitmaskString,'status_id'}</td>
   </tr>
   <tr>
     <th>Quantity</th>

@@ -43,11 +43,11 @@ tr.checked_out td {
     <th>Description</th>
     <th>Status</th>
   </tr>{gear:}
-  <tr>
+  <tr class="{c_status|bitmaskString,'status_id'}">
     <td>{ic_title} &raquo; {it_title}</td>
     <td>{c_qty}</td>
     <td>{c_description}</td>
-    <td>{st_title}</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>{:gear}
 </table>
 
