@@ -103,6 +103,7 @@ values
     ('group',       32,      'optout',            'self',         '[_]member'),
     ('group',       128,     'su',                'global',       '[_]member'),
     ('group',       256,     'activate',          'global',       '[_]membership'),
+    ('group',       256,     'list_all',          'table',        '[_]membership'),
     ('owner',       0,       'activate',          'global',       '[_]adventure'),
     ('owner',       0,       'deactivate',        'global',       '[_]adventure'),
     ('owner',       0,       'deactivate',        'global',       '[_]classified_ad'),
