@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Email.php,v 1.1 2005/03/27 19:54:19 bps7j Exp $
+ * $Id: Email.php,v 1.2 2005/08/31 00:49:46 bps7j Exp $
  */
 
 class Email {
@@ -29,7 +29,7 @@ class Email {
     var $body           = "";
     var $footer         = "";
 
-    var $nl             = "\n";
+    var $nl             = "\r\n";
     var $subjectPrefix  = "";
     var $wordWrap       = false;
     var $wrapCol        = 64;
@@ -107,20 +107,21 @@ class Email {
      *
      */
     function addBCC($email) {
-        $this->headers[] = "bcc: $email";
+        $this->headers[] = "Bcc: $email";
     } //}}}
 
     /* {{{addCC
      *
      */
     function addCC($email) {
-        $this->headers[] = "cc: $email";
+        $this->headers[] = "Cc: $email";
     } //}}}
 
     /* {{{addHeader
      */
     function addHeader($name, $val) {
-        $this->headers[] = "$name: $val";
+        $this->headers[] = preg_replace("/[^a-zA-Z0-9]+/", "-", $name)
+            . ": $val";
     } //}}}
 
     /* {{{setFrom
