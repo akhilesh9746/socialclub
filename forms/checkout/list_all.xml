@@ -12,22 +12,67 @@
     <element
         name="member"
         element-id="member" />
+    <element
+        name="begin"
+        element-id="begin" />
+    <element
+        name="end"
+        element-id="end" />
+    <element
+        name="type"
+        element-id="type" />
 </config>
 
-<table>
+<fieldset>
+<legend>Filtering Options</legend>
+
+<table class="compact collapsed elbowroom verticalHeaders">
   <tr>
-    <td>Filter by: </td>
+    <th>View</th>
     <td>
 
-    <select name="status" id="status" onChange="this.form.submit()" >
-      <option value="">[All Statuses]</option>{STATUS:}
-      <option value="{id}">{c_title}</option>{:STATUS}
-    </select>
-
-    <select name="member" id="member" onChange="this.form.submit()" >
-      <option value="">[All Members]</option>{member:}
+    checkout sheets for
+    <select name="member" id="member">
+      <option value="">[everyone]</option>{member:}
       <option value="{c_member}">{c_last_name}, {c_first_name}</option>{:member}
     </select>
+
+    in
+    <select name="status" id="status">
+      <option value="">[any]</option>{STATUS:}
+      <option value="{id}">{c_title}</option>{:STATUS}
+    </select>
+    status
+
+    </td>
+  </tr>
+  <tr>
+    <th>With</th>
+    <td>
+
+    items of type
+      <select name="type" id="type">
+        <option value="">[any type]</option>{GROUP:}
+        <optgroup label="{cat_title|htmlspecialchars}">{TYPE:}
+          <option value="{c_uid}">{c_title|htmlspecialchars}</option>{:TYPE}
+        </optgroup>{:GROUP}{TYPES}
+      </select>
+
+    </td>
+  </tr>
+  <tr>
+    <th>Dates</th>
+    <td>
+
+    checked out between
+    <input type="text" size="9" name="begin" id="begin" />
+    and
+    <input type="text" size="9" name="end" id="end" />
+
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="right">
 
     <input type="submit" value="Go" />
 
@@ -35,5 +80,5 @@
   </tr>
 
 </table>
-
+</fieldset>
 </form>
