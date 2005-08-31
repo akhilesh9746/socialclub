@@ -1,30 +1,13 @@
-/* Selects a list of members who are active.  Hides details such as phone
- * numbers if the member running this query (hide_info) is not allowed to see
- * them.
- *
- * Parameters:
- * hide_info int
- *      1 if the member is not supposed to see information the other members
- *      have marked as private
- */
 select
     me.c_uid, 
     me.c_first_name, 
     me.c_last_name,
-    case when ({hide_info,int} and me.c_email_hidden)
-        then '[private]'
+    case when (ifnull({view_private,int}, 0) = 0 and me.c_email_hidden)
+        then ''
         else me.c_email end as c_email,
-    case when (ph.c_uid is null or ({hide_info,int} and ph.c_hidden))
-        then '[private]'
-        else concat(
-            '(', ph.c_area_code, ') ', 
-            ph.c_exchange, '-', ph.c_number)
-        end as phone_number,
-    coalesce(ct.c_abbreviation, '') as c_abbreviation,
-    case when (ch.c_uid is null) then ""
-        when ({hide_info,int} and ch.c_hidden) then ""
-        else ch.c_screenname
-        end as c_screenname
+    coalesce(ph.c_phone_number, '') as phone_number,
+    coalesce(ct.c_abbreviation, 'blank') as c_abbreviation,
+    coalesce(ch.c_screenname, '') as c_screenname
 from 
     [_]member as me
     inner join [_]membership as ms on ms.c_member = me.c_uid
@@ -32,10 +15,12 @@ from
         on ph.c_owner = me.c_uid
         and ph.c_primary = 1
         and ph.c_deleted <> 1
+        and ({view_private,int} > 0 or ph.c_hidden = 0)
     left outer join [_]chat as ch
         on ch.c_owner = me.c_uid
-        and ch.c_hidden = 1
+        and ch.c_primary = 1
         and ch.c_deleted <> 1
+        and ({view_private,int} > 0 or ch.c_hidden = 0)
     left outer join [_]chat_type as ct on ct.c_uid = ch.c_type
         and ct.c_deleted <> 1
 where 
