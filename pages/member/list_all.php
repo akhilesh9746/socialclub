@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.3 2005/08/02 02:55:55 bps7j Exp $
+ * $Id: list_all.php,v 1.4 2005/08/31 00:41:20 bps7j Exp $
  */
 
 $template = file_get_contents("templates/member/list_all.php");
@@ -67,8 +67,6 @@ if ($obj['user']->isInGroup('root') || $obj['user']->isInGroup('officer')) {
 # Add constants.
 $cmd->addParameter("active", $cfg['status_id']['active']);
 $numCmd->addParameter("active", $cfg['status_id']['active']);
-$cmd->addParameter("hide_info", 
-    (($obj['user']->isRootUser() || $obj['user']->isInGroup("leader")) ? 0 : 1));
 
 $form->setValue("limit", max(10, min(100, intval($form->getValue("limit")))));
 
