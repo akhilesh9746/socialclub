@@ -16,9 +16,9 @@
 
   <p class="compact">View:
     <select name="status" id="status" onchange="this.form.submit()">
-      <option selected="1" value="1">Joined</option>
-      <option value="5">Waitlisted</option>
-      <option value="0">Both</option>
+      <option selected="1" value="default">Joined</option>
+      <option value="waitlisted">Waitlisted</option>
+      <option value="">Both</option>
     </select>
     Show questions
     <input type="radio" name="question" id="question0" value="0" onclick="this.form.submit()" checked="true"/>

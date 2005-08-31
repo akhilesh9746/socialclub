@@ -17,8 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_report.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
- *
+ * $Id: view_report.php,v 1.3 2005/08/31 00:35:02 bps7j Exp $
  */
 
 include_once("attendee.php");
@@ -34,7 +33,8 @@ $cmd->loadQuery("sql/adventure/view_report.sql");
 $cmd->addParameter("adventure", $cfg['object']);
 $cmd->addParameter("waitlisted", $cfg['status_id']['waitlisted']);
 if ($form->getValue("status")) {
-    $cmd->addParameter("status", intval($form->getValue("status")));
+    $cmd->addParameter("status",
+        $cfg['status_id'][$form->getValue("status")]);
 }
 $result = $cmd->executeReader();
 
