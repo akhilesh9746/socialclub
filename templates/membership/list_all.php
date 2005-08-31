@@ -19,6 +19,8 @@ how many memberships you activated:</p>
 
 {SOME:}
 
+{form}
+
 <p>The following memberships need to be activated.  Check the checkbox next to a
 member to activate that membership.  Be sure to check for an adult's signature
 if the member is underage (red text).</p>
@@ -26,13 +28,12 @@ if the member is underage (red text).</p>
 <p>If you have a signed waiver for a membership but don't see that member below,
     try searching for the member and then clicking on the "History" tab.  You
     can see all the memberships, active and inactive, from that page; you can
-    click on a membership and activate it.  To keep this page uncluttered, some
-    inactive memberships that are very old may not be displayed.</p>
+    click on a membership and activate it.</p>
 
 <form method="post" action="members/admin/activate-members">
 <input type="hidden" name="submitted" value="1">
 
-<table>
+<table class="top cleanHeaders">
   <tr>
     <th colspan="2">Member</th>
     <th>Membership</th>

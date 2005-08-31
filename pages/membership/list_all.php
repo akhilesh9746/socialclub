@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: activate-members.php,v 1.3 2005/08/02 02:41:45 bps7j Exp $
+ * $Id: list_all.php,v 1.1 2005/08/31 00:29:17 bps7j Exp $
  */
 
 include_once("membership.php");
@@ -25,23 +25,25 @@ include_once("membership_type.php");
 include_once("Email.php");
 require_once("transaction.php");
 
-# Check that the user has correct permissions
-if (!$obj['user']->isInGroup('root') && !$obj['user']->isInGroup('activator')) {
-    # The user is not allowed to access this page.
-    include_once("pages/common/not-permitted.php");
-    return false;
-}
+$wrapper = file_get_contents("templates/membership/list_all.php");
 
-$wrapper = file_get_contents("templates/admin/activate-members.php");
+# Create a form for filtering options.
+$form =& new XmlForm("forms/membership/list_all.xml");
+$form->setValue("start", date("n/j/Y", time() - (60*60*24*14)));
+$form->snatch();
+$wrapper = Template::replace($wrapper, array("form" => $form->toString()));
 
 # Get a list of memberships that are a) not flexible b) inactive c) the
 # membership type hasn't expired already (so activating the membership would do
 # some good).
 
 $cmd = $obj['conn']->createCommand();
-$cmd->loadQuery("sql/membership/select-for-activation.sql");
+$cmd->loadQuery("sql/membership/list_all.sql");
 $cmd->addParameter("inactive", $cfg['status_id']['inactive']);
 $cmd->addParameter("active", $cfg['status_id']['active']);
+if ($form->getValue("start")) {
+    $cmd->addParameter("start", date("Y-m-d", strtotime($form->getValue("start"))));
+}
 $result = $cmd->executeReader();
 
 if (isset($_POST['submitted']) && isset($_POST['membership'])) {
