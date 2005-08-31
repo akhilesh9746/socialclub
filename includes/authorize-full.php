@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: authorize-full.php,v 1.2 2005/08/02 02:36:28 bps7j Exp $
+ * $Id: authorize-full.php,v 1.3 2005/08/31 00:37:23 bps7j Exp $
  */
 
 # If the browser sent auth, we can authenticate against the database.  The user
@@ -65,16 +65,8 @@ if ($cfg['auth']['user'] && $cfg['auth']['pass']) {
                 if ($row['pending']) {
                     redirect("$cfg[base_url]/members/join/inactive");
                 }
-                elseif ($row['expired']) {
-                    redirect("$cfg[base_url]/members/join/renew");
-                }
                 else {
-                    # If we got here, we have a real problem: something's
-                    # wrong with the query or something.
-                    trigger_error("There's a problem deciding what to do "
-                        . "with this user", E_USER_ERROR);
-                    $cfg['login_exists'] = false;
-                    $cfg['user'] = 0;
+                    redirect("$cfg[base_url]/members/join/renew");
                 }
             }
         }
