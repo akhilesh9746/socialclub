@@ -29,12 +29,17 @@ You can do the following types of outdoor activities at this location:</p>
 
 <p>The following adventures went to this location:</p>
 
-<ol>
+<table class="compact cleanHeaders">
+  <tr>
+    <th>Title</th>
+    <th>Date</th>
+  </tr>
 {ADVENTURE:}
-  <li>
-    <a href="members/adventure/read/{C_UID}">{C_TITLE}</a>
-  </li>{:ADVENTURE}
-</ol>
+  <tr>
+    <td><a href="members/adventure/read/{c_uid}">{c_title}</a></td>
+    <td>{c_start_date|_date_format,'M j, Y'}</td>
+  </tr>{:ADVENTURE}
+</table>
 {:SOME}
 
 </div>
