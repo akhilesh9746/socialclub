@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: initialize.sql,v 1.7 2005/08/04 21:24:00 bps7j Exp $
+ * $Id: initialize.sql,v 1.8 2005/08/31 00:56:22 bps7j Exp $
  *
  */
 
@@ -306,3 +306,5 @@ insert into [_]activity
     (now(), "Sunbathing"),
     (now(), "Swimming"),
     (now(), "Whitewater rafting");
+
+insert into [_]mutex values (0), (1), (2), (3), (4), (5), (6), (7), (8), (9);

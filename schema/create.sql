@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.sql,v 1.6 2005/08/05 20:36:21 bps7j Exp $
+ * $Id: create.sql,v 1.7 2005/08/31 00:56:22 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -330,12 +330,6 @@ create table [_]checkout_gear (
     index(c_checkout)
 ) type=MyISAM;
 
-create table [_]checkout_gear_qty (
-    c_type int not null default 0,
-    c_qty int not null default 0,
-    primary key(c_type)
-) type=MyISAM;
-
 create table [_]checkout_item (
     c_uid             int unsigned    not null auto_increment,
     c_owner           int unsigned    not null default 1, -- root
@@ -350,13 +344,6 @@ create table [_]checkout_item (
     c_item            int unsigned    not null default 0, -- > [_]item
     primary key  (c_uid),
     unique index(c_checkout, c_item)
-) type=MyISAM;
-
-create table [_]checkout_item_qty (
-    c_type int not null default 0,
-    c_qty int not null default 0,
-    c_qty_out int not null default 0,
-    primary key(c_type)
 ) type=MyISAM;
 
 create table [_]classified_ad (
@@ -826,6 +813,11 @@ create table [_]membership_type (
     c_flexible        bit             not null default 0,
     c_hidden          bit             not null default 0,
     primary key  (c_uid)
+) type=MyISAM;
+
+-- Used for bridging queries so unions and subselects can be done as joins.
+create table [_]mutex (
+    c_mutex           tinyint unsigned not null primary key
 ) type=MyISAM;
 
 -- Members are opted in to every category of email unless they opt out.
