@@ -20,13 +20,13 @@
     <td width="60%" style="padding-right:10px">
 
       <!-- Begin Upcoming Adventures -->
-      <h4 class="boxed">Upcoming Adventures</h4>
+      <h4 class="boxed">A Few Upcoming Adventures</h4>
       <table class="compact collapsed elbowroom" width="100%">
         {UPCOMING:}<tr>
-          <td>{IMG}</td>
-          <td nowrap>{C_START_DATE|_date_format,'M j'}</td>
+          <td>{img}</td>
+          <td nowrap>{c_start_date|_date_format,'M j'}</td>
           <td>
-            <a href="members/adventure/read/{C_UID}">{C_TITLE}</a><br>
+            <a href="members/adventure/read/{c_uid}">{c_title}</a><br>
           </td>
         </tr>{:UPCOMING}
       </table>
