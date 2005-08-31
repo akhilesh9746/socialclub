@@ -19,13 +19,14 @@ select
     -- Total number of expired memberships for the member.  These are
     -- memberships that have been activated but the expiration date has
     -- passed.
-    sum(if(ms.c_expiration_date < current_date, 1, 0)) as expired,
+    sum(if(ms.c_status & {active,int} = {active,int}
+            and ms.c_expiration_date < current_date, 1, 0)) as expired,
 
     -- Total number of inactive memberships for the member.  These are
     -- memberships that are either inactive or the begin date has not yet
     -- arrived.
     sum(if(
-            ifnull(ms.c_status, 0) & {inactive,int} = {inactive,int}
+            ms.c_status & {inactive,int} = {inactive,int}
             and (
                 ms.c_begin_date is null
                 or ms.c_begin_date > current_date
