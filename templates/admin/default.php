@@ -15,7 +15,7 @@ allowed to run it.</p>
 <p>Use the following links to manage memberships:</p>
 
 <ul>
-  <li><a href="members/admin/activate-members">Activate Memberships</a></li>
+  <li><a href="members/membership/list_all">Activate Memberships</a></li>
   {UNSUBSCRIBE:}
   <li><a href="members/admin/auto-unsubscribe-expired-members">Unsubscribe
   expired members</a></li>
