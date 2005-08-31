@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
+ * $Id: read.php,v 1.3 2005/08/31 00:40:22 bps7j Exp $
  */
 
 $template = file_get_contents("templates/location/read.php");
@@ -50,8 +50,7 @@ $cmd->addParameter("destination", $cfg['object']);
 $result = $cmd->executeReader();
 
 while ($row = $result->fetchRow()) {
-    $template = Template::block($template, "ADVENTURE",
-        array_change_key_case($row, 1));
+    $template = Template::block($template, "ADVENTURE", $row);
 }
 if ($result->numRows()) {
     $template = Template::unhide($template, "SOME");
