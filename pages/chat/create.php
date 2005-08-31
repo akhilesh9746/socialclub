@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/08/02 02:49:46 bps7j Exp $
+ * $Id: create.php,v 1.3 2005/08/31 00:39:20 bps7j Exp $
  */
 
 $template = file_get_contents("templates/chat/create.php");
@@ -44,7 +44,6 @@ if ($form->isValid()) {
     $object =& new chat();
     $object->setType($form->getValue("type"));
     $object->setScreenName($form->getValue("screen-name"));
-    $object->setIsPrimary(1);
     $object->insert();
     redirect("$cfg[base_url]/members/chat/read/$object->c_uid");
 }
