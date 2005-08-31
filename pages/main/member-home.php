@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: member-home.php,v 1.2 2005/08/02 02:55:12 bps7j Exp $
+ * $Id: member-home.php,v 1.3 2005/08/31 00:40:47 bps7j Exp $
  *
  * Purpose: the member homepage that members see after they log in.
  */
@@ -65,13 +65,12 @@ $favImg = "<img src='assets/smiley-tiny.png' width='12' height='12' "
 $cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/adventure/select-top-upcoming.sql");
 $cmd->addParameter("active", $cfg['status_id']['active']);
-$cmd->addParameter("number", 100);
+$cmd->addParameter("number", 10);
 $cmd->addParameter("member", $cfg['user']);
 $result = $cmd->executeReader();
 while ($row = $result->fetchRow()) {
     $wrapper = Template::block($wrapper, "UPCOMING",
-        array_change_key_case($row, 1)
-        + array("IMG" => (($row['fav'] > 0) ? $favImg : "")));
+        $row + array("img" => ($row['fav'] > 0 ? $favImg : "")));
 }
 
 # Get recent classified ads
