@@ -18,7 +18,18 @@
     <td>{phone_number}</td>
     <td>{c_screenname} ({c_abbreviation})</td>
   </tr>{:ROW}
+  <tr>
+    <td align="center" colspan="4">
+      <a href="javascript:void(0);"
+      onClick="prevPage(document.forms[0].offset);return false;">
+      &laquo; prev page</a>
+      <a href="javascript:void(0);"
+      onClick="nextPage(document.forms[0].offset);return false;">
+      next page &raquo;</a>
+    </td>
+  </tr>
 </table>
+
 {:SOME}
 
 {NONE:}
