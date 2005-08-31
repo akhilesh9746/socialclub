@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: setup.php,v 1.5 2005/08/03 00:30:36 bps7j Exp $
+ * $Id: setup.php,v 1.6 2005/08/31 00:38:16 bps7j Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -128,8 +128,8 @@ if ($cfg['error_log'] || $cfg['error_email']) {
     function userErrorHandler($errno, $errstr, $errfile, $errline) {
         global $cfg;
         $logMessage = "{$cfg['error_types'][$errno]} at line $errline "
-            ."in $errfile: $errstr"
-            . "\r\non page $_SERVER[REQUEST_URI]";
+            . "in $errfile: $errstr"
+            . "\r\n$_SERVER[REMOTE_HOST] on page $_SERVER[REQUEST_URI]";
         if (isset($_SERVER['HTTP_REFERER'])) {
             $logMessage .= "\r\nreferred from $_SERVER[HTTP_REFERER]";
         }
