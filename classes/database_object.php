@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: database_object.php,v 1.4 2005/08/05 00:46:09 bps7j Exp $
+ * $Id: database_object.php,v 1.5 2005/08/31 00:30:08 bps7j Exp $
  */
 
 include_once("DateTime.php");
@@ -422,7 +422,8 @@ class database_object {
     /* {{{toString
      */
     function toString() {
-        return get_class($this) . "($this->c_uid)";
+        return get_class($this) . "($this->c_uid) ["
+            . bitmaskString($this->c_status, 'status_id') . "]";
     } //}}}
 
     /* {{{getDeletionReport
