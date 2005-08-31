@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: XmlFormDocument.php,v 1.3 2005/08/02 23:46:18 bps7j Exp $
+ * $Id: XmlFormDocument.php,v 1.4 2005/08/31 00:49:58 bps7j Exp $
  */
 /* 
  * Purpose:  Represents an HTML form object that is derived from a DOM tree that
@@ -37,7 +37,22 @@ class XMLFormDocument extends Document {
 
     // {{{setValue
     function setValue($name, $value) {
-        $value = "$value";
+        // Stringify the input
+        if (is_scalar($value)) {
+            $value = strval($value);
+        }
+        elseif (is_array($value)) {
+            foreach ($value as $key => $val) {
+                $value[strval($key)] = strval($val);
+            }
+        }
+        elseif ($value) {
+            trigger_error("Invalid object type " . gettype($value), E_USER_ERROR);
+        }
+        else {
+            $value = "";
+        }
+
         @$configElements =& $this->getElementByID("config");
         $els = $configElements->selectElements(array("name" => $name), "element");
         if (!count($els)) {
