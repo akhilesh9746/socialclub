@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.3 2005/08/02 03:05:05 bps7j Exp $
+ * $Id: create.php,v 1.4 2005/09/01 02:18:45 bps7j Exp $
  */
 
 # Create templates
@@ -70,7 +70,9 @@ if (isset($_POST['multiple'])) {
 else {
     $avail = array();
     $cmd = $obj['conn']->createCommand();
-    $cmd->loadQuery("sql/item_type/select-by-category.sql");
+    $cmd->loadQuery("sql/item_type/select-with-available.sql");
+    $cmd->addParameter("missing", $cfg['status_id']['missing']);
+    $cmd->addParameter("checked_out", $cfg['status_id']['checked_out']);
     $result = $cmd->executeReader();
     $thisCat = "";
     $groupTemplate = Template::extract($formTemplate, "group");
