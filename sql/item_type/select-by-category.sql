@@ -1,16 +1,11 @@
--- You may need to refresh the _qty tables depending
--- on whether you need the 'available' column
 select
-    cat.c_uid as cat_uid,
-    cat.c_title as cat_title,
-    it.c_uid,
-    it.c_title,
-    ciq.c_qty - ciq.c_qty_out - cgq.c_qty as available
-from [_]item_type as it
-    inner join [_]item_category as cat on cat.c_uid = it.c_category
-    left outer join [_]checkout_gear_qty as cgq on cgq.c_type = it.c_uid
-    left outer join [_]checkout_item_qty as ciq on ciq.c_type = it.c_uid
-where ({cat,int} is null or it.c_category = {cat,int})
-    and it.c_deleted <> 1
-    and cat.c_deleted <> 1
-order by cat_title, it.c_title
+    ic.c_uid as cat_uid,
+    ic.c_title as cat_title,
+    ty.c_uid,
+    ty.c_title
+from [_]item_category as ic 
+    inner join [_]item_type as ty on ty.c_category = ic.c_uid
+where ({cat,int} is null or ic.c_uid = {cat,int})
+    and ty.c_deleted = 0
+    and ic.c_deleted = 0
+order by ic.c_title, ty.c_title

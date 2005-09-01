@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.3 2005/08/02 03:05:05 bps7j Exp $
+ * $Id: write.php,v 1.4 2005/09/01 01:59:20 bps7j Exp $
  */
 
 # Create templates
@@ -101,7 +101,9 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     # Add the one-gear-at-a-time form to the page
     $formTemplate = file_get_contents("forms/checkout_gear/create.xml");
     $cmd = $obj['conn']->createCommand();
-    $cmd->loadQuery("sql/item_type/select-by-category.sql");
+    $cmd->addParameter("missing", $cfg['status_id']['missing']);
+    $cmd->addParameter("checked_out", $cfg['status_id']['checked_out']);
+    $cmd->loadQuery("sql/item_type/select-with-available.sql");
     $result = $cmd->executeReader();
     $thisCat = "";
     # Extract two templates from this template, and use them instead.
