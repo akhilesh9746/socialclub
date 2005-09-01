@@ -21,6 +21,9 @@
     <element
         name="type"
         element-id="type" />
+    <element
+        name="item"
+        element-id="item" />
 </config>
 
 <fieldset>
@@ -50,7 +53,10 @@
     <th>With</th>
     <td>
 
-    items of type
+      item #
+      <input type="text" size="5" id="item" name="item" />
+
+      and items of type
       <select name="type" id="type">
         <option value="">[any type]</option>{GROUP:}
         <optgroup label="{cat_title|htmlspecialchars}">{TYPE:}

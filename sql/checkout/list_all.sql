@@ -27,6 +27,7 @@ where ({status,int} is null or co.c_status & {status,int} = {status,int})
     and ({begin,date} is null or co.c_created_date >= {begin,date})
     and ({end,date} is null or co.c_created_date <= {end,date})
     and ({type,int} is null or it.c_type = {type,int} or cg.c_type = {type,int})
+    and ({item,int} is null or it.c_uid = {item,int})
     and co.c_deleted = 0
     and me.c_deleted = 0
     and off.c_deleted = 0

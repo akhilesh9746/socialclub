@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.4 2005/08/31 00:36:27 bps7j Exp $
+ * $Id: list_all.php,v 1.5 2005/09/01 01:58:12 bps7j Exp $
  */
 
 # Create a template 
@@ -75,6 +75,9 @@ if ($form->getValue("end")) {
 }
 if ($form->getValue("type")) {
     $cmd->addParameter("type", $form->getValue("type"));
+}
+if ($form->getValue("item")) {
+    $cmd->addParameter("item", $form->getValue("item"));
 }
 $result = $cmd->executeReader();
 
