@@ -23,6 +23,7 @@
         element-id="type" />
     <element
         name="item"
+        data-type="integer"
         element-id="item" />
 </config>
 
@@ -55,6 +56,7 @@
 
       item #
       <input type="text" size="5" id="item" name="item" />
+      <span class="error" id="item-error" hidden="1">enter an integer</span>
 
       and items of type
       <select name="type" id="type">

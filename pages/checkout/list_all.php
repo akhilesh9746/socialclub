@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.5 2005/09/01 01:58:12 bps7j Exp $
+ * $Id: list_all.php,v 1.6 2005/09/01 02:17:42 bps7j Exp $
  */
 
 # Create a template 
@@ -57,6 +57,7 @@ $formTemplate = Template::replace($formTemplate, array(
 $form =& new XmlForm(Template::finalize($formTemplate), true);
 $form->setValue("status", $cfg['status_id']['checked_out']);
 $form->snatch();
+$form->validate();
 
 $cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/checkout/list_all.sql");
