@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: database_object.php,v 1.5 2005/08/31 00:30:08 bps7j Exp $
+ * $Id: database_object.php,v 1.6 2005/09/12 01:43:23 bps7j Exp $
  */
 
 include_once("DateTime.php");
@@ -351,6 +351,20 @@ class database_object {
      */
     function setCreatedDate($value) {
         $this->c_created_date = date("Y-m-d H:i:s", strtotime($value));
+    } //}}}
+
+    /* {{{getDeleted
+     *
+     */
+    function getDeleted() {
+        return $this->c_deleted;
+    } //}}}
+
+    /* {{{setDeleted
+     *
+     */
+    function setDeleted($value) {
+        $this->c_deleted = $value;
     } //}}}
 
     /* {{{getStatus
