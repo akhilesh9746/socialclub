@@ -16,6 +16,11 @@
         name="activity"
         error-element="error-element"
         element-id="activity" />
+    <element
+        required="1"
+        name="due"
+        data-type="date"
+        element-id="due" />
 </config>
 
 <p class="error" hidden="1" id="error-element">You must select some values.</p>
@@ -29,6 +34,14 @@
   <option value="">Select one</option>{option:}
   <option value="{c_uid}">{c_title}</option>{:option}
 </select>
+
+<p><span class="error" id="due-error" hidden="1">You must enter a
+value.</span>  Please specify a due date for this equipment:</p>
+
+<input type="text" name="due" id="due" size="10" />
+<img src="assets/cal.gif" onClick="showChooser(this, 'due', 'chooserSpan', 2005, 2010, 'Y-m-d');" />
+<div id="chooserSpan" class="dateChooser" style="display:none; visibility:hidden; width:160px">
+</div>
 
 <input type="submit" value="Go" />
 

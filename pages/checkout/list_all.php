@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.6 2005/09/01 02:17:42 bps7j Exp $
+ * $Id: list_all.php,v 1.7 2005/09/12 01:42:14 bps7j Exp $
  */
 
 # Create a template 
@@ -73,6 +73,9 @@ if ($form->getValue("begin")) {
 }
 if ($form->getValue("end")) {
     $cmd->addParameter("end", date("Y-m-d", strtotime($form->getValue("end"))));
+}
+if ($form->getValue("due")) {
+    $cmd->addParameter("due", date("Y-m-d", strtotime($form->getValue("due"))));
 }
 if ($form->getValue("type")) {
     $cmd->addParameter("type", $form->getValue("type"));

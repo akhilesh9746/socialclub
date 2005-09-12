@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.3 2005/08/02 03:05:05 bps7j Exp $
+ * $Id: read.php,v 1.4 2005/09/12 01:42:14 bps7j Exp $
  */
 
 # Create templates
@@ -50,6 +50,7 @@ $member =& new member();
 $member->select($object->getMember());
 
 $res['content'] = Template::replace($template, array(
+    "due" => $object->getDueDate(),
     "name" => $member->getFullName()));
 $res['title'] = "Items Checked Out to " . $member->getFullName();
 

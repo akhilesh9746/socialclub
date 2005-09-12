@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: checkout.php,v 1.1 2005/03/27 19:54:25 bps7j Exp $
+ * $Id: checkout.php,v 1.2 2005/09/12 01:42:14 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -28,6 +28,7 @@ class checkout extends database_object {
 
     var $c_member = null;
     var $c_activity = null;
+    var $c_due_date = null;
 
     /* {{{constructor
      */
@@ -49,6 +50,14 @@ class checkout extends database_object {
 
     function setActivity($value) {
         $this->c_activity = $value;
+    }
+
+    function getDueDate() {
+        return $this->c_due_date;
+    }
+
+    function setDueDate($value) {
+        $this->c_due_date = $value;
     }
 
 }

@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.sql,v 1.7 2005/08/31 00:56:22 bps7j Exp $
+ * $Id: create.sql,v 1.8 2005/09/12 01:42:14 bps7j Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -177,8 +177,8 @@ create table [_]adventure (
     c_destination     int unsigned    not null, -- > [_]location
     c_average_rating  float           not null default 0,
     c_num_ratings     int unsigned    not null default 0,
+    c_waitlist_only   bit             not null default 0,
     index (c_start_date),
-    index (c_signup_date),
     index (c_end_date),
     index (c_owner),
     primary key  (c_uid)
@@ -308,6 +308,7 @@ create table [_]checkout (
     c_member          int unsigned    not null default 0, -- > [_]member
     -- Generally speaking, what type of checkout is this?
     c_activity        int unsigned    not null default 0, -- > [_]activity_category
+    c_due_date        date            not null,
     primary key  (c_uid)
 ) type=MyISAM;
 

@@ -9,12 +9,6 @@
 
 <h2>Items</h2>
 
-<style type="text/css">
-tr.checked_out td {
-    color:#008080;
-}
-</style>
-
 <table class="borders collapsed compact top">
   <tr>
     <th>Item #</th>
@@ -50,6 +44,8 @@ tr.checked_out td {
     <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>{:gear}
 </table>
+
+<p class="notice">This equipment is due on {due|_date_format,'M j, Y'}.</p>
 
 {actions,{PAGE},{OBJECT},default}
 

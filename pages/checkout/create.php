@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/08/02 02:50:28 bps7j Exp $
+ * $Id: create.php,v 1.3 2005/09/12 01:42:14 bps7j Exp $
  */
 
 $formT = file_get_contents("forms/checkout/create.xml");
@@ -47,6 +47,7 @@ if ($form->isValid()) {
     $object =& new checkout();
     $object->setMember($form->getValue("member"));
     $object->setActivity($form->getValue("activity"));
+    $object->setDueDate($form->getValue("due"));
     $object->insert();
     redirect("$cfg[base_url]/members/checkout/write/$object->c_uid");
 }
