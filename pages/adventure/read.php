@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.2 2005/08/02 02:48:32 bps7j Exp $
+ * $Id: read.php,v 1.3 2005/09/12 01:39:32 bps7j Exp $
  */
 
 include_once("location.php");
@@ -28,6 +28,7 @@ $cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/adventure/read.sql");
 $cmd->addParameter("adventure", $cfg['object']);
 $cmd->addParameter("member", $cfg['user']);
+$cmd->addParameter("default", $cfg['status_id']['default']);
 $result = $cmd->executeReader();
 $advRow = $result->fetchRow();
 
