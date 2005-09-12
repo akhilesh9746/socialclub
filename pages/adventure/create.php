@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.3 2005/08/02 02:47:07 bps7j Exp $
+ * $Id: create.php,v 1.4 2005/09/12 01:39:02 bps7j Exp $
  */
 
 include_once("location.php");
@@ -97,6 +97,9 @@ else {
             $object->setEndDate($form->getValue("end"));
             $object->setSignupDate($form->getValue("signup"));
             $object->setStatus($cfg['status_id']['inactive']);
+            if ($form->getValue("waitlist")) {
+                $object->setWaitlistOnly(1);
+            }
             $object->insert();
 
             # Create and save adventure-activity associations

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: join.php,v 1.1 2005/03/27 19:53:34 bps7j Exp $
+ * $Id: join.php,v 1.2 2005/09/12 01:39:02 bps7j Exp $
  *
  * Purpose: lets a member join an adventure.
  */
@@ -70,7 +70,9 @@ if (!$error && (($form && $form->isValid()) || !$form)) {
     $attendee->setMember($cfg['user']);
     $attendee->setAdventure($cfg['object']);
     $attendee->setJoinedDate(date("Y-m-d H:i:s"));
-    if ($object->isFull()) {
+    if (($object->isFull() || $object->getWaitlistOnly())
+        && $obj['user']->getUID() != $object->getOwner())
+    {
         $attendee->setStatus($cfg['status_id']['waitlisted']);
     }
     $attendee->setAmountPaid($object->getFee());

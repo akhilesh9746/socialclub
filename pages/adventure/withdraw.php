@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: withdraw.php,v 1.1 2005/03/27 19:53:35 bps7j Exp $
+ * $Id: withdraw.php,v 1.2 2005/09/12 01:39:02 bps7j Exp $
  */
 
 $template = file_get_contents("templates/adventure/withdraw.php");
@@ -53,7 +53,9 @@ if (getval('continue') && !$error) {
     # room on the adventure for the waitlisted person in case the adventure is
     # full.
     $attendee->delete(FALSE, TRUE);
-    if ($attendee->getStatus() == $cfg['status_id']['default']) {
+    if ($attendee->getStatus() == $cfg['status_id']['default']
+        && !$object->getWaitlistOnly())
+    {
         JoinAdventure::removeFirstWaitlistedMember($object);
     }
 

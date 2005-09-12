@@ -57,6 +57,9 @@
         data-type="number"
         element-id="attendees"
         />
+    <element
+        name="waitlist"
+        element-id="waitlist" />
 </config>
 
 <p class="error" id="overall-error" hidden="1">Some information is incorrect.
@@ -250,6 +253,15 @@ Please correct the errors marked below and resubmit.</p>
     <td>Maximum # of attendees</td>
     <td>
       <input type="text" name="attendees" id="attendees" value="" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>Waitlist only?</td>
+    <td>
+      <input type="checkbox" name="waitlist" id="waitlist" value="1" />
+      <label for="waitlist">If you check this box, all attendees will be
+      waitlisted when they join.</label>
     </td>
   </tr>
 

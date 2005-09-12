@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.3 2005/08/02 03:05:04 bps7j Exp $
+ * $Id: write.php,v 1.4 2005/09/12 01:39:02 bps7j Exp $
  */
 
 include_once("location.php");
@@ -30,7 +30,7 @@ if (date("Y-m-d H:i:s") >= $object->getStartDate()) {
     $template = Template::unhide($template, "DATE");
     $error = true;
 }
-if ($object->getStatus() === $cfg['status_id']['deleted']
+if ($object->getDeleted()
     || $object->getStatus() === $cfg['status_id']['cancelled'])
 {
     $template = Template::unhide($template, "STATUS");
@@ -66,6 +66,9 @@ $form->setValue("fee", $object->getFee());
 $form->setValue("start", $object->c_start_date);
 $form->setValue("end", $object->c_end_date);
 $form->setValue("signup", $object->c_signup_date);
+if ($object->c_waitlist_only) {
+    $form->setValue("waitlist", "1");
+}
 
 # Validate the form
 $form->snatch();
@@ -95,13 +98,15 @@ if (!$error && $form->isValid()) {
     $object->setStartDate($form->getValue("start"));
     $object->setEndDate($form->getValue("end"));
     $object->setSignupDate($form->getValue("signup"));
+    $object->setWaitlistOnly($form->getValue("waitlist") ? 1 : 0);
 
     # Save the modified adventure
     $object->update();
 
     # If the adventure's size was increased, let some members off the waitlist
     # if necessary
-    if ($newSize > $oldSize
+    if (!$object->getWaitlistOnly()
+            && $newSize > $oldSize
             && $newSize > count($object->getAttendees("default"))
             && count($object->getAttendees("waitlisted")))
     {

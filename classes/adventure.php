@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: adventure.php,v 1.2 2005/08/02 02:27:54 bps7j Exp $
+ * $Id: adventure.php,v 1.3 2005/09/12 01:39:01 bps7j Exp $
  */
 
 include_once("database_object.php");
@@ -35,6 +35,7 @@ class adventure extends database_object {
     var $c_max_attendees = null;
     var $c_average_rating = null;
     var $c_num_ratings = null;
+    var $c_waitlist_only = null;
     // }}}
 
     /* {{{constructor
@@ -162,6 +163,20 @@ class adventure extends database_object {
      */
     function setFee($value) {
         $this->c_fee = $value;
+    } //}}}
+
+    /* {{{getWaitlistOnly
+     *
+     */
+    function getWaitlistOnly() {
+        return $this->c_waitlist_only;
+    } //}}}
+
+    /* {{{setWaitlistOnly
+     *
+     */
+    function setWaitlistOnly($value) {
+        $this->c_waitlist_only = $value;
     } //}}}
 
     /* {{{getMaxAttendees
