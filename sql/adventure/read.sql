@@ -29,7 +29,7 @@ from [_]adventure as ad
         and co.c_adventure = ad.c_uid
     left outer join [_]attendee as other_atts
         on other_atts.c_adventure = ad.c_uid
-        and other_atts.c_status & {active,int} = {active,int}
+        and other_atts.c_status & {default,int} = {default,int}
 where ad.c_uid = {adventure,int}
 group by
     ad.c_uid, ad.c_title, ad.c_description, ad.c_owner, ad.c_max_attendees,
