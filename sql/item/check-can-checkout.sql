@@ -1,6 +1,7 @@
 select
     it.c_status,
-    ci.c_uid
+    ci.c_uid,
+    ci.c_checkout
 from [_]item as it
     left outer join [_]checkout_item as ci on ci.c_item = it.c_uid
         and (ci.c_status & {checked_out,int} = {checked_out,int})

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: check_in.php,v 1.2 2005/08/02 03:05:05 bps7j Exp $
+ * $Id: check_in.php,v 1.3 2005/09/12 23:35:13 bps7j Exp $
  */
 
 if ($object->getStatus() == $cfg['status_id']['checked_out']
@@ -58,16 +58,16 @@ if ($object->getStatus() == $cfg['status_id']['checked_out']
     # Finally, run a query that will update the status of the checkout
     # itself once all the gear and items are checked back in.
     $cmd = $obj['conn']->createCommand();
-    $cmd->loadQuery("sql/checkout/count-outstanding-items.sql");
+    $cmd->loadQuery("sql/checkout/check_in.sql");
     $cmd->addParameter("checkout", $cfg['object']);
     $cmd->addParameter("checked_out", $cfg['status_id']['checked_out']);
-    $outstandingItems = $cmd->executeScalar();
-    if ($outstandingItems == 0) {
-        $object->setStatus($cfg['status_id']['checked_in']);
-        $object->update();
-    }
+    $cmd->addParameter("checked_in", $cfg['status_id']['checked_in']);
+    $cmd->executeNonQuery();
 
 }
+
+# The query above may have changed the object's status.
+$object->select($cfg['object']);
 
 if ($object->getStatus() != $cfg['status_id']['checked_out']) {
     redirect("$cfg[base_url]/members/checkout/read/$cfg[object]");
