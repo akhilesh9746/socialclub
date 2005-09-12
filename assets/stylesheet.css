@@ -467,7 +467,7 @@ div.tinyMenu a:hover {
 
 /* Status columns */
 .checked_out, .checked_out td {
-    color:maroon;
+    color:#F00;
 }
 .missing, .missing td {
     color:#808080;
