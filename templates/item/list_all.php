@@ -4,13 +4,6 @@
 .sort{SORT_COL} {
     background: #EEE;
 }
-tr.status256 td {
-    color:#008080;
-}
-tr.status1024 td {
-    color:#808080;
-    text-decoration: line-through;
-}
 </style>
 
 {FORM}
@@ -21,9 +14,8 @@ tr.status1024 td {
 
 {GENERIC:}
 
-<p>{NUM_ROWS} items found.  Color key: <span style="color:#008080">checked
-out</span>, <span style="color:#808080; text-decoration:
-line-through">missing</span></p>
+<p>{NUM_ROWS} items found.  Color key: <span class="checked_out">checked
+out</span>, <span class="missing">missing</span></p>
 
 <table class="borders collapsed elbowroom compact top">
   <tr>
@@ -34,7 +26,7 @@ line-through">missing</span></p>
     <th>Details 1</th>
     <th>Details 2</th>
   </tr>{item:}
-  <tr class="status{c_status}">
+  <tr class="{c_status|bitmaskString,'status_id'}">
     <td class="sortID">
       <a href="members/item/read/{ID}">{ID}</a>
     </td>
@@ -50,8 +42,7 @@ line-through">missing</span></p>
 {BY_TYPE:}
 
 <p>{NUM_ROWS} items matched your query.  Color key: <span
-style="color:#008080">checked out</span>, <span style="color:#808080;
-text-decoration: line-through">missing</span>.</p>
+class="checked_out">checked out</span>, <span class="missing">missing</span>.</p>
 
 <table class="borders collapsed elbowroom compact top" style="background:white">
   <tr>
@@ -60,7 +51,7 @@ text-decoration: line-through">missing</span>.</p>
     <th>Condition</th>{header:}
     <th>{c_name}</th>{:header}
   </tr>{item:}
-  <tr class="status{status_table}">
+  <tr class="{c_status|bitmaskString,'status_id'}">
     <td class="sortID">
       <a href="members/item/read/{ID_table}">{ID_table}</a>
     </td>

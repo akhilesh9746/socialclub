@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/08/02 03:05:05 bps7j Exp $
+ * $Id: create.php,v 1.3 2005/09/12 01:53:16 bps7j Exp $
  */
 
 # Create templates
@@ -27,27 +27,51 @@ $form =& new XMLForm("forms/checkout_item/create.xml");
 $form->snatch();
 $form->validate();
 
-$found = false;
+$status = 0;
 
 if ($form->isValid()) {
     $cmd = $obj['conn']->createCommand();
     $cmd->loadQuery("sql/item/check-can-checkout.sql");
     $cmd->addParameter("item", $form->getValue("item"));
-    $cmd->addParameter("checkout", $form->getValue("checkout"));
-    $cmd->addParameter("checked_in", $cfg['status_id']['checked_in']);
-    $found = ($cmd->executeScalar() > 0);
-    if ($found) {
-        # Add the new checkout_item to the checkout, then redirect back to the checkout
-        $object =& new checkout_item();
-        $object->setCheckout($form->getValue("checkout"));
-        $object->setItem($form->getValue("item"));
-        $object->insert();
-        redirect("$cfg[base_url]/members/checkout/write/" . $form->getValue("checkout"));
+    $cmd->addParameter("checked_out", $cfg['status_id']['checked_out']);
+    $result = $cmd->executeReader();
+    if ($result->numRows()) {
+        $row = $result->fetchRow();
+        $status = $row['c_status'];
+        if ($status == $cfg['status_id']['checked_out']) {
+            # The item is checked out on other checkout sheet(s), so obviously
+            # they are wrong.  We'll forcibly check it in and add a note.
+            do {
+                $cmd = $obj['conn']->createCommand();
+                $cmd->loadQuery("sql/checkout_item/check_in.sql");
+                $cmd->addParameter("checkout_item", $row['c_uid']);
+                $cmd->addParameter("status", $cfg['status_id']['checked_in']);
+                $cmd->executeNonQuery();
+
+                $cmd = $obj['conn']->createCommand();
+                $cmd->loadQuery("sql/checkout_item/add-note.sql");
+                $cmd->addParameter("member", $cfg['user']);
+                $cmd->addParameter("checkout_item", $row['c_uid']);
+                $cmd->addParameter("note", "Forced checkin for checkout "
+                    . $form->getValue("checkout"));
+                $cmd->executeNonQuery();
+            } while ($row = $result->fetchRow());
+            $status = $cfg['status_id']['checked_in'];
+        }
+        if ($status == $cfg['status_id']['checked_in']) {
+            # Add the new checkout_item to the checkout, then redirect back
+            # to the checkout
+            $object =& new checkout_item();
+            $object->setCheckout($form->getValue("checkout"));
+            $object->setItem($form->getValue("item"));
+            $object->insert();
+            redirect("$cfg[base_url]/members/checkout/write/"
+                . $form->getValue("checkout"));
+        }
     }
 }
-
 # Display the form and force the user to fix the mistake.
-if (!$found) {
+if (!$status) {
     $template = Template::unhide($template, "notfound");
 }
 

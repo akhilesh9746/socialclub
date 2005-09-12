@@ -3,8 +3,7 @@
 <p>Please fix the errors below and resubmit the form:</p>
 
 {notfound:}
-<p class="error">Sorry, that is not a valid item number, or that item is already
-checked out.</p>
+<p class="error">Sorry, that is not a valid item number.</p>
 {:notfound}
 
 {form}
