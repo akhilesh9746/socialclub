@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_report.php,v 1.3 2005/08/31 00:35:02 bps7j Exp $
+ * $Id: view_report.php,v 1.4 2005/09/13 21:13:42 bps7j Exp $
  */
 
 include_once("attendee.php");
@@ -27,6 +27,17 @@ $res['title'] = "View Adventure Report";
 $template = file_get_contents("templates/adventure/view_report.php");
 $form =& new XmlForm("forms/adventure/view_report.xml");
 $form->snatch();
+
+$cmd = $obj['conn']->createCommand();
+$cmd->loadQuery("sql/adventure/view_report-summary.sql");
+$cmd->addParameter("adventure", $cfg['object']);
+$cmd->addParameter("waitlisted", $cfg['status_id']['waitlisted']);
+$result = $cmd->executeReader();
+$row = $result->fetchRow();
+
+$template = Template::replace($template, array(
+    "total" => $row['total'],
+    "waitlisted" => $row['waitlisted']));
 
 $cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/adventure/view_report.sql");

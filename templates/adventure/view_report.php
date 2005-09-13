@@ -11,11 +11,11 @@ Adventure: <b>{C_TITLE}</b>
 
 {SOME:}
 
-<p>{NUM_ATTENDEES} attendees shown, in the order they joined<sup>[1]</sup>.  The first column
-shows whether the member is joined or waitlisted.  The last shows the number of
-absences and times the member has been waitlisted.  Use the radio button in the
-left column, and the buttons at the bottom of the table, to manage
-attendees.</p>
+<p><b>{total} attendees, {waitlisted} waitlisted</b>.  {NUM_ATTENDEES} attendees
+shown, in the order they joined<sup>[1]</sup>.  The first column shows whether
+the member is joined or waitlisted.  The last shows the number of absences and
+times the member has been waitlisted.  Use the radio button in the left column,
+and the buttons at the bottom of the table, to manage attendees.</p>
 
 <script type="text/javascript" language="javascript">
 function formEnabled(form) {
