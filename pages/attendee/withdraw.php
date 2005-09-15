@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: withdraw.php,v 1.2 2005/09/12 01:39:02 bps7j Exp $
+ * $Id: withdraw.php,v 1.3 2005/09/15 01:13:38 bps7j Exp $
  *
  * Purpose: allows a leader to withdraw an attendee from an adventure.
  */
@@ -44,7 +44,7 @@ if (getval('waitlist')) {
 
     # If specified, move the first person off the waitlist
     if ($object->getStatus() == $cfg['status_id']['default']
-        && !$object->getWaitlistOnly()
+        && !$adventure->getWaitlistOnly()
         && getval('waitlist') == "true")
     {
         $moved = JoinAdventure::removeFirstWaitlistedMember($adventure);
