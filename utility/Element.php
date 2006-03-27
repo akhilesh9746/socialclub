@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Element.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
+ * $Id: Element.php,v 1.3 2006/03/27 03:46:25 bps7j Exp $
  */
 
 include_once("Node.php");
@@ -53,7 +53,7 @@ class Element extends Node {
         unset($this->attributes[$name]);
     }
 
-    function getElementsByTagName($name) {
+    function &getElementsByTagName($name) {
         $result = array();
         if ($name === "*") {
             $result[] =& $this;

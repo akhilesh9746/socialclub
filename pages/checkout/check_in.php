@@ -17,12 +17,10 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: check_in.php,v 1.3 2005/09/12 23:35:13 bps7j Exp $
+ * $Id: check_in.php,v 1.4 2006/03/27 03:46:25 bps7j Exp $
  */
 
-if ($object->getStatus() == $cfg['status_id']['checked_out']
-    && isset($_POST['submitted']))
-{
+if (isset($_POST['submitted'])) {
 
     if (isset($_POST['gear']) && is_array($_POST['gear'])) {
 
@@ -51,6 +49,23 @@ if ($object->getStatus() == $cfg['status_id']['checked_out']
             $cmd->addParameter("member", $cfg['user']);
             $cmd->addParameter("checkout_item", $item);
             $cmd->executeNonQuery();
+
+            # If the condition changes, both update the item and enter a note
+            if ($_POST["item{$item}oldcond"] != $_POST["item{$item}condition"]) {
+                $cmd = $obj['conn']->createCommand();
+                $cmd->loadQuery("sql/checkout_item/update-condition.sql");
+                $cmd->addParameter("checkout_item", $item);
+                $cmd->addParameter("condition", $_POST["item{$item}condition"]);
+                $cmd->executeNonQuery();
+                if ($_POST["item{$item}comment"]) {
+                    $cmd = $obj['conn']->createCommand();
+                    $cmd->loadQuery("sql/checkout_item/add-note.sql");
+                    $cmd->addParameter("member", $cfg['user']);
+                    $cmd->addParameter("note", $_POST["item{$item}comment"]);
+                    $cmd->addParameter("checkout_item", $item);
+                    $cmd->executeNonQuery();
+                }
+            }
         }
 
     }

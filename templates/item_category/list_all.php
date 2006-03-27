@@ -12,7 +12,7 @@
       {c_uid}
     </td>
     <td>
-      <a href="members/item_category/{c_uid}">{c_title}</a>
+      <a href="members/item_category/read/{c_uid}">{c_title}</a>
     </td>
   </tr>{:category}
 </table>

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: adventure.php,v 1.3 2005/09/12 01:39:01 bps7j Exp $
+ * $Id: adventure.php,v 1.4 2006/03/27 03:46:24 bps7j Exp $
  */
 
 include_once("database_object.php");

@@ -16,10 +16,10 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: implemented-actions.sql,v 1.6 2005/09/01 01:59:53 bps7j Exp $
+ * $Id: implemented-actions.sql,v 1.7 2006/03/27 03:46:25 bps7j Exp $
  *
  * Create correspondences between tables and actions to say which actions apply
- * to which tables.
+ * to which tables, and in what status.
  */
 
 -- Declare status value constants.

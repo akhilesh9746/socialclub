@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.3 2005/09/12 01:39:32 bps7j Exp $
+ * $Id: read.php,v 1.4 2006/03/27 03:46:25 bps7j Exp $
  */
 
 include_once("location.php");
@@ -55,6 +55,19 @@ $cmd->addParameter("adventure", $cfg['object']);
 $result = $cmd->executeReader();
 while ($row = $result->fetchRow()) {
     $template = Template::block($template, "cat", $row);
+}
+
+# Plug in attendees if the adventure is in the past:
+$cmd = $obj['conn']->createCommand();
+$cmd->loadQuery("sql/adventure/select-attendee-info.sql");
+$cmd->addParameter("adventure", $cfg['object']);
+$cmd->addParameter("default", $cfg['status_id']['default']);
+$result = $cmd->executeReader();
+if ($result->numRows()) {
+    $template = Template::unhide($template, "attendees");
+    while ($row = $result->fetchRow()) {
+        $template = Template::block($template, "attendee", $row);
+    }
 }
 
 # If the adventure has any comments, display them

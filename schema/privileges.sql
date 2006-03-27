@@ -1,11 +1,11 @@
 drop table if exists temp_privileges;
 
 create table temp_privileges (
-    c_what varchar(100),
-    c_groups varchar(100),
-    c_action_title varchar(100),
-    c_granted_on varchar(100),
-    c_table varchar(100),
+    c_what varchar(20),
+    c_groups varchar(20),
+    c_action_title varchar(50),
+    c_granted_on varchar(50),
+    c_table varchar(50),
     primary key (c_what, c_groups, c_action_title, c_granted_on, c_table)
 ) type=MyISAM;
 

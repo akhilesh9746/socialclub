@@ -16,7 +16,7 @@
     <td><a href="members/member/read/{c_uid}">{c_last_name}, {c_first_name}</a></td>
     <td><a href="mailto:{c_email}">{c_email}</a></td>
     <td>{phone_number}</td>
-    <td>{c_screenname} ({c_abbreviation})</td>
+    <td><img src="assets/{c_abbreviation}.png"> {c_screenname}</td>
   </tr>{:ROW}
   <tr>
     <td align="center" colspan="4">

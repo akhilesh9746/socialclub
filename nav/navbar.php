@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: navbar.php,v 1.2 2005/06/05 16:22:29 bps7j Exp $
+ * $Id: navbar.php,v 1.3 2006/03/27 03:46:25 bps7j Exp $
  */
 
 include_once("TreeNavbar.php");
@@ -27,6 +27,8 @@ $obj['navbar'] =& new TreeNavbar();
 # ==============================================================
 
 $obj['navbar']->addNode("{BASE_URL}", "Home");
+$obj['navbar']->addNode("about/sample.shtml", "Sample", "Home");
+
 $obj['navbar']->addNode("members/join", "Join {CLUB_NAME}");
 
 $obj['navbar']->addNode("members/main/member-home", "Member's Area");

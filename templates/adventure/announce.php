@@ -20,7 +20,8 @@ this adventure.</p>
 
 {SUCCESS:}
 <p class="notice">You have successfully announced your adventure to
-the main mailing list.</p>
+the main mailing list.  The messages are queued and may take 5 minutes or so to
+send.</p>
 {:SUCCESS}
 
 {CONFIRM:}

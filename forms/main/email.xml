@@ -20,6 +20,15 @@
         required="1"
         name="category"
         element-id="category" />
+    <element
+        required="1"
+        name="group"
+        element-id="group" />
+    {FORCE:}
+    <element
+        name="force"
+        element-id="force" />
+    {:FORCE}
 </config>
 
 <table width="100%">
@@ -53,9 +62,25 @@
         <option value="">Choose a Category</option>{option:}
         <option value="{c_uid}">{c_title}</option>{:option}
       </select>
-      <input type="submit" value="Send Message" />
     </td>
   </tr>
-
+  <tr hidden="1" id="group-error">
+    <td colspan="2" class="error">You must choose a group.</td>
+  </tr>
+  <tr>
+    <td>Send to</td>
+    <td>
+      <select name="group" id="group">
+        <option value="">Choose a Group</option>{group:}
+        <option value="{group_id}">{group_name}s</option>{:group}
+      </select>
+      {FORCE:}
+      <input name="force" id="force" type="checkbox" value="1" />
+      <label for="force">Send even if member doesn't want email?</label>
+      {:FORCE}
+    </td>
+  </tr>
 </table>
+
+      <input type="submit" value="Send Message" />
 </form>

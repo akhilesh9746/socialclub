@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: foreign-keys.sql,v 1.2 2005/06/05 18:07:47 bps7j Exp $
+ * $Id: foreign-keys.sql,v 1.3 2006/03/27 03:46:25 bps7j Exp $
  *
  */
 
@@ -59,6 +59,7 @@ insert into [_]foreign_key
     ("[_]condition",            "[_]item",                  "c_uid",    "c_condition"),
     ("[_]condition",            "[_]item_note",             "c_uid",    "c_condition"),
     ("[_]email_list",           "[_]subscription",          "c_uid",    "c_list"),
+    ("[_]email",                "[_]email_recipient",       "c_uid",    "c_email"),
     ("[_]expense_report",       "[_]expense",               "c_uid",    "c_report"),
     ("[_]expense_report",       "[_]expense_report_note",   "c_uid",    "c_report"),
     ("[_]expense_category",     "[_]expense",               "c_uid",    "c_category"),
@@ -72,6 +73,7 @@ insert into [_]foreign_key
     ("[_]location",             "[_]adventure",             "c_uid",    "c_destination"),
     ("[_]location",             "[_]location_activity",     "c_uid",    "c_location"),
     ("[_]member",               "[_]attendee",              "c_uid",    "c_member"),
+    ("[_]member",               "[_]email_recipient",       "c_uid",    "c_recipient"),
     ("[_]member",               "[_]interest",              "c_uid",    "c_member"),
     ("[_]member",               "[_]member_note",           "c_uid",    "c_member"),
     ("[_]member",               "[_]membership",            "c_uid",    "c_member"),

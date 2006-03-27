@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="assets/stylesheet.css" type="text/css">
   <script type="text/javascript" src="assets/combo-box.js" language="text/javascript"></script>
   <script type="text/javascript" src="assets/datechooser.js" language="javascript"></script>
+  <script type="text/javascript" src="assets/script.js" language="javascript"></script>
 </head>
 
 <body>

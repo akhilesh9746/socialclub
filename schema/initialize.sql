@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: initialize.sql,v 1.8 2005/08/31 00:56:22 bps7j Exp $
+ * $Id: initialize.sql,v 1.9 2006/03/27 03:46:25 bps7j Exp $
  *
  */
 
@@ -52,7 +52,9 @@ insert into [_]table
     ("[_]checkout_item"),
     ("[_]classified_ad"),
     ("[_]condition"),
+    ("[_]email"),
     ("[_]email_list"),
+    ("[_]email_recipient"),
     ("[_]expense"),
     ("[_]expense_category"),
     ("[_]expense_report"),
@@ -255,7 +257,7 @@ insert into [_]membership_type
 insert into [_]membership
     (c_created_date, c_status, c_member, c_type, c_begin_date,
     c_expiration_date, c_units_granted, c_unit, c_total_cost, c_amount_paid)
-select now(), 8, me.c_uid, mt.c_uid, mt.c_begin_date,
+select now(), 4, me.c_uid, mt.c_uid, mt.c_begin_date,
     mt.c_expiration_date, c_units_granted, c_unit, c_total_cost, 0
     from [_]member as me, [_]membership_type as mt
     where me.c_email in ("admin@domain.org", "guest@domain.org")

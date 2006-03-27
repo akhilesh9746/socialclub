@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: setup.php,v 1.6 2005/08/31 00:38:16 bps7j Exp $
+ * $Id: setup.php,v 1.7 2006/03/27 03:46:24 bps7j Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -345,6 +345,9 @@ while ($row = $result->fetchRow()) {
         break;
     case "number":
         $cfg[$row['c_name']] = floatval($row['c_value']);
+        break;
+    case "bool":
+        $cfg[$row['c_name']] = ($row['c_value'] === "true");
         break;
     default:
         $cfg[$row['c_name']] = $row['c_value'];

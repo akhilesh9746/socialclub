@@ -17,21 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: email_attendees.php,v 1.1 2005/03/27 19:53:34 bps7j Exp $
+ * $Id: email_attendees.php,v 1.2 2006/03/27 03:46:25 bps7j Exp $
  */
 
 include_once("Email.php");
 include_once("location.php");
 
 $template = file_get_contents("templates/adventure/email_attendees.php");
-
-$error = false;
-
-# Ensure that the adventure is active.
-if ($object->getStatus() != $cfg['status_id']['active']) {
-    $template = Template::unhide($template, "ACTIVE");
-    $error = true;
-}
 
 # Create the form.
 $form =& new XMLForm("forms/adventure/email_attendees.xml");
@@ -40,39 +32,42 @@ $form =& new XMLForm("forms/adventure/email_attendees.xml");
 $form->snatch();
 $form->validate();
 
-if (!$error && $form->isValid()) {
-    $leader =& new member();
-    $leader->select($object->getOwner());
+if ($form->isValid()) {
+    $who = $form->getValue("who");
 
-    $email =& new Email();
-    $email->setFrom($obj['user']->getEmail());
-    $email->addTo($leader->getEmail());
-    foreach ($object->getChildren("attendee") as $key => $attendee) {
-        if ($form->getValue("who") == "all"
-            || ($form->getValue("who") == "joined"
-                && $attendee->getStatus() == $cfg['status_id']['default'])
-            || ($form->getValue("who") == "waitlisted"
-                && $attendee->getStatus() == $cfg['status_id']['waitlisted']))
-        {
-            $member =& new member();
-            $member->select($attendee->getMember());
-            $email->addBCC($member->getEmail());
-        }
+    // Insert the email into the DB
+    $cmd = $obj['conn']->createCommand();
+    $cmd->loadQuery("sql/email/insert.sql");
+    $cmd->addParameter("subject", $form->getValue("subject"));
+    $cmd->addParameter("message", $form->getValue("message"));
+    $cmd->addParameter("what_relates_to", "[_]adventure");
+    $cmd->addParameter("related_uid", $cfg['object']);
+    $cmd->addParameter("user", $cfg['user']);
+    $result = $cmd->executeReader();
+    $id = $result->identity();
+
+    $cmd = $obj['conn']->createCommand();
+    $cmd->loadQuery("sql/email/insert-adventure-attendees.sql");
+    $cmd->addParameter("email", $id);
+    $cmd->addParameter("adventure", $cfg['object']);
+    $cmd->addParameter("leader", $object->getOwner());
+    if ($who == "joined") {
+        $cmd->addParameter("status", $cfg['status_id']['default']);
     }
-    $email->setSubject($form->getValue("subject"));
-    $email->setBody($form->getValue("message"));
-    $email->setWordWrap(TRUE);
-    $email->loadFooter("templates/emails/footer.txt");
-    $email->send();
+    else if ($who == "waitlisted") {
+        $cmd->addParameter("status", $cfg['status_id']['waitlisted']);
+    }
+    $cmd->executeNonQuery();
+
     $template = Template::unhide($template, "SUCCESS");
-    $template = Template::replace($template, array("MESSAGE" => $email->toString()));
 }
-elseif (!$error) {
+else {
     $template = Template::unhide($template, "CONFIRM");
     $template = Template::replace($template, array("FORM" => $form->toString()));
 }
 
-$res['content'] = $object->insertIntoTemplate($template);
+$res['content'] = Template::replace($template,
+        array("C_TITLE" => $object->getTitle()));
 $res['title'] = "Email Adventure Attendees";
 
 ?>

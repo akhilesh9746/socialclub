@@ -9,6 +9,8 @@
 
 <form action="members/checkout/check_in/{OBJECT}" method="POST">
 
+{someitems:}
+
 <p><b>Items</b> that are checked out:</p>
 
 <table class="cleanHeaders compact top">
@@ -17,6 +19,8 @@
     <th>Type</th>
     <th>Details 1</th>
     <th>Details 2</th>
+    <th>Condition</th>
+    <th>Comment</th>
   </tr>{item:}
   <tr>
     <td>
@@ -28,9 +32,28 @@
     <td>{ty_title}</td>
     <td>{c_primary}</td>
     <td>{c_secondary}</td>
+    <td>
+      <input type="hidden" name="item{c_uid}oldcond" value="{c_title}">
+      <select name="item{c_uid}condition" class="compact">
+        <option value="">{c_title}</option>
+        <option value="brand_new">brand_new</option>
+        <option value="dirty">dirty</option>
+        <option value="excellent">excellent</option>
+        <option value="fair">fair</option>
+        <option value="good">good</option>
+        <option value="mint">mint</option>
+        <option value="poor">poor</option>
+        <option value="unknown">unknown</option>
+        <option value="unsafe">unsafe</option>
+        <option value="unusable">unusable</option>
+      </select>
+    </td>
+    <td><input type="text" name="item{c_uid}comment" class="squeeze"></td>
   </tr>{:item}
 </table>
+{:someitems}
 
+{somegear:}
 <p><b>Gear</b> that is checked out:</p>
 
 <table class="cleanHeaders compact top">
@@ -50,6 +73,7 @@
     <td>{c_description}</td>
   </tr>{:gear}
 </table>
+{:somegear}
 
 <p><input type="submit" name="submitted" value="Check in Selected Equipment"></p>
 

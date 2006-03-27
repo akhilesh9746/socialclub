@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: email.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
+ * $Id: email.php,v 1.3 2006/03/27 03:46:25 bps7j Exp $
  */
 
 include_once("MassEmail.php");
@@ -35,17 +35,33 @@ $result = $cmd->executeReader();
 while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "option", $row);
 }
+$invalid = array("wheel", "root", "guest", "activator");
+foreach ($cfg['group_id'] as $key => $val) {
+    if (!in_array($key, $invalid)) {
+        $formTemplate = Template::block($formTemplate, "group",
+            array("group_id" => $val, "group_name" => $key));
+    }
+}
+if ($obj['user']->isRootUser()) {
+    $formTemplate = Template::unhide($formTemplate, "FORCE");
+}
 
 $form =& new XmlForm(Template::finalize($formTemplate), true);
 $form->snatch();
 $form->validate();
+if (!$form->getValue("group")) {
+    $form->setValue("group", $cfg['group_id']['member']);
+}
 
 if ($form->isValid()) {
     MassEmail::sendMassEmail(
         $obj['user'],
         $form->getValue("subject"),
         $form->getValue("message"),
-        $form->getValue("category"));
+        $form->getValue("category"),
+        $form->getValue("group"),
+        $obj['user']->isRootUser() ? $form->getValue("force") : 0
+    );
     $template = Template::unhide($template, "success");
 }
 else {

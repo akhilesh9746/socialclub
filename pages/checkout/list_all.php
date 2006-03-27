@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.7 2005/09/12 01:42:14 bps7j Exp $
+ * $Id: list_all.php,v 1.8 2006/03/27 03:46:25 bps7j Exp $
  */
 
 # Create a template 

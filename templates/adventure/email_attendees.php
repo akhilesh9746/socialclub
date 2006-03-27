@@ -7,17 +7,10 @@
 
 <p>Use this page to send an email to attendees for adventure <b>{C_TITLE}</b>.</p>
 
-{ACTIVE:}
-<p class="error">This adventure is not active.  You cannot email attendees for 
-this adventure.</p>
-{:ACTIVE}
-
 {SUCCESS:}
-<p class="notice">You have successfully emailed attendees for this
-adventure.</p>
-
-<p>The following is the message you sent:</p>
-<pre style="border:1px dotted black; background:white; color:green">{MESSAGE}</pre>
+<p class="notice">Your email has been added to the queue.  It may be several
+minutes before your message is sent.  Please do not try to resend the message if
+you don't think it sent; contact the webmasters if you have any troubles.</p>
 {:SUCCESS}
 
 {FORM}

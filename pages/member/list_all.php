@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.4 2005/08/31 00:41:20 bps7j Exp $
+ * $Id: list_all.php,v 1.5 2006/03/27 03:46:25 bps7j Exp $
  */
 
 $template = file_get_contents("templates/member/list_all.php");
@@ -91,8 +91,10 @@ if (!$form->getValue("sort")) {
 }
 
 # Add pagination parameters
-$cmd->addParameter("offset", $form->getValue("limit")
-    * ($form->getValue("offset") - 1));
+if ($form->getValue("limit") && $form->getValue("offset")) {
+    $cmd->addParameter("offset", $form->getValue("limit")
+        * ($form->getValue("offset") - 1));
+}
 $cmd->addParameter("limit", $form->getValue("limit"));
 $cmd->addParameter("orderby", "c_" . $form->getValue("sort"));
 

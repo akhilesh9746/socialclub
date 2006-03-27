@@ -66,6 +66,20 @@ on this adventure</a> if you wish.</p>
   <li>{ac_title}</li>{:cat}
 </ul>
 
+{attendees:}
+<h2>Attendees</h2>
+<table class="cleanHeaders compact">
+  <tr>
+    <th>Member</th>
+    <th>Email</th>
+  </tr>{attendee:}
+  <tr>
+    <td><a href="members/member/read/{c_uid}">{c_full_name}</a></td>
+    <td><a href="mailto:{c_email}">{c_email}</a></td>
+  </tr>{:attendee}
+</table>
+{:attendees}
+
 {actions,{PAGE},{OBJECT},default}
 
 </div>

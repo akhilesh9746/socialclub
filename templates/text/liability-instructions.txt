@@ -1,0 +1,10 @@
+NOTICE NOTICE NOTICE
+
+This is just a template!  You should edit the file
+templates/liability-instructions.txt and put your information in.
+
+NOTICE NOTICE NOTICE
+
+Please verify that all information on the first page is correct. If there are any errors, please email [someone] and describe the problem. If all of the information is correct, please print this form and send the first page to [put your organization's address here].  Please be sure to include your membership dues as shown below.
+
+Once we have received your dues, we will activate your membership and send you an email welcoming you to the club.

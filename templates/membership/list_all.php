@@ -30,7 +30,7 @@ if the member is underage (red text).</p>
     can see all the memberships, active and inactive, from that page; you can
     click on a membership and activate it.</p>
 
-<form method="post" action="members/admin/activate-members">
+<form method="post" action="members/membership/list_all">
 <input type="hidden" name="submitted" value="1">
 
 <table class="top cleanHeaders">

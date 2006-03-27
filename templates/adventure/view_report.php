@@ -11,10 +11,10 @@ Adventure: <b>{C_TITLE}</b>
 
 {SOME:}
 
-<p><b>{total} attendees, {waitlisted} waitlisted</b>.  {NUM_ATTENDEES} attendees
+<p><b>{total} total, {waitlisted} waitlisted</b>.  {NUM_ATTENDEES} attendees
 shown, in the order they joined<sup>[1]</sup>.  The first column shows whether
 the member is joined or waitlisted.  The last shows the number of absences and
-times the member has been waitlisted.  Use the radio button in the left column,
+times the member has been waitlisted over the past 6 months<sup>[2]</sup>.  Use the radio button in the left column,
 and the buttons at the bottom of the table, to manage attendees.</p>
 
 <script type="text/javascript" language="javascript">
@@ -44,7 +44,7 @@ function enableForm(form) {
 }
 </script>
 
-<form action="index.php" method="GET" onSubmit="return formEnabled(this)">
+<form action="index.php" method="GET" onSubmit="return formEnabled(this);">
   <input type="hidden" name="page" value="attendee">
 <table class="compact cleanHeaders top">
   <tr>
@@ -119,6 +119,8 @@ function enableForm(form) {
 <p><sup>[1]</sup><span class="tiny">After a member is automatically removed from
 the waitlist his/her joined date is reset, so s/he appears at the end of the
 roster.  This is correct behavior.  It doesn't mean that people who joined later
-are getting off the waitlist first.</span></p>
+are getting off the waitlist first.<br>
+<sup>[2]</sup>Clicking on the number of waitlists or absenses a person has will show
+their history for all time.</span></p>
 
 </div>

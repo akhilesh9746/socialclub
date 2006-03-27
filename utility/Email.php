@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Email.php,v 1.2 2005/08/31 00:49:46 bps7j Exp $
+ * $Id: Email.php,v 1.3 2006/03/27 03:46:25 bps7j Exp $
  */
 
 class Email {
@@ -25,6 +25,7 @@ class Email {
     // This is an array.  Do not set it directly, use the addXXX method.
     var $to;
     var $headers;
+    var $bcc;
     var $subject        = "";
     var $body           = "";
     var $footer         = "";
@@ -41,6 +42,7 @@ class Email {
     function Email() {
         $this->to = array();
         $this->headers = array();
+        $this->bcc = array();
     } //}}}
 
     /* {{{toString
@@ -63,6 +65,14 @@ class Email {
      */
     function send() {
         global $cfg;
+        $result = true;
+
+        $headers = count($this->headers)
+            ? implode($this->nl, $this->headers)
+            : "";
+        if (count($this->bcc)) {
+            $headers .= $this->nl . implode($this->nl, $this->bcc);
+        }
 
         if ($cfg['send_emails']) {
             $result = mail(
@@ -76,10 +86,9 @@ class Email {
                     : $this->body)
                 . $this->footer,
                 // Parameter 4: additional headers
-                (count($this->headers) ? implode($this->nl, $this->headers) : ""));
-            return $result;
+                $headers);
         }
-        return true;
+        return $result;
     } //}}}
 
     /* {{{loadFooter
@@ -107,7 +116,7 @@ class Email {
      *
      */
     function addBCC($email) {
-        $this->headers[] = "Bcc: $email";
+        $this->bcc[] = "Bcc: $email";
     } //}}}
 
     /* {{{addCC
