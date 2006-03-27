@@ -28,8 +28,8 @@ sub send_mail {
     my ($from, $to, $subject, $message) = @_;
     $message =~ s/^\./../g;
 
-    open my $MAIL, "|", $mailer or die("Could not open $mailer: $OS_ERROR");
-    print $MAIL <<"%%%";
+    open(MAIL, "|$mailer") or die("Could not open $mailer: $OS_ERROR");
+    print MAIL <<"%%%";
 From: $from
 To: $to
 Subject: $subject
@@ -37,7 +37,7 @@ Subject: $subject
 $message
 %%%
 
-    close($MAIL);
+    close(MAIL);
 }
 
 my $dbh = DBI->connect("DBI:mysql:database=$db;host=$host", $user, $pass) or die("Can't connect to DB: $OS_ERROR");
