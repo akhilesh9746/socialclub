@@ -1,3 +1,4 @@
+#!/usr/bin/perl
 use strict;
 use warnings;
 
@@ -12,8 +13,10 @@ my $host      = "localhost";
 my $user      = "socialclub";
 my $pass      = "onyx";
 my $prefix    = "sc_";
+# You may need to run the command "which sendmail" on your system
+# to determine the location of the sendmail binary.
 # Another possibility: my $mailer = "/var/qmail/bin/qmail-inject";
-my $mailer    = "/usr/bin/sendmail";
+my $mailer    = '/usr/sbin/sendmail -i -t';
 # How long to keep emails before purging them.
 my $keep_days = 30;
 # ===========================================================================
@@ -76,9 +79,9 @@ while ($prep->rows) {
 
 # Purge emails that have been sent.
 $dbh->do("delete from ${prefix}email where c_created_date "
-    . "< date_add(current_date, interval $keep_days day);");
+    . "< date_add(current_date, interval -$keep_days day);");
 $dbh->do("delete from ${prefix}email_recipient where c_created_date "
-    . "< date_add(current_date, interval $keep_days day) and c_deleted = 1;");
+    . "< date_add(current_date, interval -$keep_days day) and c_deleted = 1;");
 
 flock($FILE, 8);
 close($FILE);
