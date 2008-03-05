@@ -30,6 +30,7 @@ from [_]adventure as ad
     left outer join [_]attendee as other_atts
         on other_atts.c_adventure = ad.c_uid
         and other_atts.c_status & {default,int} = {default,int}
+        and other_atts.c_deleted = 0
 where ad.c_uid = {adventure,int}
 group by
     ad.c_uid, ad.c_title, ad.c_description, ad.c_owner, ad.c_max_attendees,
