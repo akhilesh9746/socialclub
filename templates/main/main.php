@@ -8,6 +8,9 @@
   <script type="text/javascript" src="assets/combo-box.js" language="text/javascript"></script>
   <script type="text/javascript" src="assets/datechooser.js" language="javascript"></script>
   <script type="text/javascript" src="assets/script.js" language="javascript"></script>
+{RSSFEED:}
+  <link rel="alternate" type="application/rss+xml" title="Outdoors at UVA Upcoming Trips" href="/extras/rss.xml">
+{:RSSFEED}
 </head>
 
 <body>

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: index.php,v 1.2 2005/06/05 16:11:46 bps7j Exp $
+ * $Id: index.php,v 1.3 2008/03/05 00:12:35 pctainto Exp $
  */
 
 include_once("includes/setup.php");
@@ -68,6 +68,7 @@ $page = Template::replace($page, array(
 
 # Plug in information about the user
 if (isset($obj['user'])) {
+    $page = Template::unhide($page, "RSSFEED");
     $page = Template::unhide($page, "LOGOUT");
     # Fill in the member's name
     $page = Template::replace($page, array(
