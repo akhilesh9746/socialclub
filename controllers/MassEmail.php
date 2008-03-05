@@ -17,14 +17,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: MassEmail.php,v 1.3 2006/03/27 03:46:24 bps7j Exp $
+ * $Id: MassEmail.php,v 1.4 2008/03/05 00:11:30 pctainto Exp $
  */
 
 include_once("Email.php");
 
 class MassEmail {
 
-    function sendMassEmail($user, $subject, $message, $category, $group = 0, $force = 0) {
+    function sendMassEmail($user, $subject, $message, $category, $group = 0) {
         global $obj;
         global $cfg;
 
@@ -32,7 +32,21 @@ class MassEmail {
         $email->setFrom($user->getFullName() . " <" . $user->getEmail() . ">");
         $email->addTo($user->getFullName() . " <" . $user->getEmail() . ">");
         if (strpos($subject, "$cfg[club_name]: ") == FALSE) {
-            $subject = "$cfg[club_name]: $subject";
+            if ($cfg['group_id']['leader'] == $group){
+                 $subject = "$cfg[club_name] Leaders: $subject";
+             }
+             else if ($cfg['group_id']['officer'] == $group){
+                 $subject = "$cfg[club_name] Officers: $subject";
+             }
+             else if ($cfg['group_id']['treasurer'] == $group){
+                 $subject = "$cfg[club_name] Treasurers: $subject";
+             }
+             else if ($cfg['group_id']['quartermaster'] == $group){
+                 $subject = "$cfg[club_name] Quartermasters: $subject";
+             }
+             else{
+                 $subject = "$cfg[club_name]: $subject";
+             }
         }
         $email->setSubject($subject);
         $email->setBody($message);
@@ -57,9 +71,6 @@ class MassEmail {
         $cmd->addParameter("email", $id);
         if ($group) {
             $cmd->addParameter("group", $group);
-        }
-        if ($force) {
-            $cmd->addParameter("force", 1);
         }
         $cmd->executeNonQuery();
     }
