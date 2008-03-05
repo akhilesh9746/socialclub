@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.sql,v 1.9 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: create.sql,v 1.10 2008/03/05 00:14:14 pctainto Exp $
  *
  * NOTE you must not have an unmatched quote in your comments, or MySQL will
  * barf.  The same goes for semicolons, parentheses etc.
@@ -276,6 +276,7 @@ create table [_]chat (
     c_type            int unsigned    not null default 1, -- > [_]chat_type
     c_primary         tinyint         not null default 0,
     c_hidden          tinyint         not null default 0,
+    index (c_owner),
     primary key  (c_uid)
 ) type=MyISAM;
 
@@ -329,7 +330,8 @@ create table [_]checkout_gear (
     c_description     varchar(100)    not null default '',
     c_checkin_member  int unsigned    not null default 0, -- > [_]member
     primary key  (c_uid),
-    index(c_checkout)
+    index(c_checkout),
+    index(c_type)
 ) type=MyISAM;
 
 create table [_]checkout_item (
