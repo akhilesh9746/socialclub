@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.1 2005/08/31 00:29:17 bps7j Exp $
+ * $Id: list_all.php,v 1.2 2008/04/12 21:32:54 pctainto Exp $
  */
 
 include_once("membership.php");
@@ -27,11 +27,22 @@ require_once("transaction.php");
 
 $wrapper = file_get_contents("templates/membership/list_all.php");
 
+# If the start date is not propagated correctly through both the GET and POST
+# forms, there will be bugs.
+$start = date("n/j/Y", time() - (60*60*24*14));
+
 # Create a form for filtering options.
 $form =& new XmlForm("forms/membership/list_all.xml");
-$form->setValue("start", date("n/j/Y", time() - (60*60*24*14)));
+$form->setValue("start", $start);
 $form->snatch();
 $wrapper = Template::replace($wrapper, array("form" => $form->toString()));
+
+if ( isset($_POST['start']) && $_POST['start'] ) {
+    $start = $_POST['start'];
+}
+else {
+    $start = $form->getValue("start");
+}
 
 # Get a list of memberships that are a) not flexible b) inactive c) the
 # membership type hasn't expired already (so activating the membership would do
@@ -41,9 +52,7 @@ $cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/membership/list_all.sql");
 $cmd->addParameter("inactive", $cfg['status_id']['inactive']);
 $cmd->addParameter("active", $cfg['status_id']['active']);
-if ($form->getValue("start")) {
-    $cmd->addParameter("start", date("Y-m-d", strtotime($form->getValue("start"))));
-}
+$cmd->addParameter("start", date("Y-m-d", strtotime($start)));
 $result = $cmd->executeReader();
 
 if (isset($_POST['submitted']) && isset($_POST['membership'])) {
@@ -122,6 +131,7 @@ if (isset($_POST['submitted']) && isset($_POST['membership'])) {
 else {
     # No post data; display the list.
     $wrapper = Template::unhide($wrapper, "SOME");
+    $wrapper = Template::replace($wrapper, array("start" => $start));
     while ($row = $result->fetchRow()) {
         $wrapper = Template::block($wrapper, "row", $row + array(
             "underage" => ($row['c_underage'] ? " class='underage'" : "")));
