@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Node.php,v 1.3 2009/03/12 03:13:36 pctainto Exp $
+ * $Id: Node.php,v 1.4 2009/03/12 03:44:44 pctainto Exp $
  */
 
 define("DOM_ELEMENT_NODE",                    1);
@@ -87,7 +87,7 @@ class Node {
                 }
             }
             else {
-                return $this->appendChild(&$newChild);
+                return $this->appendChild($newChild);
             }
         }
         elseif ($newChild->nodeType === DOM_DOCUMENT_FRAGMENT_NODE) {
@@ -224,7 +224,7 @@ class Node {
         // somewhere in the middle.
         $this->ownerDocument->addNodeToLookupCache($node);
         if ($index == 0) {
-            array_unshift($this->childNodes, &$node);
+            array_unshift($this->childNodes, $node);
             $node->nextSibling = $this->firstChild;
             $this->firstChild->previousSibling = $node;
             $this->firstChild = $node;

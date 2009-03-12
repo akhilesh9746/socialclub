@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: SqlConnection.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
+ * $Id: SqlConnection.php,v 1.3 2009/03/12 03:44:44 pctainto Exp $
  *
  * Represents a connection to a SQL database.
  */
@@ -82,7 +82,7 @@ class SqlConnection {
     }
 
     function createCommand() {
-        return new SqlCommand(&$this);
+        return new SqlCommand($this);
     }
 
     function getOption($name) {

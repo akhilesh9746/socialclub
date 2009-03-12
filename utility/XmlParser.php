@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: XmlParser.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
+ * $Id: XmlParser.php,v 1.3 2009/03/12 03:44:44 pctainto Exp $
  */
 
 include_once("Document.php");
@@ -32,7 +32,7 @@ class XMLParser {
     function XMLParser($encoding = 'ISO-8859-1') {
         $this->parser = xml_parser_create($encoding);
         xml_parser_set_option($this->parser,XML_OPTION_TARGET_ENCODING, $encoding);
-        xml_set_object($this->parser, &$this);
+        xml_set_object($this->parser, $this);
         xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
         xml_set_element_handler($this->parser, "startTag", "endTag");
         xml_set_character_data_handler($this->parser, "characterData");
