@@ -17,14 +17,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: MassEmail.php,v 1.5 2009/03/12 03:15:58 pctainto Exp $
+ * $Id: MassEmail.php,v 1.6 2009/03/12 04:46:44 pctainto Exp $
  */
 
 include_once("Email.php");
 
 class MassEmail {
 
-    function sendMassEmail($user, $subject, $message, $category, $group = 0) {
+    function sendMassEmail($user, $subject, $message, $category, $group = 0, $force = 0) {
         global $obj;
         global $cfg;
 
@@ -72,6 +72,8 @@ class MassEmail {
         if ($group) {
             $cmd->addParameter("group", $group);
         }
+      	$cmd->addParameter("force", $force);
+
         $cmd->executeNonQuery();
     }
 
