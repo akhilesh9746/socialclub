@@ -47,7 +47,7 @@ function populate(obj) {
 }
 </script>
 
-<p>You can use this menu to pre-populate some fields belowSSSS.
+<p>You can use this menu to pre-populate some fields below.
 <select onChange="populate(this)" class="compact" >
   <option value="">Choose An Adventure</option>{adventure:}
   <option value="{c_uid}">{c_title|htmlspecialchars} - {c_start_date|_date_format,'Y-m-d'}</option>{:adventure}
