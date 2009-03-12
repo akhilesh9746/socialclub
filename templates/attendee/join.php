@@ -8,7 +8,10 @@
 <p>You are joining <b>{C_FULL_NAME}</b> to adventure <b>{C_TITLE}</b>.</p>
 
 {SUCCESS:}
-<p class="notice">You have successfully joined this attendee onto this adventure.</p>
+<p class="notice">You have successfully joined this attendee onto this
+adventure.</p>
+<p><i>&raquo; Return to the adventure's <a href="members/adventure/view_report/{C_ADVENTURE}">report
+page</a></i>.</p>
 {:SUCCESS}
 
 {ALREADY:}
