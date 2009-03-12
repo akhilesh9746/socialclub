@@ -46,7 +46,7 @@
 
   <tr>
     <th>Status</th>
-    <td>{C_STATUS|bitmaskString,'status_id'}</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>
 
 </table>

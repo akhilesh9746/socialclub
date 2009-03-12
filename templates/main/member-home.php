@@ -44,6 +44,7 @@
       <h4 class="boxed">Classifieds</h4>
       <table class="compact collapsed elbowroom" width="100%">{CLASSIFIEDS:}
         <tr>
+          <td nowrap>{C_CREATED_DATE|_date_format,'M j'}</td>
           <td>
             <a href="members/classified_ad/read/{C_UID}">{C_TITLE}</a><br>
           </td>

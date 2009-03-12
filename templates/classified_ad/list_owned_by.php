@@ -20,7 +20,7 @@ ad</a>.</p>
       {C_CREATED_DATE|_date_format,'M j, Y'}
     </td>
     <td>
-      {C_STATUS|bitmaskString,'status_id'}
+      {c_status|bitmaskString,'status_id'}
     </td>
   </tr>{:ROW}
 </table>

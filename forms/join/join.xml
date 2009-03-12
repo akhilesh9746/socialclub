@@ -26,6 +26,13 @@
         element-id="emailAddress" />
     <element
         required="1"
+        name="confirmEmailAddress"
+        error-element="confirm-email-error"
+        compare-type="equal"
+        compare-to-id="emailAddress"
+        element-id="confirmEmailAddress" />
+    <element
+        required="1"
         name="password1"
         element-id="password1"
         />
@@ -195,6 +202,14 @@ the officers and we will help you as soon as possible.</p>
   <tr>
     <td>Email Address (your email address is your login name)</td>
     <td><input type="text" name="emailAddress" id="emailAddress" /></td>
+  </tr>
+  
+  <tr hidden="1" id="confirm-email-error">
+    <td colspan="2" class="error">Your email address doesn't match.</td>
+  </tr>
+  <tr>
+    <td>Confirm Email Address</td>
+    <td><input type="text" name="confirmEmailAddress" id="confirmEmailAddress" /></td>
   </tr>
 
   <tr>
