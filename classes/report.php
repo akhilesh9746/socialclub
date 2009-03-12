@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: report.php,v 1.2 2005/06/05 16:13:38 bps7j Exp $
+ * $Id: report.php,v 1.3 2009/03/12 03:52:49 pctainto Exp $
  */
 
 include_once("database_object.php");
@@ -41,7 +41,13 @@ class report extends database_object {
      */
     function execute() {
         global $obj;
-        return $obj['conn']->query($this->c_query);
+        $executeQuery = $this->c_query;
+        if (isset($_GET['arg']))
+        {
+            $argString = "ARGUMENT";
+            $executeQuery = str_replace($argString,$_GET["arg"],$executeQuery);
+        }
+        return $obj['conn']->query($executeQuery);
     } //}}}
 
     /* {{{getTitle
