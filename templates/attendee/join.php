@@ -15,6 +15,10 @@
 <p class="error">This attendee is already attending this adventure.</p>
 {:ALREADY}
 
+{CANTJOIN:}
+<p class="error">Only the trip leader or an officer can take people off of the waitlist.</p>
+{:CANTJOIN}
+
 {CONFIRM:}
 <p>Please confirm that you wish to move this attendee off the waitlist and onto
 the adventure's roster.</p>

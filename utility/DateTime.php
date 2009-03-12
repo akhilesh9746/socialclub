@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: DateTime.php,v 1.1 2005/03/27 19:54:12 bps7j Exp $
+ * $Id: DateTime.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  *
  * This class represents a date and time, down to the precision of one second.
  * The date is kept as a signed integer since the epoch.  Note that this will
@@ -26,13 +26,13 @@
  * information.
  */
 
-class DateTime {
+class DateTimeSC {
 
     var $time = 0;
 
     /* {{{Constructor
      */
-    function DateTime($string = null, $time = null) {
+    function DateTimeSC($string = null, $time = null) {
         # Try to parse a string
         if (isset($string) && strlen($string) > 0
                 && ($secs = $this->parseDate($string)) !== FALSE) {
@@ -80,7 +80,7 @@ class DateTime {
      *
      */
     function getDate() {
-        return new DateTime(date("Y-m-d", $this->time));
+        return new DateTimeSC(date("Y-m-d", $this->time));
     }//}}}
 
     /* {{{getDay
@@ -138,7 +138,7 @@ class DateTime {
      *
      */
     function now() {
-        return new DateTime();
+        return new DateTimeSC();
     }//}}}
 
     /* {{{getSecond
@@ -161,7 +161,7 @@ class DateTime {
      *
      */
     function today() {
-        return new DateTime(date("Y-m-d"));
+        return new DateTimeSC(date("Y-m-d"));
     }//}}}
 
     /* {{{getYear
@@ -172,8 +172,8 @@ class DateTime {
     }//}}}
 
     /*
-     * The following methods do not alter the DateTime object.  They return a
-     * new object.  DateTime objects are immutable (unless you go tinkering
+     * The following methods do not alter the DateTimeSC object.  They return a
+     * new object.  DateTimeSC objects are immutable (unless you go tinkering
      * directly with the object's variables, which you should not do).
      */
 
@@ -181,7 +181,7 @@ class DateTime {
      *
      */
     function addDays($days) {
-        return new DateTime(null, mktime(
+        return new DateTimeSC(null, mktime(
             date("H", $this->time),
             date("i", $this->time),
             date("s", $this->time),
@@ -194,7 +194,7 @@ class DateTime {
      *
      */
     function addHours($hours) {
-        return new DateTime(null, mktime(
+        return new DateTimeSC(null, mktime(
             date("H", $this->time) + $hours,
             date("i", $this->time),
             date("s", $this->time),
@@ -207,7 +207,7 @@ class DateTime {
      *
      */
     function addMinutes($mins) {
-        return new DateTime(null, mktime(
+        return new DateTimeSC(null, mktime(
             date("H", $this->time),
             date("i", $this->time) + $mins,
             date("s", $this->time),
@@ -220,7 +220,7 @@ class DateTime {
      *
      */
     function addMonths($mons) {
-        return new DateTime(null, mktime(
+        return new DateTimeSC(null, mktime(
             date("H", $this->time),
             date("i", $this->time),
             date("s", $this->time),
@@ -233,7 +233,7 @@ class DateTime {
      *
      */
     function addSeconds($secs) {
-        return new DateTime(null, mktime(
+        return new DateTimeSC(null, mktime(
             date("H", $this->time),
             date("i", $this->time),
             date("s", $this->time) + $secs,
@@ -246,7 +246,7 @@ class DateTime {
      *
      */
     function addYears($years) {
-        return new DateTime(null, mktime(
+        return new DateTimeSC(null, mktime(
             date("H", $this->time),
             date("i", $this->time),
             date("s", $this->time),
@@ -284,7 +284,7 @@ class DateTime {
      *
      */
     function parse($string) {
-        return new DateTime($string);
+        return new DateTimeSC($string);
     }//}}}
 
     /* {{{parseDate

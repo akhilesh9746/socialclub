@@ -17,19 +17,19 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:27 bps7j Exp $
+ * $Id: create.php,v 1.2 2009/03/12 03:16:03 pctainto Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/classified_ad/create.php");
 
 # Create and validate the form.
-$form =& new XmlForm("forms/classified_ad/create.xml");
+$form = new XmlForm("forms/classified_ad/create.xml");
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $object =& new classified_ad();
+    $object = new classified_ad();
     $object->setTitle($form->getValue("title"));
     $object->setText($form->getValue("text"));
     $object->insert();

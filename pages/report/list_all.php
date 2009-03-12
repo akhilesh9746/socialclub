@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.3 2005/08/02 03:05:26 bps7j Exp $
+ * $Id: list_all.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
  */
 
 $template = file_get_contents("templates/report/list_all.php");
@@ -30,7 +30,7 @@ $result = $cmd->executeReader();
 
 while ($row = $result->fetchRow()) {
     # Only list reports that the member is allowed to execute
-    $report =& new report();
+    $report = new report();
     $report->initFromRow($row);
     if ($report->permits('execute')) {
         $template = Template::block($template, "ITEM",

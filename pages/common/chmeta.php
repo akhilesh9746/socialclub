@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: chmeta.php,v 1.2 2005/08/02 03:05:06 bps7j Exp $
+ * $Id: chmeta.php,v 1.3 2009/03/12 03:15:59 pctainto Exp $
  */
 
 # Create and populate the form.  Create the form as a template.  Create a
@@ -41,7 +41,7 @@ foreach ($cfg['status_id'] as $key => $val) {
 
 $formTemplate = Template::finalize($formTemplate);
 
-$form =& new XmlForm($formTemplate, true);
+$form = new XmlForm($formTemplate, true);
 
 # Populate with the current values
 $form->setValue("created", $object->getCreatedDate());

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: adventure.php,v 1.4 2006/03/27 03:46:24 bps7j Exp $
+ * $Id: adventure.php,v 1.5 2009/03/12 03:16:00 pctainto Exp $
  */
 
 include_once("database_object.php");
@@ -231,7 +231,7 @@ class adventure extends database_object {
         $cmd->addParameter("status", $cfg['status_id'][$status]);
         $result = $cmd->executeReader();
         while ($row = $result->fetchRow()) {
-            $res[$row['c_uid']] =& new Attendee();
+            $res[$row['c_uid']] = new Attendee();
             $res[$row['c_uid']]->initFromRow($row);
         }
         return $res;

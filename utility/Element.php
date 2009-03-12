@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Element.php,v 1.3 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: Element.php,v 1.4 2009/03/12 03:13:36 pctainto Exp $
  */
 
 include_once("Node.php");
@@ -53,13 +53,13 @@ class Element extends Node {
         unset($this->attributes[$name]);
     }
 
-    function &getElementsByTagName($name) {
+    function getElementsByTagName($name) {
         $result = array();
         if ($name === "*") {
-            $result[] =& $this;
+            $result[] = $this;
         }
         elseif (isset($this->tagName) && $this->tagName === $name) {
-            $result[] =& $this;
+            $result[] = $this;
         }
         foreach (array_keys($this->childNodes) as $key) {
             if ($this->childNodes[$key]->nodeType == DOM_ELEMENT_NODE) {

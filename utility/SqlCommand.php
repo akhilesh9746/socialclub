@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: SqlCommand.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
+ * $Id: SqlCommand.php,v 1.3 2009/03/12 03:13:36 pctainto Exp $
  *
  * Represents a command to execute against a SQL database, using a
  * SqlConnection.  There should be no need to subclass SqlCommand, as it's
@@ -44,12 +44,12 @@ class SqlCommand {
 
     function SqlCommand(&$conn, $cmd = null) {
         $this->cmdText = $cmd;
-        $this->conn =& $conn;
+        $this->conn = $conn;
         $this->params = array();
     }
 
     function setConnection(&$value) {
-        $this->conn =& $value;
+        $this->conn = $value;
         $this->preparedQuery = "";
     }
 

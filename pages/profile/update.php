@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: update.php,v 1.2 2005/08/02 03:05:26 bps7j Exp $
+ * $Id: update.php,v 1.3 2009/03/12 03:16:02 pctainto Exp $
  */
 
 include_once("JoinClub.php");
@@ -26,7 +26,7 @@ include_once("JoinClub.php");
 $wrapper = file_get_contents("templates/profile/update.php");
 
 # Create the form
-$form =& new XMLForm("forms/profile/update.xml");
+$form = new XMLForm("forms/profile/update.xml");
 
 # Fill the form with the user's data
 $form->setValue("firstName", $obj['user']->getFirstName());

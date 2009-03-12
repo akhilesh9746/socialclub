@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: default.php,v 1.5 2005/08/31 00:39:01 bps7j Exp $
+ * $Id: default.php,v 1.6 2009/03/12 03:15:59 pctainto Exp $
  *
  * This is the default page for the Admin Tasks tab.
  */
@@ -34,7 +34,7 @@ if (!$obj['user']->isRootUser()
 
 $contents = file_get_contents("templates/admin/default.php");
 
-$obj['table'] =& new table("$cfg[table_prefix]membership");
+$obj['table'] = new table("$cfg[table_prefix]membership");
 if ($obj['table']->permits("list_all")) {
     $contents = Template::unhide($contents, "ACTIVATE");
 }

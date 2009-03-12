@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: DOMImplementation.php,v 1.1 2005/03/27 19:54:12 bps7j Exp $
+ * $Id: DOMImplementation.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  */
 
 class DOMImplementation {
@@ -29,7 +29,7 @@ class DOMImplementation {
     function createDocumentType($qualifiedName, $publicID, $systemID) {
     }
 
-    function &createDocument($namespaceURI, $qualifiedName, &$doctype) {
+    function createDocument($namespaceURI, $qualifiedName, &$doctype) {
     }
 
 }

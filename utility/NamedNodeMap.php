@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: NamedNodeMap.php,v 1.1 2005/03/27 19:54:13 bps7j Exp $
+ * $Id: NamedNodeMap.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  */
 
 class NamedNodeMap {
@@ -33,7 +33,7 @@ class NamedNodeMap {
     function removeNamedItem($name) {
     }
 
-    function &item($index) {
+    function item($index) {
     }
 
 }

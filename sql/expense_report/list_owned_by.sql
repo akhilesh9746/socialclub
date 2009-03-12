@@ -9,3 +9,4 @@ from [_]expense_report as re
 where re.c_member = {leader,int}
     and re.c_deleted <> 1
 group by re.c_uid
+order by re.c_created_date DESC

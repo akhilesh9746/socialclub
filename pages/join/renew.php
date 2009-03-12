@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: renew.php,v 1.3 2005/08/31 00:40:05 bps7j Exp $
+ * $Id: renew.php,v 1.4 2009/03/12 03:16:00 pctainto Exp $
  *
  * Purpose: allows a current member (who may be expired) to renew his/her
  * membership.
@@ -45,7 +45,7 @@ while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "plan", $row);
 }
 
-$form =& new XMLForm(Template::finalize($formTemplate), true);
+$form = new XMLForm(Template::finalize($formTemplate), true);
 
 # Plug the member's phone and address information into the form, then overwrite
 # it with whatever the member submits:
@@ -68,10 +68,10 @@ $form->validate();
 
 if ($form->isValid()) {
     # Create a new membership
-    $type =& new membership_type();
+    $type = new membership_type();
     $type->select($form->getValue("membership-plan"));
 
-    $mem =& new membership();
+    $mem = new membership();
     $mem->setOwner($cfg['root_uid']);
     $mem->setType($type->getUID());
     $mem->setBeginDate($type->getBeginDate());
@@ -90,7 +90,7 @@ if ($form->isValid()) {
         $phone->update();
     }
     else {
-        $phone =& new phone_number();
+        $phone = new phone_number();
         $phone->setTitle("Phone Number");
         $phone->setPrimary(1);
         $phone->setAreaCode($form->getValue('areaCode'));
@@ -106,7 +106,7 @@ if ($form->isValid()) {
         $address->update();
     }
     else {
-        $address =& new address();
+        $address = new address();
         $address->setTitle("Main Address");
         $address->setStreet($form->getValue('street'));
         $address->setCity($form->getValue('city'));
@@ -119,7 +119,7 @@ if ($form->isValid()) {
 
     # Send an email to the member
     $body = file_get_contents("templates/emails/final-instructions.txt");
-    $email =& new Email();
+    $email = new Email();
     $email->setFrom($cfg['club_admin_email_name']);
     $email->addHeader("Return-Path", $cfg['club_admin_email']);
     $email->setSubject("Your new $cfg[club_name] membership");

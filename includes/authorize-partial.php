@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: authorize-partial.php,v 1.2 2005/08/02 02:37:21 bps7j Exp $
+ * $Id: authorize-partial.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  */
 
 # If the 'user' cookie exists, we can use that.  Test to see if this user is in
@@ -31,7 +31,7 @@ if (isset($_COOKIE['user']) && $_COOKIE['user']
         array('uid' => $_COOKIE['user']));
     if ($result->numRows()) {
         # We're good to go.
-        $obj['user'] =& new Member();
+        $obj['user'] = new Member();
         $obj['user']->initFromRow($result->fetchRow());
         $cfg['user'] = $obj['user']->getUID();
         $cfg['db_server_time'] = $row['current_timestamp'];
@@ -49,7 +49,7 @@ if ($cfg['auth']['user'] && $cfg['auth']['pass']) {
     # If there are any rows, the email address exists in the database and the
     # user knows the right password.
     if ($result->numRows()) {
-        $obj['user'] =& new Member();
+        $obj['user'] = new Member();
         $obj['user']->initFromRow($result->fetchRow());
         $cfg['user'] = $obj['user']->getUID();
         return;

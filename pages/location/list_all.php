@@ -17,12 +17,12 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
+ * $Id: list_all.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  */
 
 $template = file_get_contents("templates/location/list_all.php");
 
-$form =& new XmlForm("forms/location/list_all.xml");
+$form = new XmlForm("forms/location/list_all.xml");
 $form->snatch();
 
 $cmd = $obj['conn']->createCommand();

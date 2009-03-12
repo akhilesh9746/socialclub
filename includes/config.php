@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: config.php,v 1.5 2006/03/27 03:46:24 bps7j Exp $
+ * $Id: config.php,v 1.6 2009/03/12 03:15:58 pctainto Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -25,18 +25,18 @@
 
 # Where the system should log error messages.  Leave blank if you don't want to
 # log any messages to that particular source.
-$cfg['error_log'] = "errors";
-$cfg['error_email'] = "";
+$cfg['error_log'] = "/Users/Case/Sites/src/errors.log";
+$cfg['error_email'] = "casetaintor@gmail.com";
 
 # The prefix for database table names.
-$cfg['table_prefix'] = "sc_";
+$cfg['table_prefix'] = "m_";
 
 # How to connect to the database.
 $cfg['db'] = array(
     'type' => 'MySqlConnection',
     'persistent' => true,
     'user' => 'socialclub',
-    'pass' => 'onyx',
+    'pass' => 'asdf',
     'db' => 'socialclub',
     'host' => 'localhost',
     'debug' => false,

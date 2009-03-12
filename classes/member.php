@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: member.php,v 1.3 2005/08/02 02:32:35 bps7j Exp $
+ * $Id: member.php,v 1.4 2009/03/12 03:16:00 pctainto Exp $
  */
 
 include_once("member_note.php");
@@ -69,7 +69,7 @@ class member extends database_object {
      */
     function addNote($noteText) {
         global $cfg;
-        $note =& new member_note();
+        $note = new member_note();
         if (!isset($cfg['user'])) {
             $note->setOwner($cfg['root_uid']);
             $note->setCreator($cfg['root_uid']);
@@ -233,7 +233,7 @@ class member extends database_object {
             . "where c_owner = $this->c_uid and c_deleted <> 1 "
             . "and c_primary = 1");
         if ($result->numRows()) {
-            $address =& new address();
+            $address = new address();
             $address->initFromRow($result->fetchRow());
             return $address;
         }
@@ -251,7 +251,7 @@ class member extends database_object {
             . "where c_owner = $this->c_uid and c_deleted <> 1 "
             . "and c_primary = 1");
         if ($result->numRows()) {
-            $num =& new phone_number();
+            $num = new phone_number();
             $num->initFromRow($result->fetchRow());
             return $num;
         }
@@ -269,7 +269,7 @@ class member extends database_object {
             . "where c_owner = $this->c_uid and c_deleted <> 1 "
             . "and c_primary = 1");
         if ($result->numRows()) {
-            $chat =& new chat();
+            $chat = new chat();
             $chat->initFromRow($result->fetchRow());
             return $chat;
         }

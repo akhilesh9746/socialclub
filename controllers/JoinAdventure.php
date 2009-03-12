@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: JoinAdventure.php,v 1.3 2005/08/02 02:33:54 bps7j Exp $
+ * $Id: JoinAdventure.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 // {{{require statements
 include_once("Email.php");
@@ -76,12 +76,12 @@ class JoinAdventure {
 
         $waitlist = ($status == $cfg['status_id']['waitlisted']);
 
-        $leader =& new member();
+        $leader = new member();
         $leader->select($adventure->getOwner());
         $phone = $leader->getPrimaryPhoneNumber();
-        $departure =& new location();
+        $departure = new location();
         $departure->select($adventure->getDeparture());
-        $destination =& new location();
+        $destination = new location();
         $destination->select($adventure->getDestination());
 
         $emailTemplate = "";
@@ -94,7 +94,7 @@ class JoinAdventure {
                 file_get_contents("templates/emails/welcome-to-adventure.txt");
         }
 
-        $email =& new Email();
+        $email = new Email();
         $email->addTo($member->getEmail());
         $email->setFrom($leader->getEmail());
         $email->addCC($leader->getEmail());
@@ -148,12 +148,12 @@ class JoinAdventure {
     /* {{{sendWithdrawalConfirmation
      */
     function sendWithdrawalConfirmation(&$member, &$adventure) {
-        $leader =& new member();
+        $leader = new member();
         $leader->select($adventure->getOwner());
         $emailTemplate = 
             file_get_contents("templates/emails/adventure-withdraw.txt");
 
-        $email =& new Email();
+        $email = new Email();
         $email->addTo($member->getEmail());
         $email->setFrom('"' . $leader->getFullName() . '" <' . $leader->getEmail() . ">");
         $email->addHeader("Reply-To",  $leader->getEmail());
@@ -189,7 +189,7 @@ class JoinAdventure {
             $attendee->setStatus($cfg['status_id']['default']);
             $attendee->setJoinedDate(date("Y-m-d H:i:s"));
             $attendee->update();
-            $member =& new member();
+            $member = new member();
             $member->select($attendee->getMember());
             JoinAdventure::sendJoinConfirmation($member, $adventure,
                 $attendee->getStatus());
@@ -201,12 +201,12 @@ class JoinAdventure {
     /* {{{sendWaitlistConfirmation
      */
     function sendWaitlistConfirmation(&$member, &$adventure) {
-        $leader =& new member();
+        $leader = new member();
         $leader->select($adventure->getOwner());
         $emailTemplate = 
             file_get_contents("templates/emails/waitlist-email.txt");
 
-        $email =& new Email();
+        $email = new Email();
         $email->addTo($member->getEmail());
         $email->setFrom($leader->getEmail());
         $email->addCC($leader->getEmail());

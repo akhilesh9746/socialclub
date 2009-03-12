@@ -16,7 +16,7 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: initialize.sql,v 1.9 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: initialize.sql,v 1.10 2009/03/12 03:15:59 pctainto Exp $
  *
  */
 
@@ -31,7 +31,16 @@ insert into [_]configuration
         'The club treasurer, comma-separated'),
     ('send_emails', 'true', 'bool', 'Whether the website should send any email'),
     ('root_uid', '1', 'integer', 'The "root" user for the system'),
-    ('expense_from_uid', '2', 'integer', 'The user from whom expenses come');
+    ('expense_from_uid', '2', 'integer', 'The user from whom expenses come'),
+    ('short_trip_length', '0', 'integer', 'The length of what is considered a ''short'' trip (in nigths).'),
+    ('short_trip_advance_notice', '24', 'integer', 'How much advance notice must be given for a short trip to be funded (in hours).'),
+    ('short_trip_message', 'You have not given enough advance notice for this trip to be funded.  You must post the trip 24 hours prior to the trip leaving.','string','Message displayed when someone creates a short trip on short notice'),
+    ('med_trip_length', '1', 'integer', 'The length of what is considered a ''medium'' trip (in nights)'),
+    ('med_trip_advance_notice', '48', 'integer', 'How much advance notice must be given for a short trip to be funded (in hours).'),
+    ('med_trip_message', 'You have not given enough advance notice for this trip to be funded.  Overnight trips must be posted the 48 hours prior to the trip leaving.','string','Message displayed when someone creates a short trip on short notice'),
+    ('long_trip_length', '3', 'integer', 'The length of what is considered a ''long'' trip (in nights)'),
+    ('long_trip_advance_notice', '168', 'integer', 'How much advance notice must be given for a short trip to be funded (in hours).'),
+    ('long_trip_message', 'You have not given enough advance notice for this trip to be funded.  Trips that are 3 nights or longer must be posted a week prior to the trip leaving.','string','Message displayed when someone creates a short trip on short notice');
 
 insert into [_]table
     (c_name)

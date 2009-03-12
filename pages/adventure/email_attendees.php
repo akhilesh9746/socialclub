@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: email_attendees.php,v 1.2 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: email_attendees.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("Email.php");
@@ -26,7 +26,7 @@ include_once("location.php");
 $template = file_get_contents("templates/adventure/email_attendees.php");
 
 # Create the form.
-$form =& new XMLForm("forms/adventure/email_attendees.xml");
+$form = new XMLForm("forms/adventure/email_attendees.xml");
 
 # Validate the form
 $form->snatch();

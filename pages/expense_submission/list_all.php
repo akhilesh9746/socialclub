@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
+ * $Id: list_all.php,v 1.3 2009/03/12 03:16:02 pctainto Exp $
  */
 
 # Create a template 
@@ -28,7 +28,7 @@ foreach (array("default", "submitted", "paid") as $status) {
     $formTemplate = Template::block($formTemplate, "STATUS",
         array("id" => $cfg['status_id'][$status], "c_title" => $status));
 }
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 $form->snatch();
 
 $cmd = $obj['conn']->createCommand();

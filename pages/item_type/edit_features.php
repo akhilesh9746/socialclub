@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: edit_features.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
+ * $Id: edit_features.php,v 1.3 2009/03/12 03:15:59 pctainto Exp $
  */
 
 include_once("item_type_feature.php");
@@ -29,7 +29,7 @@ $template = file_get_contents("templates/item_type/edit_features.php");
 # queries.
 $reserved = array("id", "qty", "condition", "status");
 # Add a form to the page so the user can add an feature
-$form =& new XmlForm("forms/item_type_feature/create.xml");
+$form = new XmlForm("forms/item_type_feature/create.xml");
 $form->snatch();
 $form->validate();
 if (in_array(strtolower($form->getValue("name")), $reserved)) {
@@ -37,7 +37,7 @@ if (in_array(strtolower($form->getValue("name")), $reserved)) {
 }
 elseif ($form->isValid()) {
     # Add a new feature to the object
-    $attr =& new item_type_feature();
+    $attr = new item_type_feature();
     $attr->setType($cfg['object']);
     $attr->setName($form->getValue("name"));
     $attr->insert();
@@ -49,7 +49,7 @@ $template = Template::replace($template, array(
 
 # Delete features if necessary
 if (postval("delete")) {
-    $attr =& new item_type_feature();
+    $attr = new item_type_feature();
     $attr->select(postval("delete"));
     $attr->delete(true);
     # Delete the features from all the items of this type, too

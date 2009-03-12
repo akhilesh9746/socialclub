@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: TreeNavbar.php,v 1.1 2005/03/27 19:54:11 bps7j Exp $
+ * $Id: TreeNavbar.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  */
 
 include_once("TreeNode.php");
@@ -45,7 +45,7 @@ class TreeNavbar {
 
     function addNode($link, $text, $path = "") {
         if ($path == "") {
-            $this->nodes[$text] =& new TreeNode($link, $text);
+            $this->nodes[$text] = new TreeNode($link, $text);
         }
         else {
             $names = explode("/", $path);

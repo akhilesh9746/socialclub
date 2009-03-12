@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: XmlFormParser.php,v 1.1 2005/03/27 19:54:11 bps7j Exp $
+ * $Id: XmlFormParser.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  */
 /* 
  * Purpose:  Represents a specialized XML parser that builds an XMLFormDocument
@@ -33,9 +33,9 @@ class XMLFormParser extends XMLParser {
         $this->XMLParser();
     }
 
-    function &parse($data) { 
-        $this->document =& new XMLFormDocument();
-        $this->currentNode =& $this->document;
+    function parse($data) { 
+        $this->document = new XMLFormDocument();
+        $this->currentNode = $this->document;
         if (!xml_parse($this->parser, $data)) {
             $line = xml_get_current_line_number($this->parser);
             $col = xml_get_current_column_number($this->parser);

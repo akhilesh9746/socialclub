@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: member-home.php,v 1.3 2005/08/31 00:40:47 bps7j Exp $
+ * $Id: member-home.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
  *
  * Purpose: the member homepage that members see after they log in.
  */
@@ -39,7 +39,7 @@ if (($phone = $obj['user']->getPrimaryPhoneNumber()) != null) {
 }
 if (($chat = $obj['user']->getPrimaryChat()) != null) {
     require_once("chat_type.php");
-    $type =& new chat_type();
+    $type = new chat_type();
     $type->select($chat->getType());
     $wrapper = Template::block($wrapper, "CHAT",
         $chat->getVarArray() 
@@ -123,11 +123,10 @@ else {
 
 $wrapper = Template::replace($wrapper, array(
     "CALENDAR" => EventCalendar::generateMonthView(
-        new DateTime(date("Y-m-01")), 25, false, true, true)));
-
+        new DateTimeSC(date("Y-m-01")), 25, false, true, true)));
+        
 # Plug the user's ID into the page
 $wrapper = Template::replace($wrapper, array("MEMBER" => $cfg['user']));
-
 
 $res['navbar'] = "Member's Area/Member Home Page";
 $res['title'] = "Member Home Page";

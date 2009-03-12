@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/08/02 03:05:03 bps7j Exp $
+ * $Id: create.php,v 1.3 2009/03/12 03:16:02 pctainto Exp $
  */
 
 # Create templates
@@ -34,12 +34,12 @@ while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "option", $row);
 }
 
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $object =& new activity();
+    $object = new activity();
     $object->setTitle($form->getValue("title"));
     $object->setCategory($form->getValue("category"));
     $object->insert();

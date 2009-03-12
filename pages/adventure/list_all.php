@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.3 2005/08/02 02:47:31 bps7j Exp $
+ * $Id: list_all.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  *
  * This page expects some criteria for what to display: past, joined.
  * This variable comes from $_GET[criteria].
@@ -66,7 +66,7 @@ switch (getval('criteria')) {
         $dateFormat = "M j, Y";
         # Special case (OK, it's actually the general case): allow
         # filtering a la searching.
-        $form =& new XmlForm("forms/adventure/list_all.xml");
+        $form = new XmlForm("forms/adventure/list_all.xml");
         $form->snatch();
         $template = Template::replace($template, array(
             "form" => $form->toString()));

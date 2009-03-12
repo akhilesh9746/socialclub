@@ -17,16 +17,16 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:22 bps7j Exp $
+ * $Id: create.php,v 1.2 2009/03/12 03:16:02 pctainto Exp $
  */
 
 if (is_array($_POST['expense'])) {
-    $object =& new expense_submission();
+    $object = new expense_submission();
     $object->insert();
 
     # Add expense_submission_expense records
     foreach ($_POST['expense'] as $exp) {
-        $expense =& new expense_submission_expense();
+        $expense = new expense_submission_expense();
         $expense->setSubmission($object->c_uid);
         $expense->setExpense($exp);
         $expense->insert();

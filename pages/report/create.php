@@ -17,18 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/06/05 18:04:06 bps7j Exp $
+ * $Id: create.php,v 1.3 2009/03/12 03:15:59 pctainto Exp $
  */
 
 $template = file_get_contents("templates/report/create.php");
 
 # Create and validate the form.
-$form =& new XmlForm("forms/report/create.xml");
+$form = new XmlForm("forms/report/create.xml");
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $object =& new report();
+    $object = new report();
     $object->setTitle($form->getValue("title"));
     $object->setDescription($form->getValue("description"));
     $object->setQuery($form->getValue("query"));

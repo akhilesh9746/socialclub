@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: SqlConnection.php,v 1.1 2005/03/27 19:54:18 bps7j Exp $
+ * $Id: SqlConnection.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  *
  * Represents a connection to a SQL database.
  */
@@ -81,7 +81,7 @@ class SqlConnection {
         }
     }
 
-    function &createCommand() {
+    function createCommand() {
         return new SqlCommand(&$this);
     }
 
@@ -93,7 +93,7 @@ class SqlConnection {
         $this->options[$name] = $val;
     }
 
-    function &getRawParams($query) {
+    function getRawParams($query) {
         $matches = array(null, null);
         preg_match_all("/\{([a-zA-Z0-9_]+)[^}]*}/",
             $query, $matches);

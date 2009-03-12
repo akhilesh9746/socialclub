@@ -17,12 +17,12 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: join.php,v 1.2 2005/09/12 01:39:02 bps7j Exp $
+ * $Id: join.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  *
  * Purpose: lets a member join an adventure.
  */
 
-$leader =& new member();
+$leader = new member();
 $leader->select($object->getOwner());
 
 $template = file_get_contents("templates/adventure/join.php");
@@ -58,7 +58,7 @@ if (count($object->getChildren("question"))) {
     $formTemplate = JoinAdventure::addQuestionsToForm($formTemplate, $object);
 
     # Create and validate the form
-    $form =& new XMLForm(Template::finalize($formTemplate), true);
+    $form = new XMLForm(Template::finalize($formTemplate), true);
     $form->snatch();
     $form->validate();
 }
@@ -66,7 +66,7 @@ if (count($object->getChildren("question"))) {
 if (!$error && (($form && $form->isValid()) || !$form)) {
     require_once("answer.php");
 
-    $attendee =& new attendee();
+    $attendee = new attendee();
     $attendee->setMember($cfg['user']);
     $attendee->setAdventure($cfg['object']);
     $attendee->setJoinedDate(date("Y-m-d H:i:s"));
@@ -81,7 +81,7 @@ if (!$error && (($form && $form->isValid()) || !$form)) {
     if ($form) {
         # Record the answers to the questions
         foreach ($object->getChildren("question") as $key => $q) {
-            $answer =& new answer();
+            $answer = new answer();
             $answer->setQuestion($q->getUID());
             $answer->setAttendee($attendee->getUID());
             $answer->setAnswerText($form->getValue("question" . $q->getUID()));

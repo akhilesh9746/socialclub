@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Document.php,v 1.2 2005/08/05 00:47:29 bps7j Exp $
+ * $Id: Document.php,v 1.3 2009/03/12 03:13:36 pctainto Exp $
  */
 
 include_once("Node.php");
@@ -37,23 +37,23 @@ class Document extends Node {
         $this->nodeType = DOM_DOCUMENT_NODE;
     }
 
-    function &createElement($tagName) {
-        $element =& new Element();
+    function createElement($tagName) {
+        $element = new Element();
         $element->tagName = $tagName;
-        $element->ownerDocument =& $this;
+        $element->ownerDocument = $this;
         return $element;
     }
 
-    function &createDocumentFragment() {
-        $fragment =& new DocumentFragment();
-        $fragment->ownerDocument =& $this;
+    function createDocumentFragment() {
+        $fragment = new DocumentFragment();
+        $fragment->ownerDocument = $this;
         return $fragment;
     }
 
-    function &createTextNode($data) {
-        $text =& new Text();
+    function createTextNode($data) {
+        $text = new Text();
         $text->data = $data;
-        $text->ownerDocument =& $this;
+        $text->ownerDocument = $this;
         return $text;
     }
 
@@ -62,7 +62,7 @@ class Document extends Node {
     }
 
 
-    function &getElementByID($elementID) {
+    function getElementByID($elementID) {
         if (isset($this->idCache[$elementID])) {
             return $this->idCache[$elementID];
         }
@@ -75,21 +75,21 @@ class Document extends Node {
                 trigger_error("There is already a node with id '{$node->attributes['id']}'", 
                     E_USER_ERROR);
             }
-            $this->idCache[$node->attributes['id']] =& $node;
+            $this->idCache[$node->attributes['id']] = $node;
         }
     }
 
-    function &appendChild(&$newChild) {
+    function appendChild(&$newChild) {
         // Check to make sure there are none; throw exeption if so
         if (count($this->childNodes)) {
             trigger_error("The Document node can only have one child", E_USER_ERROR);
         }
-        $this->childNodes[] =& $newChild;
+        $this->childNodes[] = $newChild;
         $numNodes = count($this->childNodes);
-        $this->lastChild =& $newChild;
-        $this->documentElement =& $newChild;
-        $this->firstChild =& $newChild;
-        $newChild->parentNode =& $this;
+        $this->lastChild = $newChild;
+        $this->documentElement = $newChild;
+        $this->firstChild = $newChild;
+        $newChild->parentNode = $this;
         $this->addNodeToLookupCache($newChild);
         return $newChild;
     }

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.3 2005/09/12 01:42:14 bps7j Exp $
+ * $Id: create.php,v 1.4 2009/03/12 03:16:00 pctainto Exp $
  */
 
 $formT = file_get_contents("forms/checkout/create.xml");
@@ -39,12 +39,12 @@ while ($row = $result->fetchRow()) {
 }
 
 $cmd->loadQuery("sql/member/select-active.sql");
-$form =& new XmlForm(Template::finalize($formT), true);
+$form = new XmlForm(Template::finalize($formT), true);
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $object =& new checkout();
+    $object = new checkout();
     $object->setMember($form->getValue("member"));
     $object->setActivity($form->getValue("activity"));
     $object->setDueDate($form->getValue("due"));

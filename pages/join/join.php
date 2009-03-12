@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: join.php,v 1.2 2005/08/02 02:54:11 bps7j Exp $
+ * $Id: join.php,v 1.3 2009/03/12 03:16:00 pctainto Exp $
  *
  * Purpose: the main join page.
  */
@@ -55,7 +55,7 @@ while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "plan", $row);
 }
 
-$form =& new XMLForm(Template::finalize($formTemplate), true);
+$form = new XMLForm(Template::finalize($formTemplate), true);
 
 $form->snatch();
 $form->validate();

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
+ * $Id: create.php,v 1.3 2009/03/12 03:16:01 pctainto Exp $
  */
 
 # Create templates
@@ -63,12 +63,12 @@ while ($row = $result->fetchRow()) {
         array_change_key_case($row, 1));
 }
 
-$form =& new XMLForm(Template::finalize($formTemplate), true);
+$form = new XMLForm(Template::finalize($formTemplate), true);
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $object =& new item();
+    $object = new item();
     $object->setDescription($form->getValue("description"));
     $object->setPurchaseDate($form->getValue("purchase-date"));
     $object->setCondition($form->getValue("condition"));

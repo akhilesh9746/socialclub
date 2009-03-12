@@ -17,12 +17,12 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:14 bps7j Exp $
+ * $Id: write.php,v 1.2 2009/03/12 03:15:59 pctainto Exp $
  */
 
 $template = file_get_contents("templates/item_category/write.php");
 $template = $object->insertIntoTemplate($template);
-$form =& new XMLForm("forms/item_category/write.xml");
+$form = new XMLForm("forms/item_category/write.xml");
 
 # Put the object's information into the form
 $form->setValue("title", $object->getTitle());

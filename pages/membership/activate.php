@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: activate.php,v 1.3 2005/08/31 00:41:53 bps7j Exp $
+ * $Id: activate.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 
 require_once("membership_type.php");
@@ -28,9 +28,9 @@ require_once("DateTime.php");
 $template = file_get_contents("templates/membership/activate.php");
 
 # Retrieve some objects we need
-$type =& new membership_type();
+$type = new membership_type();
 $type->select($object->getType());
-$member =& new member();
+$member = new member();
 $member->select($object->getMember());
 
 if ($type->getFlexible()) {
@@ -57,12 +57,12 @@ $cmd = $obj['conn']->createCommand();
 $cmd->loadQuery("sql/membership/select-max-expiration-date.sql");
 $cmd->addParameter("active", $cfg['status_id']['active']);
 $cmd->addParameter("member", $object->getMember());
-$maxExpire =& new DateTime($cmd->executeScalar());
+$maxExpire = new DateTimeSC($cmd->executeScalar());
 
 # Figure out when the suggested end date should be.  It depends on whether
 # the membership type is flexible or not.
-$begin =& new DateTime();
-$expire =& new DateTime();
+$begin = new DateTimeSC();
+$expire = new DateTimeSC();
 if ($type->getFlexible()) {
     if ($begin->compareTo($maxExpire) < 0) {
         $begin = $maxExpire;
@@ -82,13 +82,13 @@ if ($type->getFlexible()) {
 else {
     # Just use the values in the membership itself; these were set when the
     # membership was created.
-    $begin =& new DateTime($object->getBeginDate());
-    $expire =& new DateTime($object->getExpirationDate());
+    $begin = new DateTimeSC($object->getBeginDate());
+    $expire = new DateTimeSC($object->getExpirationDate());
 }
 
 # Create the form and initialize it from the results of the date
 # calculations above.
-$form =& new XmlForm("forms/membership/activate.xml");
+$form = new XmlForm("forms/membership/activate.xml");
 $form->setValue("begin", $begin->toString("Y-m-d"));
 $form->setValue("expire", $expire->toString("Y-m-d"));
 $form->setValue("totalcost", $object->getTotalCost());
@@ -107,7 +107,7 @@ if ($form->isValid()) {
     # Add a note to the member to say who activated the membership
     $member->addNote("$cfg[user] activated membership $cfg[object]");
 
-    $msg =& new Email();
+    $msg = new Email();
     $msgBody = file_get_contents("templates/emails/activation-notice.txt");
     $msgBody = Template::replace($msgBody, array(
         "CLUB_NAME" => $cfg['club_name'],
@@ -130,7 +130,7 @@ if ($form->isValid()) {
     $cat = $cmd->executeScalar();
 
     # Record this transaction
-    $tran =& new transaction();
+    $tran = new transaction();
     $tran->setAmount(floatval($form->getValue("totalcost")));
     $tran->setCategory($cat);
     $tran->setDescription($member->getFullName()

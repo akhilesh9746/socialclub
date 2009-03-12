@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: edit_features.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
+ * $Id: edit_features.php,v 1.3 2009/03/12 03:16:01 pctainto Exp $
  */
 
 # Create templates
@@ -66,7 +66,7 @@ if (postval('edit_features')) {
             $cmd->executeNonQuery();
         }
         else {
-            $at =& new item_feature();
+            $at = new item_feature();
             $at->setName($row['c_name']);
             $at->setValue($_POST[$row['c_name']]);
             $at->setItem($cfg['object']);

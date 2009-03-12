@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.3 2005/08/31 00:39:20 bps7j Exp $
+ * $Id: create.php,v 1.4 2009/03/12 03:16:01 pctainto Exp $
  */
 
 $template = file_get_contents("templates/chat/create.php");
@@ -34,14 +34,14 @@ while ($row = $result->fetchRow()) {
 }
 
 # Create the form.
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 
 # Validate and plug the form into the template
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $object =& new chat();
+    $object = new chat();
     $object->setType($form->getValue("type"));
     $object->setScreenName($form->getValue("screen-name"));
     $object->insert();

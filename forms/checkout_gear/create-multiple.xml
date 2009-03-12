@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <form name="multipleForm" id="multipleForm" method="POST" action="members/checkout_gear/create">
     <input type="hidden" name="form-name" id="form-name" value="1" />
 

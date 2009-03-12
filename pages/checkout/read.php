@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.4 2005/09/12 01:42:14 bps7j Exp $
+ * $Id: read.php,v 1.5 2009/03/12 03:16:00 pctainto Exp $
  */
 
 # Create templates
@@ -46,7 +46,7 @@ if ($result->numRows()) {
     }
 }
 
-$member =& new member();
+$member = new member();
 $member->select($object->getMember());
 
 $res['content'] = Template::replace($template, array(

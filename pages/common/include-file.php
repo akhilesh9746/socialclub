@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: include-file.php,v 1.3 2005/08/02 02:51:32 bps7j Exp $
+ * $Id: include-file.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
  *
  * This file is included from many pages that have the generic directory
  * structure of files named with the name of the action.  If the action file
@@ -39,7 +39,7 @@ if ($cfg['action']) {
             $res['title'] = "Error: Object Required";
             return;
         }
-        $object =& new $cfg['page']();
+        $object = new $cfg['page']();
         $object->select($cfg['object'], false);
         if (!$object->getUID()) {
             trigger_error("No row $cfg[object] in $object->table", E_USER_ERROR);
@@ -82,7 +82,7 @@ if ($cfg['action']) {
     elseif (isset($cfg['actions'][$cfg['action']])) {
         # It's assumed that the action is on a table, because the table/object
         # actions are mutually exclusive.   Check permissions:
-        $table =& new table("$cfg[table_prefix]$cfg[page]");
+        $table = new table("$cfg[table_prefix]$cfg[page]");
         if (!$table->permits($cfg['action'])) {
             mail($cfg['webmaster_email'],
                 "Permission Error",

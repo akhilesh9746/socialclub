@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.3 2005/08/02 03:05:22 bps7j Exp $
+ * $Id: create.php,v 1.4 2009/03/12 03:16:01 pctainto Exp $
  */
 
 # Create templates
@@ -43,13 +43,13 @@ while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "category", $row);
 }
 
-$form =& new XMLForm(Template::finalize($formTemplate), true);
+$form = new XMLForm(Template::finalize($formTemplate), true);
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
     # Add the new expense to the report, then redirect back to the report
-    $object =& new expense();
+    $object = new expense();
     $object->setReport($form->getValue("report"));
     $object->setCategory($form->getValue("category"));
     $object->setAdventure($form->getValue("adventure"));

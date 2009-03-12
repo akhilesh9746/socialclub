@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: auto-unsubscribe-expired-members.php,v 1.2 2005/08/02 02:42:14 bps7j Exp $
+ * $Id: auto-unsubscribe-expired-members.php,v 1.3 2009/03/12 03:15:59 pctainto Exp $
  */
 
 include_once("subscription.php");
@@ -41,7 +41,7 @@ $result = $cmd->executeReader();
 if ($result->numRows()) {
     $template = Template::unhide($template, "SOME");
     while ($row = $result->fetchRow()) {
-        $subscription =& new subscription();
+        $subscription = new subscription();
         $subscription->initFromRow($row);
         $subscription->delete(TRUE);
         $template = Template::block($template, "ROW",

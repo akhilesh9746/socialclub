@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.4 2005/09/01 02:18:45 bps7j Exp $
+ * $Id: create.php,v 1.5 2009/03/12 03:15:58 pctainto Exp $
  */
 
 # Create templates
@@ -38,7 +38,7 @@ if (isset($_POST['multiple'])) {
     while ($row = $result->fetchRow()) {
         $multiTemplate = Template::block($multiTemplate, array("common", "config"), $row);
     }
-    $multiForm =& new XmlForm(Template::finalize($multiTemplate), true);
+    $multiForm = new XmlForm(Template::finalize($multiTemplate), true);
 
     $multiForm->snatch();
     $multiForm->validate();
@@ -49,7 +49,7 @@ if (isset($_POST['multiple'])) {
                 # Check out the quantity of the specified category of gear, with the
                 # specified description.  Status is checked_out by default,
                 # since there is no direct relationship to an item.
-                $object =& new checkout_gear();
+                $object = new checkout_gear();
                 $object->setCheckout($multiForm->getValue("checkout"));
                 $object->setType($gear);
                 $object->setStatus($cfg['status_id']['checked_out']);
@@ -93,14 +93,14 @@ else {
     $formTemplate = Template::replace($formTemplate, array(
         "types" => $thisGroup), 1);
 
-    $form =& new XMLForm(Template::finalize($formTemplate), true);
+    $form = new XMLForm(Template::finalize($formTemplate), true);
 
     $form->snatch();
     $form->validate();
 
     if ($form->isValid() && $form->getValue("qty") <= $avail[$form->getValue("category")]) {
         # Add the new checkout_gear to the checkout, then redirect back to the checkout
-        $object =& new checkout_gear();
+        $object = new checkout_gear();
         $object->setCheckout($form->getValue("checkout"));
         $object->setType($form->getValue("category"));
         $object->setDescription($form->getValue("description"));

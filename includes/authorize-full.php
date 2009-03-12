@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: authorize-full.php,v 1.3 2005/08/31 00:37:23 bps7j Exp $
+ * $Id: authorize-full.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 
 # If the browser sent auth, we can authenticate against the database.  The user
@@ -87,7 +87,7 @@ if (!$cfg['user']) {
 }
 # If we got here, we have identified the user's c_uid.
 else {
-    $obj['user'] =& new Member();
+    $obj['user'] = new Member();
     $obj['user']->select($cfg['user']);
     $cfg['login_status'] = true;
 }

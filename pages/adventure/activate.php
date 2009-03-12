@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: activate.php,v 1.1 2005/03/27 19:53:34 bps7j Exp $
+ * $Id: activate.php,v 1.2 2009/03/12 03:15:58 pctainto Exp $
  */
 
 # Create templates
@@ -25,7 +25,7 @@ $template = file_get_contents("templates/adventure/activate.php");
 $template = $object->insertIntoTemplate($template);
 
 # Make sure that the leader has joined the adventure
-$leader =& new member();
+$leader = new member();
 $leader->select($object->getOwner());
 $hasJoined = JoinAdventure::checkIfMemberIsAttending($object, $leader);
 $error = false;

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: RetrievePassword.php,v 1.2 2005/08/02 02:34:36 bps7j Exp $
+ * $Id: RetrievePassword.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  */
 // {{{require declarations
 include_once("Email.php");
@@ -52,7 +52,7 @@ class RetrievePassword {
      */
     function sendPassword(&$member) {
         global $cfg;
-        $email =& new Email();
+        $email = new Email();
         $email->loadFooter("templates/emails/footer.txt");
         $body = file_get_contents("templates/emails/retrieve-password.txt");
         $body = Template::replace($body, array(

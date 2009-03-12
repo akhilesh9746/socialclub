@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2008/04/12 21:32:54 pctainto Exp $
+ * $Id: list_all.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("membership.php");
@@ -32,7 +32,7 @@ $wrapper = file_get_contents("templates/membership/list_all.php");
 $start = date("n/j/Y", time() - (60*60*24*14));
 
 # Create a form for filtering options.
-$form =& new XmlForm("forms/membership/list_all.xml");
+$form = new XmlForm("forms/membership/list_all.xml");
 $form->setValue("start", $start);
 $form->snatch();
 $wrapper = Template::replace($wrapper, array("form" => $form->toString()));
@@ -68,9 +68,9 @@ if (isset($_POST['submitted']) && isset($_POST['membership'])) {
         # Check that the current row got submitted with the form
         if (in_array($row['membership_uid'], $_POST['membership'])) {
             # Create the objects we need
-            $membership =& new membership();
+            $membership = new membership();
             $membership->select($row['membership_uid']);
-            $member =& new member();
+            $member = new member();
             $member->select($row['c_uid']);
             $membership->setStatus($cfg['status_id']['active']);
             $membership->setBeginDate($row['c_begin_date']);
@@ -82,7 +82,7 @@ if (isset($_POST['submitted']) && isset($_POST['membership'])) {
             $member->addNote("$cfg[user] activated membership "
                 .  $membership->getUID());
 
-            $msg =& new Email();
+            $msg = new Email();
             $msgBody = file_get_contents("templates/emails/activation-notice.txt");
             $msgBody = Template::replace($msgBody, array(
                 "CLUB_NAME" => $cfg['club_name'],
@@ -99,7 +99,7 @@ if (isset($_POST['submitted']) && isset($_POST['membership'])) {
             $msg->send();
 
             # Record this transaction
-            $tran =& new transaction();
+            $tran = new transaction();
             $tran->setAmount(floatval($membership->getAmountPaid()));
             $tran->setCategory($cat);
             $tran->setDescription($member->getFullName()
@@ -120,7 +120,7 @@ if (isset($_POST['submitted']) && isset($_POST['membership'])) {
     if (count($aggregate)) {
         $wrapper = Template::unhide($wrapper, "SUCCESS");
         foreach ($aggregate as $type => $num) {
-            $mt =& new membership_type();
+            $mt = new membership_type();
             $mt->select($type);
             $wrapper = Template::block($wrapper, "RESULTS", array(
                 "MEMBERSHIP_TITLE" => $mt->getTitle(),

@@ -17,13 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.2 2005/08/02 03:05:26 bps7j Exp $
+ * $Id: read.php,v 1.3 2009/03/12 03:16:02 pctainto Exp $
  */
 
 $template = file_get_contents("templates/question/read.php");
 
 # Insert the adventure into the template
-$adventure =& new adventure();
+$adventure = new adventure();
 $adventure->select($object->getAdventure());
 $template = Template::replace($template, array(
     "ADVENTURE" => $adventure->c_title));

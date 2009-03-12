@@ -3,7 +3,7 @@ select
     ic.c_title as ic_title,
     ty.c_uid as ty_uid,
     ty.c_title as ty_title,
-    it.existing,
+    coalesce(it.existing,0) as existing,
     sum(coalesce(it.it_out, 0) + coalesce(cg.g_out, 0)) as items_out
 from [_]item_category as ic 
     inner join [_]item_type as ty on ty.c_category = ic.c_uid

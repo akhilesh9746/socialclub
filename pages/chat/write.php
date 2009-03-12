@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.2 2005/08/02 03:05:05 bps7j Exp $
+ * $Id: write.php,v 1.3 2009/03/12 03:16:01 pctainto Exp $
  */
 
 $template = file_get_contents("templates/chat/write.php");
@@ -34,7 +34,7 @@ while ($row = $result->fetchRow()) {
 }
 
 # Create the form
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 
 # Put the chat's information into the form
 $form->setValue("type", $object->getType());

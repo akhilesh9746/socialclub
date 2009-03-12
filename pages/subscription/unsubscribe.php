@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: unsubscribe.php,v 1.1 2005/03/27 19:53:20 bps7j Exp $
+ * $Id: unsubscribe.php,v 1.2 2009/03/12 03:15:59 pctainto Exp $
  */
 
 include_once("email_list.php");
@@ -25,7 +25,7 @@ include_once("email_list.php");
 $template = file_get_contents("templates/subscription/unsubscribe.php");
 
 if (getval('continue')) {
-    $list =& new email_list();
+    $list = new email_list();
     $list->select($object->getList());
     $list->unsubscribe($object);
     $list->processRequests();

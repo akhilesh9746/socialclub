@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: inventory.php,v 1.3 2005/08/02 03:05:24 bps7j Exp $
+ * $Id: inventory.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
  */
 
 include_once("includes/authorize.php");
@@ -33,8 +33,8 @@ $res['navbar'] = "Member's Area/Inventory";
 $template = file_get_contents("templates/main/inventory.php");
 
 # Plug in allowed actions.
-$item =& new table("$cfg[table_prefix]item");
-$checkout =& new table("$cfg[table_prefix]checkout");
+$item = new table("$cfg[table_prefix]item");
+$checkout = new table("$cfg[table_prefix]checkout");
 
 if ($item->permits('list_all')) {
     $template = Template::unhide($template, "item_list_all");

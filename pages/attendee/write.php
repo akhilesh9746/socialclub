@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:14 bps7j Exp $
+ * $Id: write.php,v 1.2 2009/03/12 03:15:58 pctainto Exp $
  *
  * Allows a leader to edit an attendee record.  Really the only thing to edit is
  * the amount the attendee paid.
@@ -27,7 +27,7 @@ $template = file_get_contents("templates/attendee/write.php");
 $template = $object->insertIntoTemplate($template);
 
 # Create the form.
-$form =& new XMLForm("forms/attendee/write.xml");
+$form = new XMLForm("forms/attendee/write.xml");
 
 # Populate the form from the object
 $form->setValue("amount-paid", $object->getAmountPaid());

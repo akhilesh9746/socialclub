@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: feedback.php,v 1.1 2005/03/27 19:53:13 bps7j Exp $
+ * $Id: feedback.php,v 1.2 2009/03/12 03:15:59 pctainto Exp $
  *
  * Purpose: allow the user to send anonymous feedback to the officers list
  */
@@ -25,13 +25,13 @@
 include_once("Email.php");
 
 $wrapper = file_get_contents("templates/main/feedback.php");
-$form =& new XmlForm("forms/main/feedback.xml");
+$form = new XmlForm("forms/main/feedback.xml");
 
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $email =& new Email();
+    $email = new Email();
     $email->addTo($cfg['club_admin_email']);
     $email->setFrom($cfg['club_admin_email']);
     $email->setSubject($form->getValue("subject"));

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: MySqlConnection.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
+ * $Id: MySqlConnection.php,v 1.3 2009/03/12 03:13:36 pctainto Exp $
  *
  * Represents a connection to a MySQL database.
  */
@@ -123,16 +123,16 @@ class MySqlConnection extends SqlConnection {
             $rows = mysql_affected_rows($this->dbh);
             $info = mysql_info($this->dbh);
             $this->setQueryStatus($queryNum, mysql_errno($this->dbh), $errors);
-            $thisResult =& new MySqlResult($sth, $query, $rows, $info, $ident);
+            $thisResult = new MySqlResult($sth, $query, $rows, $info, $ident);
             if ($select || count($queries) == 1) {
                 # Chain the result into the chain
                 if ($result == null) {
-                    $result =& $thisResult;
-                    $firstResult =& $thisResult;
+                    $result = $thisResult;
+                    $firstResult = $thisResult;
                 }
                 else {
-                    $result->next =& $thisResult;
-                    $result =& $thisResult;
+                    $result->next = $thisResult;
+                    $result = $thisResult;
                 }
             }
         }

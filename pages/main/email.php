@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: email.php,v 1.3 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: email.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
  */
 
 include_once("MassEmail.php");
@@ -46,7 +46,7 @@ if ($obj['user']->isRootUser()) {
     $formTemplate = Template::unhide($formTemplate, "FORCE");
 }
 
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 $form->snatch();
 $form->validate();
 if (!$form->getValue("group")) {

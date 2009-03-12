@@ -17,14 +17,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.2 2005/08/02 03:05:25 bps7j Exp $
+ * $Id: write.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  */
 
 $template = file_get_contents("templates/phone_number/write.php");
 $formTemplate = file_get_contents("forms/phone_number/write.xml");
 
 # Create the owner for the phone number
-$owner =& new member();
+$owner = new member();
 $owner->select($object->getOwner());
 
 # Add all phone number types to the form
@@ -38,7 +38,7 @@ while ($row = $result->fetchRow()) {
 }
 
 # Create the form
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 
 # Put the phone's information into the form
 $form->setValue("type", $object->getType());

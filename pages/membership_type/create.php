@@ -17,17 +17,17 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/08/02 02:59:31 bps7j Exp $
+ * $Id: create.php,v 1.3 2009/03/12 03:16:00 pctainto Exp $
  */
 
 $template = file_get_contents("templates/membership_type/create.php");
 
-$form =& new XmlForm("forms/membership_type/create.xml");
+$form = new XmlForm("forms/membership_type/create.xml");
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $object =& new membership_type();
+    $object = new membership_type();
     $object->setTitle($form->getValue("title"));
     $object->setDescription($form->getValue("description"));
     $object->setHidden(intval($form->getValue("private")));

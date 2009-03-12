@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: setup.php,v 1.7 2006/03/27 03:46:24 bps7j Exp $
+ * $Id: setup.php,v 1.8 2009/03/12 03:15:58 pctainto Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -57,6 +57,8 @@ $err = array();
 $res = array();
 
 # Set the level of error that should trigger something to happen.
+# The final 2 are the decimal representation because they are new in PHP5
+# so PHP4 will have problems
 $cfg['error_types'] = array(
 	E_ERROR => "E_ERROR",
 	E_WARNING => "E_WARNING",
@@ -69,8 +71,12 @@ $cfg['error_types'] = array(
 	E_USER_ERROR => "E_USER_ERROR",
 	E_USER_WARNING => "E_USER_WARNING",
 	E_USER_NOTICE => "E_USER_NOTICE",
-	E_ALL => "E_ALL");
-error_reporting(E_ALL);
+	E_ALL => "E_ALL",
+	2048 => "E_STRICT",
+	4096 => "E_RECOVERABLE_ERROR",
+	8192 => "E_DEPRECATED",
+	16384 => "E_USER_DEPRECATED");
+error_reporting(E_ALL|E_STRICT|E_DEPRECATED|E_RECOVERABLE_ERROR);
 
 # Define the levels of errors that I want to cause a webmaster email or log
 define("ERROR_EMAILING", E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR
@@ -129,7 +135,14 @@ if ($cfg['error_log'] || $cfg['error_email']) {
         global $cfg;
         $logMessage = "{$cfg['error_types'][$errno]} at line $errline "
             . "in $errfile: $errstr"
-            . "\r\n$_SERVER[REMOTE_HOST] on page $_SERVER[REQUEST_URI]";
+            . "\r\n";
+        if (isset($_SERVER['REMOTE_HOST'])) {
+        	$logMessage .= "$_SERVER[REMOTE_HOST]";
+        } 
+        else{
+        	$logMessage .= "$_SERVER[REMOTE_ADDR]";
+        }
+        $logMessage .= " on page $_SERVER[REQUEST_URI]";
         if (isset($_SERVER['HTTP_REFERER'])) {
             $logMessage .= "\r\nreferred from $_SERVER[HTTP_REFERER]";
         }
@@ -199,7 +212,7 @@ if ($cfg['error_log'] || $cfg['error_email']) {
 # Create the database connection.
 # ------------------------------------------------------------------------------
 include_once("{$cfg['db']['type']}.php");
-$obj['conn'] =& new $cfg['db']['type']($cfg['db']);
+$obj['conn'] = new $cfg['db']['type']($cfg['db']);
 $obj['conn']->open();
 
 # ------------------------------------------------------------------------------

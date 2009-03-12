@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: XmlParser.php,v 1.1 2005/03/27 19:54:13 bps7j Exp $
+ * $Id: XmlParser.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  */
 
 include_once("Document.php");
@@ -31,15 +31,16 @@ class XMLParser {
 
     function XMLParser($encoding = 'ISO-8859-1') {
         $this->parser = xml_parser_create($encoding);
+        xml_parser_set_option($this->parser,XML_OPTION_TARGET_ENCODING, $encoding);
         xml_set_object($this->parser, &$this);
         xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
         xml_set_element_handler($this->parser, "startTag", "endTag");
         xml_set_character_data_handler($this->parser, "characterData");
     }
 
-    function &parse($data) {
-        $this->document =& new Document();
-        $this->currentNode =& $this->document;
+    function parse($data) {
+        $this->document = new Document();
+        $this->currentNode = $this->document;
         if (!xml_parse($this->parser, $data)) {
             trigger_error("XML Parsing error at line "
                 . xml_get_current_line_number($this->parser) . ", column "
@@ -52,12 +53,12 @@ class XMLParser {
 
     function startTag($parser, $tag, $attributes) {
         $this->coalesceCData();
-        $element =& $this->document->createElement($tag);
+        $element = $this->document->createElement($tag);
         foreach ($attributes as $name => $value) {
             $element->setAttribute($name, $value);
         }
         $this->currentNode->appendChild($element);
-        $this->currentNode =& $element;
+        $this->currentNode = $element;
     }
 
     function characterData($parser, $cdata) {
@@ -71,7 +72,7 @@ class XMLParser {
 
     function endTag($parser, $tag) {
         $this->coalesceCData();
-        $this->currentNode =& $this->currentNode->parentNode;
+        $this->currentNode = $this->currentNode->parentNode;
     }
 
     function coalesceCData() {
@@ -87,7 +88,7 @@ class XMLParser {
         else {
             $this->cdata = preg_replace("/(^ +)|( +$)/s", " ", $this->cdata);
         }
-        $text =& $this->document->createTextNode($this->cdata);
+        $text = $this->document->createTextNode($this->cdata);
         $this->currentNode->appendChild($text);
         $this->cdata = null;
     }

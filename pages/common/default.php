@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: default.php,v 1.2 2005/06/05 17:10:17 bps7j Exp $
+ * $Id: default.php,v 1.3 2009/03/12 03:15:59 pctainto Exp $
  *
  * Presents a default list of actions you can take on a table.  If there is a
  * template, it uses that; otherwise it uses a default template.  You can use
@@ -34,7 +34,7 @@ else {
 }
 
 # Plug in allowed actions.  If there is only one, redirect to it.
-$obj['table'] =& new table("$cfg[table_prefix]$cfg[page]");
+$obj['table'] = new table("$cfg[table_prefix]$cfg[page]");
 $links = 0;
 $singleAction = 0;
 foreach ($obj['table']->getAllowedActions() as $key => $row) {

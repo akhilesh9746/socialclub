@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: functions.php,v 1.3 2005/08/02 02:38:32 bps7j Exp $
+ * $Id: functions.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 
 # ------------------------------------------------------------------------------
@@ -147,7 +147,7 @@ function actionform($class, $id, $style, $cache = false) {
         }
         elseif (!$cache || !is_array($privs) || $cacheType != $class) {
             $cacheType = $class;
-            $obj =& new $class();
+            $obj = new $class();
             $obj->select($id);
             # Don't assign by reference.
             $privs = $obj->getAllowedActions();

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Node.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
+ * $Id: Node.php,v 1.3 2009/03/12 03:13:36 pctainto Exp $
  */
 
 define("DOM_ELEMENT_NODE",                    1);
@@ -60,7 +60,7 @@ class Node {
      * @param refChild Node
      * @return Node
      */
-    function &insertBefore(&$newChild, &$refChild) {
+    function insertBefore(&$newChild, &$refChild) {
         // Search for $refChild in the childNodes list.  If it is null, append
         // $newChild to the list.  If it's found, insert $newChild before it.
         $existingNode = $this->findIndex($refChild);
@@ -99,7 +99,7 @@ class Node {
         }
         else {
             // If the new child already exists, remove it from the tree
-            $newChild =& $this->removeChildIfExists($newChild);
+            $newChild = $this->removeChildIfExists($newChild);
             // We might have modified the array... re-calculate the index of the
             // one to insert before.
             $existingNode = $this->findIndex($refChild);
@@ -114,8 +114,8 @@ class Node {
      * @param oldChild Node
      * @desc Replaces the child node oldChild with newChild
      */
-    function &replaceChild(&$newChild, &$oldChild) {
-        $result =& $this->insertBefore($newChild, $oldChild);
+    function replaceChild(&$newChild, &$oldChild) {
+        $result = $this->insertBefore($newChild, $oldChild);
         return $this->removeChild($oldChild);
     } // }}}
 
@@ -124,7 +124,7 @@ class Node {
      * @return Node
      * @param oldChild The node to remove.
      */
-    function &removeChild(&$oldChild) {
+    function removeChild(&$oldChild) {
         if ($this->isReadOnly()) {
             trigger_error("DOM_NO_MODIFICATION_ALLOWED_ERR", E_USER_ERROR);
         }
@@ -132,7 +132,7 @@ class Node {
         if ($index < 0) {
             trigger_error("DOM_NOT_FOUND_ERR", E_USER_ERROR);
         }
-        $result =& $this->removeChildAtIndex($index);
+        $result = $this->removeChildAtIndex($index);
         return $result;
     } // }}}
 
@@ -141,7 +141,7 @@ class Node {
     * @param $newChild Node
     * @desc Appends $newChild to the node's list of child nodes.
     */
-    function &appendChild(&$newChild) {
+    function appendChild(&$newChild) {
         if ($this->isDescendantOf($newChild)
                 || !$this->canAcceptChildNodeOfType($newChild->nodeType)) {
             trigger_error("DOM_HIERARCHY_REQUEST_ERR", E_USER_ERROR);
@@ -162,16 +162,16 @@ class Node {
         }
         else {
             // If newChild is already in the tree, it is first removed.
-            $newChild =& $this->removeChildIfExists($newChild);
-            $this->childNodes[] =& $newChild;
+            $newChild = $this->removeChildIfExists($newChild);
+            $this->childNodes[] = $newChild;
             $numNodes = count($this->childNodes);
             if ($numNodes > 1) {
-                $newChild->previousSibling =& $this->childNodes[$numNodes - 2];
-                $this->childNodes[$numNodes - 2]->nextSibling =& $newChild;
+                $newChild->previousSibling = $this->childNodes[$numNodes - 2];
+                $this->childNodes[$numNodes - 2]->nextSibling = $newChild;
             }
-            $this->lastChild =& $newChild;
-            $this->firstChild =& $this->childNodes[0];
-            $newChild->parentNode =& $this;
+            $this->lastChild = $newChild;
+            $this->firstChild = $this->childNodes[0];
+            $newChild->parentNode = $this;
             $this->ownerDocument->addNodeToLookupCache($newChild);
         }
         return $newChild;
@@ -183,7 +183,7 @@ class Node {
     } // }}}
 
     // {{{cloneNode
-    function &cloneNode($deep) {
+    function cloneNode($deep) {
     } // }}}
 
     // {{{normalize
@@ -225,21 +225,21 @@ class Node {
         $this->ownerDocument->addNodeToLookupCache($node);
         if ($index == 0) {
             array_unshift($this->childNodes, &$node);
-            $node->nextSibling =& $this->firstChild;
-            $this->firstChild->previousSibling =& $node;
-            $this->firstChild =& $node;
+            $node->nextSibling = $this->firstChild;
+            $this->firstChild->previousSibling = $node;
+            $this->firstChild = $node;
         }
         else {
             // Move each of the following nodes "up" one in the childNodes
             // array, and insert this node into the "hole" that was left
             for ($i = count($this->childNodes); $i > $index; --$i) {
-                $this->childNodes[$i] =& $this->childNodes[$i - 1];
+                $this->childNodes[$i] = $this->childNodes[$i - 1];
             }
-            $node->nextSibling =& $this->childNodes[$i + 1];
-            $node->previousSibling =& $this->childNodes[$i - 1];
-            $this->childNodes[$i] =& $node;
-            $node->nextSibling->previousSibling =& $node;
-            $node->previousSibling->nextSibling =& $node;
+            $node->nextSibling = $this->childNodes[$i + 1];
+            $node->previousSibling = $this->childNodes[$i - 1];
+            $this->childNodes[$i] = $node;
+            $node->nextSibling->previousSibling = $node;
+            $node->previousSibling->nextSibling = $node;
         }
     } // }}}
 
@@ -270,7 +270,7 @@ class Node {
      * @param child The node to remove
      * @desc Removes the child if it exists in childNodes
      */
-    function &removeChildIfExists(&$child) {
+    function removeChildIfExists(&$child) {
         $index = $this->findIndex($child);
         if ($index != -1) {
             return $this->removeChildAtIndex($index);
@@ -283,8 +283,8 @@ class Node {
      * @param index The index to remove
      * @desc Removes the given node from the list of child nodes
      */
-    function &removeChildAtIndex($index) {
-        $result =& $this->childNodes[$index];
+    function removeChildAtIndex($index) {
+        $result = $this->childNodes[$index];
         // There are four cases.  The node to remove is at the front, at the
         // back, in the middle, or the only node.
         $numNodes = count($this->childNodes);
@@ -294,31 +294,32 @@ class Node {
         }
         elseif ($index === 0) {
             array_shift($this->childNodes);
-            $this->firstChild =& $this->childNodes[0];
-            $this->firstChild->previousSibling =& $null;
+            $this->firstChild = $this->childNodes[0];
+            $this->firstChild->previousSibling = $null;
         }
         elseif ($index === $numNodes - 1) {
             array_pop($this->childNodes);
-            $this->lastChild =& $this->childNodes[$numNodes - 2];
-            $this->lastChild->nextSibling =& $null;
+            $this->lastChild = $this->childNodes[$numNodes - 2];
+            $this->lastChild->nextSibling = $null;
         }
         else {
             // Re-link the linked list around the node to remove, then move all
             // the elements of the childNodes array up one position
-            $this->childNodes[$index - 1]->nextSibling =& $this->childNodes[$index + 1];
-            $this->childNodes[$index + 1]->previousSibling =& $this->childNodes[$index - 1];
+            $this->childNodes[$index - 1]->nextSibling = $this->childNodes[$index + 1];
+            $this->childNodes[$index + 1]->previousSibling = $this->childNodes[$index - 1];
             for ($i = $index; $i < $numNodes - 1; $i++) {
-                $this->childNodes[$i] =& $this->childNodes[$i + 1];
+                $this->childNodes[$i] = $this->childNodes[$i + 1];
             }
             // The array's last two elements now both point to the same Node.
             // Get rid of the last one:
             array_pop($this->childNodes);
         }
         // Get rid of any entries in the id lookup table:
+        print ("B$this->ownerDocument"."b");
         if (isset($this->ownerDocument->idCache[$node->attributes['id']])) {
             unset($this->ownerDocument->idCache[$node->attributes['id']]);
         }
-        $result->parentNode =& $null;
+        $result->parentNode = $null;
         return $result;
     } //}}}
 
@@ -336,7 +337,7 @@ class Node {
     } //}}}
 
     // {{{getElementByID
-    function &getElementByID($elementID) {
+    function getElementByID($elementID) {
         if ($this->nodeType == DOM_ELEMENT_NODE) {
             if (isset($this->attributes[$this->idName])
                     && $this->attributes[$this->idName] === $elementID) {
@@ -344,7 +345,7 @@ class Node {
             }
         }
         foreach (array_keys($this->childNodes) as $key) {
-            @$result =& $this->childNodes[$key]->getElementByID($elementID);
+            @$result = $this->childNodes[$key]->getElementByID($elementID);
             if (!is_null($result)) {
                 return $result;
             }
@@ -358,7 +359,7 @@ class Node {
         if ($this->nodeType == DOM_ELEMENT_NODE) {
             if (isset($this->attributes[$name])
                     && $this->attributes[$name] === $value) {
-                $result[] =& $this;
+                $result[] = $this;
             }
         }
         foreach (array_keys($this->childNodes) as $key) {
@@ -383,7 +384,7 @@ class Node {
                 }
             }
             if ($matches) {
-                $result[] =& $arr[$key];
+                $result[] = $arr[$key];
             }
         }
         return $result;

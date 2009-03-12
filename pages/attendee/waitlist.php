@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: waitlist.php,v 1.1 2005/03/27 19:53:15 bps7j Exp $
+ * $Id: waitlist.php,v 1.2 2009/03/12 03:15:58 pctainto Exp $
  *
  * Purpose: allows a leader to move an attendee from an adventure's roster onto
  * the end of the waitlist.
@@ -25,9 +25,9 @@
 
 include_once("JoinAdventure.php");
 
-$adventure =& new adventure();
+$adventure = new adventure();
 $adventure->select($object->getAdventure());
-$member =& new member();
+$member = new member();
 $member->select($object->getMember());
 
 # Create templates

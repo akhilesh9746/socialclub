@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: XmlForm.php,v 1.2 2005/08/02 23:46:18 bps7j Exp $
+ * $Id: XmlForm.php,v 1.3 2009/03/12 03:13:36 pctainto Exp $
  */
 include_once("XmlFormParser.php");
 include_once("XmlSerializer.php");
@@ -31,7 +31,7 @@ class XMLForm {
         # $text being TRUE means the $data is actually a parsable string;
         # otherwise $data is a filename to read from disk and parse
         if ($text) {
-            $file =& $data;
+            $file = $data;
         }
         else {
             $file = file_get_contents($data);
@@ -40,14 +40,14 @@ class XMLForm {
         if (!trim($file)) {
             trigger_error("The file is empty", E_USER_ERROR);
         }
-        $parser =& new XMLFormParser();
-        @$this->form =& $parser->parse($file);
+        $parser = new XMLFormParser();
+        @$this->form = $parser->parse($file);
     } //}}}
 
     // {{{getValue
     function getValue($name) {
         // Get the config for the form
-        $config =& $this->form->getElementByID("config");
+        $config = $this->form->getElementByID("config");
         if (is_null($config)) {
             trigger_error("Invalid <config> specification in the form", E_USER_ERROR);
         }
@@ -57,7 +57,7 @@ class XMLForm {
             return null;
         }
         else {
-            $el =& $els[0];
+            $el = $els[0];
         }
         // $el is now the config element that tells us things about the element
         // whose value we want.  Get the element's value
@@ -69,7 +69,7 @@ class XMLForm {
                     "name" => $el->getAttribute("name") . "[]",
                     "type" => "checkbox"), "input");
                 foreach (array_keys($elements) as $key) {
-                    $option =& $elements[$key];
+                    $option = $elements[$key];
                     if ($option->getAttribute("checked")) {
                         $result[$option->getAttribute("value")] = "1";
                     }
@@ -79,9 +79,9 @@ class XMLForm {
                 }
             }
             elseif ($el->getAttribute("tag-name") == "select") {
-                $select =& $this->form->getElementByID($el->getAttribute("element-id"));
+                $select = $this->form->getElementByID($el->getAttribute("element-id"));
                 foreach (array_keys($select->childNodes) as $key) {
-                    $option =& $select->childNodes[$key];
+                    $option = $select->childNodes[$key];
                     if ($option->nodeType == DOM_ELEMENT_NODE
                             && $option->tagName == "option") {
                         if ($option->getAttribute("selected")) {
@@ -98,11 +98,11 @@ class XMLForm {
         }
         elseif ($el->getAttribute("element-id")) {
             // {{{scalar that's not a radio button or checkbox array
-            $element =& $this->form->getElementByID($el->getAttribute("element-id"));
+            $element = $this->form->getElementByID($el->getAttribute("element-id"));
             if ($element->tagName == "select") {
                 // Select
                 // Find the correct child node of the element and get its value
-                @$options =& $element->getElementsByTagName("option");
+                @$options = $element->getElementsByTagName("option");
                 foreach (array_keys($options) as $key) {
                     if ($options[$key]->getAttribute("selected")) {
                         return $options[$key]->getAttribute("value");
@@ -145,11 +145,11 @@ class XMLForm {
     // {{{toString
     function toString() {
         // Set the form's action, by default, to post back to itself.
-        @$config =& $this->form->getElementByID("config");
+        @$config = $this->form->getElementByID("config");
         if (is_null($config)) {
             trigger_error("Invalid <config> specification in the form", E_USER_ERROR);
         }
-        @$form =& $this->form->getElementByID($config->getAttribute("form-id"));
+        @$form = $this->form->getElementByID($config->getAttribute("form-id"));
         if (is_null($form)) {
             trigger_error("Invalid <config> specification in the form", E_USER_ERROR);
             return;
@@ -160,7 +160,7 @@ class XMLForm {
         if (!$form->getAttribute("action")) {
             $form->setAttribute("action", $_SERVER['REQUEST_URI']);
         }
-        $serializer =& new XMLSerializer("HTML");
+        $serializer = new XMLSerializer("HTML");
         return $serializer->serializeNode($this->form, "");
     } //}}}
 
@@ -173,8 +173,8 @@ class XMLForm {
     function validate() {
         $result = $this->form->validate();
         // Only enable error messages if the form has been submitted
-        @$config =& $this->form->getElementByID("config");
-        @$formEl =& $this->form->getElementByID(
+        @$config = $this->form->getElementByID("config");
+        @$formEl = $this->form->getElementByID(
             $config->getAttribute("form-id"));
         if (is_null($formEl)) {
             trigger_error("There is no element with id "

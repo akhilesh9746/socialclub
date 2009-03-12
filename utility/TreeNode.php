@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: TreeNode.php,v 1.1 2005/03/27 19:54:11 bps7j Exp $
+ * $Id: TreeNode.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  */
 
 class TreeNode {
@@ -39,7 +39,7 @@ class TreeNode {
 
     function addNode($link, $text, $path = array()) {
         if (!count($path)) {
-            $this->children[$text] =& new TreeNode($link, $text);
+            $this->children[$text] = new TreeNode($link, $text);
         }
         else {
             if (isset($this->children[$path[0]])) {

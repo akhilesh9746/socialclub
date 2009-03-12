@@ -17,13 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: change_password.php,v 1.1 2005/03/27 19:53:29 bps7j Exp $
+ * $Id: change_password.php,v 1.2 2009/03/12 03:15:59 pctainto Exp $
  */
 
 $template = file_get_contents("templates/member/change_password.php");
 $template = $object->insertIntoTemplate($template);
 
-$form =& new XMLForm("forms/member/change_password.xml");
+$form = new XMLForm("forms/member/change_password.xml");
 
 $form->snatch();
 $form->validate();

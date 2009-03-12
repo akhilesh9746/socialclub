@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.3 2005/08/02 03:05:23 bps7j Exp $
+ * $Id: read.php,v 1.4 2009/03/12 03:16:01 pctainto Exp $
  */
 
 # Create templates
@@ -61,11 +61,11 @@ $replacement = "<a href=\"members/item/read/\\1\">\\0</a>";
 $template = preg_replace("/item (\d+)/", $replacement, $template);
 
 # Add information about the type and condition and status
-$type =& new item_type();
+$type = new item_type();
 $type->select($object->getType());
 $template = Template::replace($template, array(
     "TYPE_TITLE" => $type->getTitle()));
-$cond =& new condition();
+$cond = new condition();
 $cond->select($object->getCondition());
 $cfg['status_title'] = array_flip($cfg['status_id']);
 $template = Template::replace($template, array(

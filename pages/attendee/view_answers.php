@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_answers.php,v 1.2 2005/06/05 17:07:42 bps7j Exp $
+ * $Id: view_answers.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  * Allows a member to view and edit his/her answers to questions.
  *
  * Two scenarios are possible:  The user chose to view answers for a specific
@@ -30,8 +30,8 @@ include_once("answer.php");
 include_once("JoinAdventure.php");
 
 # Get info about the attendee & adventure
-$member =& new member();
-$adventure =& new adventure();
+$member = new member();
+$adventure = new adventure();
 $member->select($object->getMember());
 $adventure->select($object->getAdventure());
 
@@ -55,7 +55,7 @@ $formTemplate = file_get_contents("forms/attendee/view_answers.xml");
 # Add the adventure's questions to the form.
 $formTemplate = JoinAdventure::addQuestionsToForm($formTemplate, $adventure);
 $formTemplate = Template::finalize($formTemplate);
-$form =& new XMLForm($formTemplate, true);
+$form = new XMLForm($formTemplate, true);
 
 # Set the answer values in the form, and save the answers for later (rekey them
 # by question ID)
@@ -72,14 +72,14 @@ $form->validate();
 if (!$error && $form->isValid()) {
     # Record the answers to the questions
     foreach ($adventure->getChildren("question") as $key => $q) {
-        $answer =& new answer();
+        $answer = new answer();
         # Update existing answers & create new ones
         if (isset($answers[$q->getUID()])) {
             $answers[$q->getUID()]->setAnswerText($form->getValue("question" . $q->getUID()));
             $answers[$q->getUID()]->update();
         }
         else {
-            $answer =& new answer();
+            $answer = new answer();
             $answer->setQuestion($q->getUID());
             $answer->setOwner($member->getUID());
             $answer->setAttendee($cfg['object']);

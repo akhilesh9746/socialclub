@@ -45,7 +45,7 @@
 {LAST:}
 <a href="members/item/read/{LAST_ID}">&laquo; prev</a>
 {:LAST}
-<a href="members/item/list_all?category=&form-name=1&type={C_TYPE}">item list</a>
+<a href="members/item/list_all?category=form-name=1&type={C_TYPE}">item list</a>
 {NEXT:}
 <a href="members/item/read/{NEXT_ID}">next &raquo;</a>
 {:NEXT}

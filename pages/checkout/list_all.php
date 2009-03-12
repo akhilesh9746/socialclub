@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.8 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: list_all.php,v 1.9 2009/03/12 03:16:00 pctainto Exp $
  */
 
 # Create a template 
@@ -54,7 +54,7 @@ while ($row = $result->fetchRow()) {
 $formTemplate = Template::replace($formTemplate, array(
     "TYPES" => $thisGroup), 1);
 
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 $form->setValue("status", $cfg['status_id']['checked_out']);
 $form->snatch();
 $form->validate();

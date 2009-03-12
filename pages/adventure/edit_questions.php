@@ -17,13 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: edit_questions.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
+ * $Id: edit_questions.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("question.php");
 
 # Create and validate the form.
-$form =& new XMLForm("forms/adventure/edit_questions.xml");
+$form = new XMLForm("forms/adventure/edit_questions.xml");
 $form->snatch();
 $form->validate();
 
@@ -36,7 +36,7 @@ if ($object->getStatus() == $cfg['status_id']['active']) {
 
 if ($form->isValid()) {
     # Create the question
-    $question =& new question();
+    $question = new question();
     $question->setAdventure($cfg['object']);
     $question->setType($form->getValue("type"));
     $question->setText($form->getValue("text"));

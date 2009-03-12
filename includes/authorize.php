@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: authorize.php,v 1.1 2005/03/27 19:54:19 bps7j Exp $
+ * $Id: authorize.php,v 1.2 2009/03/12 03:15:58 pctainto Exp $
  *
  * Purpose: requires authentication.  The variable $cfg['login_mode'] is
  * used to instruct this file whether the current page requires the user to be
@@ -35,7 +35,7 @@
 $cfg['user'] = 0;
 
 # Gather login information
-$form =& new XmlForm("forms/main/login.xml");
+$form = new XmlForm("forms/main/login.xml");
 $form->snatch();
 $form->validate();
 if ($form->isValid()) {

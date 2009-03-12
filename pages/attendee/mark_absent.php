@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: mark_absent.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
+ * $Id: mark_absent.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  *
  * Allows a leader to mark an attendee as absent.
  */
@@ -30,9 +30,9 @@ $template = file_get_contents("templates/attendee/mark_absent.php");
 $template = $object->insertIntoTemplate($template);
 
 # Create the member and adventure for the absence
-$member =& new member();
+$member = new member();
 $member->select($object->getMember());
-$adventure =& new adventure();
+$adventure = new adventure();
 $adventure->select($object->getAdventure());
 
 # Check to see if this member is already marked as absent from this adventure.
@@ -46,20 +46,20 @@ if ($already) {
 }
 else {
     # Create the form.
-    $form =& new XMLForm("forms/attendee/mark_absent.xml");
+    $form = new XMLForm("forms/attendee/mark_absent.xml");
 
     # Validate the form
     $form->snatch();
     $form->validate();
     
     if ($form->isValid()) {
-        $absence =& new absence();
+        $absence = new absence();
         $absence->setAttendee($cfg['object']);
         $absence->setComment($form->getValue("comment"));
         $absence->setSeverity($form->getValue("severity"));
         $absence->insert();
         if ($form->getValue("email") == "1" ) {
-            $leader =& new member();
+            $leader = new member();
             $leader->select($adventure->getOwner());
 
             $emailTemplate = file_get_contents("templates/emails/absence.txt");
@@ -70,7 +70,7 @@ else {
             $cmd->addParameter("member", $object->getMember());
             $num = $cmd->executeScalar();
 
-            $email =& new Email();
+            $email = new Email();
             $email->addTo($member->getEmail());
             $email->setFrom($cfg['club_admin_email']);
             $email->addCC($leader->getEmail());

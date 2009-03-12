@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: MassEmail.php,v 1.4 2008/03/05 00:11:30 pctainto Exp $
+ * $Id: MassEmail.php,v 1.5 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("Email.php");
@@ -28,7 +28,7 @@ class MassEmail {
         global $obj;
         global $cfg;
 
-        $email =& new Email();
+        $email = new Email();
         $email->setFrom($user->getFullName() . " <" . $user->getEmail() . ">");
         $email->addTo($user->getFullName() . " <" . $user->getEmail() . ">");
         if (strpos($subject, "$cfg[club_name]: ") == FALSE) {

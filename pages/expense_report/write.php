@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.3 2005/08/02 03:05:22 bps7j Exp $
+ * $Id: write.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
  */
 
 # Create templates
@@ -44,7 +44,7 @@ while ($row = $result->fetchRow()) {
     $formTemplate = Template::block($formTemplate, "category", $row);
 }
 
-$form =& new XMLForm(Template::finalize($formTemplate), true);
+$form = new XMLForm(Template::finalize($formTemplate), true);
 $form->setValue("report", $cfg['object']);
 
 # Display information about the current expense report

@@ -18,7 +18,7 @@ if (!is_object($address) || !is_object($phone)) {
 }
 
 # Set up the PDF and add some common stuff to it
-$pdf =& new EasyPdf();
+$pdf = new EasyPdf();
 $pdf->selectFont("utility/fonts/Times-Roman.afm");
 $pdf->ezSetMargins(40, 40, 40, 40);
 # Put a line on the top and bottom of all the pages
@@ -60,7 +60,7 @@ $pdf->ezTable(
     array('showHeadings' => 0));
 
 $now = date("Y-m-d");
-$birth = new DateTime($obj['user']->getBirthDate());
+$birth = new DateTimeSC($obj['user']->getBirthDate());
 $plus18 = $birth->addYears(18);
 # Print out the signature lines
 $pdf->ezText("\n\n\nSignature:______________________________________ Date: _____________");

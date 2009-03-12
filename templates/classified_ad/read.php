@@ -20,7 +20,7 @@
   </tr>
   <tr>
     <th>Status</th>
-    <td>{STATUS}</td>
+    <td>{C_STATUS|bitmaskString,'status_id'}</td>
   </tr>
 </table>
 

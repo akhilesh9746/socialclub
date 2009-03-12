@@ -16,16 +16,16 @@
  * this program.  If not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: foreign-keys.sql,v 1.4 2006/04/13 12:53:54 bps7j Exp $
+ * $Id: foreign-keys.sql,v 1.5 2009/03/12 03:15:59 pctainto Exp $
  *
  */
 
 delete from [_]foreign_key;
 
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 -- Define foreign keys.  Insert rows for properties that every table has: owner,
 -- creator, status
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
 insert into [_]foreign_key
     (c_parent_table, c_child_table, c_parent_col, c_child_col)
@@ -37,9 +37,9 @@ insert into [_]foreign_key
     select "[_]member", c_name, "c_uid", "c_creator"
     from [_]table;
 
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 -- Insert rows for other foreign keys in the database.
---------------------------------------------------------------------------------
+-- -----------------------------------------------------------------------------
 
 insert into [_]foreign_key
     (c_parent_table, c_child_table, c_parent_col, c_child_col)
@@ -93,6 +93,6 @@ insert into [_]foreign_key
     ("[_]checkout",             "[_]checkout_item",         "c_uid",    "c_checkout"),
     ("[_]item",                 "[_]checkout_item",         "c_uid",    "c_item");
 
--------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------
 -- Done inserting foreign keys.
--------------------------------------------------------------------------------
+-- ---------------------------------------------------------------------------

@@ -17,18 +17,18 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.1 2005/03/27 19:53:14 bps7j Exp $
+ * $Id: create.php,v 1.2 2009/03/12 03:15:59 pctainto Exp $
  */
 
 $template = file_get_contents("templates/item_category/create.php");
-$form =& new XMLForm("forms/item_category/create.xml");
+$form = new XMLForm("forms/item_category/create.xml");
 
 # Validate the form
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $object =& new item_category();
+    $object = new item_category();
     $object->setTitle($form->getValue("title"));
     $object->insert();
     redirect("$cfg[base_url]/members/item_category/read/$object->c_uid");

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.4 2005/09/01 01:59:20 bps7j Exp $
+ * $Id: write.php,v 1.5 2009/03/12 03:16:00 pctainto Exp $
  */
 
 # Create templates
@@ -68,7 +68,7 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     }
     $activityMenu = Template::replace($activityMenu, array(
         "OBJECT" => $cfg['object']));
-    $activityForm =& new XmlForm(Template::finalize($activityMenu), true);
+    $activityForm = new XmlForm(Template::finalize($activityMenu), true);
     $activityForm->setValue("activity", $object->getActivity());
     $activityForm->snatch();
 
@@ -94,7 +94,7 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     else {
         $template = Template::unhide($template, "noFreq");
     }
-    $multiForm =& new XmlForm(Template::finalize($multiTemplate), true);
+    $multiForm = new XmlForm(Template::finalize($multiTemplate), true);
     $multiForm->setValue("checkout", $cfg['object']);
     $multiForm->setValue("activity", $activityForm->getValue("activity"));
 
@@ -123,13 +123,13 @@ if ($object->getStatus() == $cfg['status_id']['default']) {
     $gearTemplate = Template::replace($gearTemplate, array(
         "types" => $thisGroup), 1);
 
-    $gearForm =& new XMLForm(Template::finalize($gearTemplate), true);
+    $gearForm = new XMLForm(Template::finalize($gearTemplate), true);
     $gearForm->setValue("checkout", $cfg['object']);
 
-    $itemForm =& new XmlForm("forms/checkout_item/create.xml");
+    $itemForm = new XmlForm("forms/checkout_item/create.xml");
     $itemForm->setValue("checkout", $cfg['object']);
 
-    $member =& new member();
+    $member = new member();
     $member->select($object->getMember());
 
     $template = Template::replace($template, array(

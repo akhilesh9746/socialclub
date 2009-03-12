@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:30 bps7j Exp $
+ * $Id: read.php,v 1.2 2009/03/12 03:16:03 pctainto Exp $
  */
 
 include_once("attendee.php");
@@ -27,11 +27,11 @@ include_once("adventure.php");
 $template = file_get_contents("templates/absence/read.php");
 
 # Create the member and adventure for the absence
-$attendee =& new attendee();
+$attendee = new attendee();
 $attendee->select($object->getAttendee());
-$member =& new member();
+$member = new member();
 $member->select($attendee->getMember());
-$adventure =& new adventure();
+$adventure = new adventure();
 $adventure->select($attendee->getAdventure());
 
 $template = $adventure->insertIntoTemplate($template);

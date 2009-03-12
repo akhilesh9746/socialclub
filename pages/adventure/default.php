@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: default.php,v 1.3 2005/08/02 02:46:31 bps7j Exp $
+ * $Id: default.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 
 $template = file_get_contents("templates/adventure/default.php");
@@ -39,7 +39,7 @@ else {
 }
 
 # Unhide some items depending on who's logged in
-$obj['table'] =& new table("$cfg[table_prefix]$cfg[page]");
+$obj['table'] = new table("$cfg[table_prefix]$cfg[page]");
 if ($obj['table']->permits('create')) {
     $template = Template::unhide($template, array("CREATE", "INACTIVE"));
 }

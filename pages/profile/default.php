@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: default.php,v 1.5 2005/08/05 00:46:27 bps7j Exp $
+ * $Id: default.php,v 1.6 2009/03/12 03:16:02 pctainto Exp $
  */
 
 require_once("chat.php");
@@ -28,7 +28,7 @@ $wrapper = file_get_contents("templates/profile/default.php");
 
 # Update the member's choice of primary address
 if (isset($_GET['primaryAddress'])) {
-    $newAddr =& new address();
+    $newAddr = new address();
     $newAddr->select($_GET['primaryAddress']);
     if ($newAddr->getOwner() == $cfg['user']) {
         $newAddr->makePrimary();
@@ -37,7 +37,7 @@ if (isset($_GET['primaryAddress'])) {
 
 # Update the member's privacy preferences on addresses
 if (isset($_GET['privateAddress'])) {
-    $privAddr =& new address();
+    $privAddr = new address();
     $privAddr->select($_GET['privateAddress']);
     if ($privAddr->getOwner() == $cfg['user']) {
         $privAddr->setHidden(!$privAddr->getHidden());
@@ -47,7 +47,7 @@ if (isset($_GET['privateAddress'])) {
 
 # Update the member's choice of primary chat
 if (isset($_GET['primaryChat'])) {
-    $newChat =& new chat();
+    $newChat = new chat();
     $newChat->select($_GET['primaryChat']);
     if ($newChat->getOwner() == $cfg['user']) {
         $newChat->makePrimary();
@@ -56,7 +56,7 @@ if (isset($_GET['primaryChat'])) {
 
 # Update the member's privacy preferences on chats
 if (isset($_GET['privateChat'])) {
-    $privChat =& new chat();
+    $privChat = new chat();
     $privChat->select($_GET['privateChat']);
     if ($privChat->getOwner() == $cfg['user']) {
         $privChat->setHidden(!$privChat->getHidden());
@@ -66,7 +66,7 @@ if (isset($_GET['privateChat'])) {
 
 # Update the member's choice of primary phone
 if (isset($_GET['primaryPhone'])) {
-    $newPhone =& new phone_number();
+    $newPhone = new phone_number();
     $newPhone->select($_GET['primaryPhone']);
     if ($newPhone->getOwner() == $cfg['user']) {
         $newPhone->makePrimary();
@@ -75,7 +75,7 @@ if (isset($_GET['primaryPhone'])) {
 
 # Update the member's privacy preferences on phones
 if (isset($_GET['privatePhone'])) {
-    $privPhone =& new phone_number();
+    $privPhone = new phone_number();
     $privPhone->select($_GET['privatePhone']);
     if ($privPhone->getOwner() == $cfg['user']) {
         $privPhone->setHidden(!$privPhone->getHidden());

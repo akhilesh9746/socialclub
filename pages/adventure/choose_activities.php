@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: choose_activities.php,v 1.3 2005/08/05 20:27:10 bps7j Exp $
+ * $Id: choose_activities.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("adventure_activity.php");
@@ -70,7 +70,7 @@ foreach (array_keys($activities) as $key) {
         && $posted
         && in_array($key, $checkboxes))
     {
-        $advAct =& new adventure_activity();
+        $advAct = new adventure_activity();
         $advAct->setAdventure($cfg['object']);
         $advAct->setActivity($key);
         $advAct->insert();

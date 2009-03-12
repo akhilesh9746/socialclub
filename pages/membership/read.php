@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:14 bps7j Exp $
+ * $Id: read.php,v 1.2 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("membership_type.php");
@@ -25,12 +25,12 @@ include_once("membership_type.php");
 $template = file_get_contents("templates/membership/read.php");
 
 # Get the membership-type object
-$mt =& new membership_type();
+$mt = new membership_type();
 $mt->select($object->getType());
 $template = Template::replace($template, array("TYPE_TITLE" => $mt->getTitle()));
 
 # Get the member for the membership
-$member =& new member();
+$member = new member();
 $member->select($object->getMember());
 
 $cfg['status_title'] = array_flip($cfg['status_id']);

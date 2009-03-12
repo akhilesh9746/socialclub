@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: expense_report.php,v 1.1 2005/03/27 19:54:29 bps7j Exp $
+ * $Id: expense_report.php,v 1.2 2009/03/12 03:16:00 pctainto Exp $
  */
 
 include_once("database_object.php");
@@ -43,7 +43,7 @@ class expense_report extends database_object {
 
     function addNote() {
         $this->ensureUID(__LINE__, __FILE__);
-        $note =& new expense_report_note();
+        $note = new expense_report_note();
         $note->setReport($this->c_uid);
         $note->setNewStatus($this->c_status);
         $note->insert();

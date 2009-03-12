@@ -17,12 +17,12 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:31 bps7j Exp $
+ * $Id: read.php,v 1.2 2009/03/12 03:16:00 pctainto Exp $
  */
 
 $template = file_get_contents("templates/address/read.php");
 
-$owner =& new member();
+$owner = new member();
 $owner->select($object->getOwner());
 
 $res['content'] = $owner->insertIntoTemplate(

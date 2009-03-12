@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Template.php,v 1.1 2005/03/27 19:54:13 bps7j Exp $
+ * $Id: Template.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  *
  * Purpose:  A template-replacing engine that operates on templates (strings of
  * text with special keys in them).  Think of it as containing operations that
@@ -55,28 +55,30 @@ class Template {
                     # the input, but will slow the page generation down vastly
                     # because of the errors it will throw.
                     # if (strpos($data, "{$key}") === FALSE
-                    #     && !preg_match("/\\\{$key\}/", $data)) {
+                    #     && !preg_match("/\{$key\}/", $data)) {
                     #     trigger_error("Key $key not found in input", E_USER_WARNING);
                     # }
 
                     # Do the work of replacement, two different ways -- one for
                     # {KEY} and one for {KEY:}blabla{:KEY} formats
-                    #$data = str_replace("\{$key}",
+                    #$data = str_replace('{'."$key}",
                         #($repeat ? "$values[$key]\{$key}" : $values[$key]), $data);
                     if ($repeat) {
-                        $data = preg_replace("/(\\\{$key(\|(.*?))?\})/e",
+                        $data = preg_replace("/(\{$key(\|(.*?))?\})/e",
                             "('\$2' "
                                 . "? (Template::preProcess(\$value, '\$3') . '\$1') "
                                 . ": (\$value . '\$1'))",
                             $data);
-                        $data = preg_replace("/\\\{$key:\}.*?\\\{:$key\}/s",
-                            "$value\{$key}", $data);
+                        //Don't get fancy with the second parameter -- PHP5 seems to have a bug
+                        //where a backslash is added if you say "$value\{$key}"
+                        $data = preg_replace("/\{$key:}.*?{:$key}/s",
+                            $value . "{" . $key . "}", $data);
                     }
                     else {
-                        $data = preg_replace("/(\\\{$key(\|(.*?))?\})/e",
+                        $data = preg_replace("/(\{$key(\|(.*?))?})/e",
                             "('\$2' ? Template::preProcess(\$value, '\$3') : \$value)",
                             $data);
-                        $data = preg_replace("/\\\{$key:\}.*?\\\{:$key\}/s",
+                        $data = preg_replace("/\{$key:}.*?\{:$key}/s",
                             $value, $data);
                     }
                 }
@@ -158,7 +160,7 @@ class Template {
     /* {{{delete
      */
     function delete($data, $key) {
-        return preg_replace("/\\\{$key:\}.*\\\{:$key\}/s", "", $data);
+        return preg_replace("/\{$key:\}.*\{:$key\}/s", "", $data);
     } //}}}
 
     /* {{{unhide
@@ -176,7 +178,7 @@ class Template {
             $keys = array($keys);
         }
         foreach ($keys as $key) {
-            $data = str_replace("\{$key:}", "", str_replace("\{:$key}", "", $data));
+            $data = str_replace('{'."$key:}", "", str_replace('{'.":$key}", "", $data));
         }
         return $data;
     } //}}}
@@ -187,7 +189,7 @@ class Template {
      */
     function extract($data, $key) {
         $matches = array();
-        preg_match("/\\\{$key:\}(.*?)\\\{:$key\}/s", $data, $matches);
+        preg_match("/\{$key:\}(.*?)\{:$key\}/s", $data, $matches);
         if (isset($matches[1])) {
             return $matches[1];
         }
@@ -214,13 +216,15 @@ class Template {
 
         foreach ($blocks as $block) {
             // First extract the block template from the data that's passed in
-            preg_match("/\\\{$block:\}(.*?)\\\{:$block\}/s", $data, $matches);
+            preg_match("/\{$block:\}(.*?)\{:$block\}/s", $data, $matches);
             if (!isset($matches[1])) {
                 trigger_error("Template block $block doesn't exist", E_USER_NOTICE);
             }
             else {
                 # Then use it to generate results
-                $data = str_replace("\{$block:}$matches[1]\{:$block}",
+                # (Don't try to combine this into one string.  the leading '{' causes problems.
+                #  you may try to escape it, but, then the '\' will show up in the output)
+                $data = str_replace('{'.$block.":}$matches[1]{:$block}",
                     Template::replace($matches[1], $values) . ($repeat ? $matches[0] : ""),
                     $data);
             }

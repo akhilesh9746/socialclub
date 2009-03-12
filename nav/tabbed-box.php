@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: tabbed-box.php,v 1.3 2005/08/02 02:40:34 bps7j Exp $
+ * $Id: tabbed-box.php,v 1.4 2009/03/12 03:16:02 pctainto Exp $
  *
  * This page looks for an object called $cfg['object'] that it can use to check
  * permissions and so forth.  It then generates a row of tabs, one for each
@@ -28,7 +28,7 @@
  */
 
 include_once("TabbedBox.php");
-$obj['tabbed_box'] =& new TabbedBox();
+$obj['tabbed_box'] = new TabbedBox();
 
 if (isset($object)) {
     # Init the object's allowed actions, if needed

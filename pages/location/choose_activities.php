@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: choose_activities.php,v 1.3 2005/08/05 20:27:12 bps7j Exp $
+ * $Id: choose_activities.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 
 $template = file_get_contents("templates/location/choose_activities.php");
@@ -68,7 +68,7 @@ foreach (array_keys($activities) as $key) {
         && $posted
         && in_array($key, $checkboxes))
     {
-        $locAct =& new location_activity();
+        $locAct = new location_activity();
         $locAct->setLocation($cfg['object']);
         $locAct->setActivity($key);
         $locAct->insert();

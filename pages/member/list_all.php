@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.5 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: list_all.php,v 1.6 2009/03/12 03:15:59 pctainto Exp $
  */
 
 $template = file_get_contents("templates/member/list_all.php");
@@ -28,7 +28,7 @@ if ($obj['user']->isInGroup('root') || $obj['user']->isInGroup('officer')) {
     $formT = Template::unhide($formT, "HIDDEN");
 }
 
-$form =& new XmlForm(Template::finalize($formT), true);
+$form = new XmlForm(Template::finalize($formT), true);
 $form->snatch();
 
 # Show the members in a list.  Don't show information that the user isn't
@@ -74,10 +74,10 @@ $form->setValue("limit", max(10, min(100, intval($form->getValue("limit")))));
 # to allow the user to select which page to show.
 $numRows = $numCmd->executeScalar();
 $numPages = ceil($numRows / $form->getValue("limit"));
-$select =& $form->form->getElementByID("offset");
+$select = $form->form->getElementByID("offset");
 for ($i = 1; $i <= $numPages; ++$i) {
-    $option =& $select->ownerDocument->createElement("option");
-    $text =& $select->ownerDocument->createTextNode("page $i of $numPages");
+    $option = $select->ownerDocument->createElement("option");
+    $text = $select->ownerDocument->createTextNode("page $i of $numPages");
     $option->appendChild($text);
     $option->setAttribute("value", $i);
     $select->appendChild($option);

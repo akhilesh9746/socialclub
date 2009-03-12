@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
 <form name="theform" id="theform" method="POST">
     <input type="hidden" name="form-name" id="form-name" value="1" />
     <input type="hidden" name="report" id="report" />
@@ -46,7 +47,7 @@ function populate(obj) {
 }
 </script>
 
-<p>You can use this menu to pre-populate some fields below.
+<p>You can use this menu to pre-populate some fields belowSSSS.
 <select onChange="populate(this)" class="compact" >
   <option value="">Choose An Adventure</option>{adventure:}
   <option value="{c_uid}">{c_title|htmlspecialchars} - {c_start_date|_date_format,'Y-m-d'}</option>{:adventure}

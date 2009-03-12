@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
+ * $Id: write.php,v 1.3 2009/03/12 03:16:01 pctainto Exp $
  */
 
 include_once("item_note.php");
@@ -68,7 +68,7 @@ foreach (array("checked_out", "checked_in", "missing") as $status) {
         "C_UID" => $cfg['status_id'][$status]));
 }
 
-$form =& new XMLForm(Template::finalize($formTemplate), true);
+$form = new XMLForm(Template::finalize($formTemplate), true);
 
 # Put the item's information into the form
 $form->setValue("description", $object->getDescription());
@@ -86,7 +86,7 @@ if ($form->isValid()) {
     if (trim($form->getValue("note"))
             || $object->getCondition() != $form->getValue("condition")
             || $object->getStatus() != $form->getValue("status")) {
-        $note =& new item_note();
+        $note = new item_note();
         $note->setItem($cfg['object']);
         $note->setNote($form->getValue("note"));
         $note->setCondition($form->getValue("condition"));

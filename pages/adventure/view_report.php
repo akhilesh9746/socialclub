@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: view_report.php,v 1.4 2005/09/13 21:13:42 bps7j Exp $
+ * $Id: view_report.php,v 1.5 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("attendee.php");
@@ -25,7 +25,7 @@ include_once("attendee.php");
 $res['title'] = "View Adventure Report";
 
 $template = file_get_contents("templates/adventure/view_report.php");
-$form =& new XmlForm("forms/adventure/view_report.xml");
+$form = new XmlForm("forms/adventure/view_report.xml");
 $form->snatch();
 
 $cmd = $obj['conn']->createCommand();
@@ -88,7 +88,7 @@ if ($result->numRows()) {
         $result->seekRow(0);
         while ($row = $result->fetchRow()) {
             $thisRow = $rowTemplate;
-            $attendee =& new attendee();
+            $attendee = new attendee();
             $attendee->select($row['c_uid']);
             $answers = $attendee->getChildren("answer");
             # Re-key the answers by question ID

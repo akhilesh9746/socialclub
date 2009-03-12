@@ -17,8 +17,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: index.php,v 1.3 2008/03/05 00:12:35 pctainto Exp $
+ * $Id: index.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
  */
+
+ini_set('include_path', ".:classes:controllers:utility:includes");
+ini_set('magic_quotes_gpc','Off');
+ini_set('register_globals','Off');
+ini_set('allow_call_time_pass_reference','On');
+ini_set('date.timezone',"US/Eastern");
 
 include_once("includes/setup.php");
 

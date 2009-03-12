@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: add_privilege.php,v 1.4 2005/08/03 01:29:11 bps7j Exp $
+ * $Id: add_privilege.php,v 1.5 2009/03/12 03:15:59 pctainto Exp $
  */
 
 include_once("privilege.php");
@@ -38,14 +38,14 @@ while ($row = $result->fetchRow()) {
         array_change_key_case($row, 1));
 }
 
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 $form->setValue("related_uid", $cfg['object']);
 $form->setValue("related_table", $cfg['table_prefix'] . get_class($object));
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
-    $priv =& new privilege();
+    $priv = new privilege();
     $priv->setWhatGrantedTo($form->getValue("what_granted_to"));
     $priv->setWhoGrantedTo($form->getValue("who_granted_to"));
     $priv->setAction($form->getValue("action"));

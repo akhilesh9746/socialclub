@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: comment.php,v 1.2 2005/08/02 02:45:56 bps7j Exp $
+ * $Id: comment.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  *
  * Allows an attendee to comment on the adventure
  */
@@ -43,12 +43,12 @@ if ($allowed) {
             array_change_key_case($row, 1));
     }
 
-    $form =& new XmlForm(Template::finalize($formTemplate), true);
+    $form = new XmlForm(Template::finalize($formTemplate), true);
     $form->snatch();
     $form->validate();
 
     if ($form->isValid()) {
-        $ac =& new adventure_comment();
+        $ac = new adventure_comment();
         $ac->setText($form->getValue("comment"));
         $ac->setSubject($form->getValue("subject"));
         $ac->setRating($form->getValue("rating"));

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: JoinClub.php,v 1.3 2005/08/02 02:34:36 bps7j Exp $
+ * $Id: JoinClub.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 // {{{require statements
 include_once("Email.php");
@@ -44,7 +44,7 @@ class JoinClub {
         global $obj;
         global $cfg;
 
-        $member =& new member();
+        $member = new member();
         $member->setOwner($cfg['root_uid']);
         $member->setCreator($cfg['root_uid']);
         $member->setEmail($form->getValue('emailAddress'));
@@ -64,7 +64,7 @@ class JoinClub {
         # Make the user a 'member' initially
         $member->setInGroup('member', 1);
 
-        $address =& new address();
+        $address = new address();
         $address->setTitle($form->getValue('street'));
         $address->setStreet($form->getValue('street'));
         $address->setCity($form->getValue('city'));
@@ -74,7 +74,7 @@ class JoinClub {
         $address->setPrimary(1);
         $address->insert();
 
-        $phone =& new phone_number();
+        $phone = new phone_number();
         $phone->setAreaCode($form->getValue('areaCode'));
         $phone->setExchange($form->getValue('exchange'));
         $phone->setNumber($form->getValue('number'));
@@ -85,7 +85,7 @@ class JoinClub {
 
         # Insert the chat identity, if it exists
         if ($form->getValue("chat")) {
-            $chat =& new chat();
+            $chat = new chat();
             $chat->setType($form->getValue("chatType"));
             $chat->setScreenName($form->getValue("chat"));
             $chat->setPrimary(1);
@@ -93,9 +93,9 @@ class JoinClub {
         }
 
         # Create a new membership
-        $type =& new membership_type();
+        $type = new membership_type();
         $type->select($form->getValue("membership-plan"));
-        $mem =& new membership();
+        $mem = new membership();
         $mem->setOwner($cfg['root_uid']);
         $mem->setType($form->getValue("membership-plan"));
         $mem->setBeginDate($type->getBeginDate());
@@ -108,7 +108,7 @@ class JoinClub {
 
         # Send an email to the member
         $body = file_get_contents("templates/emails/final-instructions.txt");
-        $email =& new Email();
+        $email = new Email();
         $email->setFrom($cfg['club_admin_email_name']);
         $email->addHeader("Return-Path", $cfg['club_admin_email']);
         $email->setSubject("Your $cfg[club_name] Membership");

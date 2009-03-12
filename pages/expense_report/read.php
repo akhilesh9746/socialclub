@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.2 2005/08/02 03:05:22 bps7j Exp $
+ * $Id: read.php,v 1.3 2009/03/12 03:15:59 pctainto Exp $
  */
 
 $template = file_get_contents("templates/expense_report/read.php");
@@ -42,7 +42,7 @@ else {
     $template = Template::unhide($template, "none");
 }
 
-$member =& new member();
+$member = new member();
 $member->select($object->getMember());
 $cfg['status_title'] = array_flip($cfg['status_id']);
 $template = Template::replace($template, array(

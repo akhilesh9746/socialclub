@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: announce.php,v 1.3 2005/08/02 03:05:04 bps7j Exp $
+ * $Id: announce.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("MassEmail.php");
@@ -43,11 +43,11 @@ if ($object->getStatus() != $cfg['status_id']['active']) {
 
 if (!$error && getval('continue')) {
     # Create some variables that we need
-    $leader =& new member();
+    $leader = new member();
     $leader->select($object->getOwner());
-    $departure =& new location();
+    $departure = new location();
     $departure->select($object->getDeparture());
-    $destination =& new location();
+    $destination = new location();
     $destination->select($object->getDestination());
 
     # Find the main category of the adventure, and use that as the email's

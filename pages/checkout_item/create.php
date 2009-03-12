@@ -17,13 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.5 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: create.php,v 1.6 2009/03/12 03:16:01 pctainto Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/checkout_item/create.php");
 
-$form =& new XMLForm("forms/checkout_item/create.xml");
+$form = new XMLForm("forms/checkout_item/create.xml");
 $form->snatch();
 $form->validate();
 
@@ -78,7 +78,7 @@ if ($form->isValid()) {
         {
             # Add the new checkout_item to the checkout, then redirect back
             # to the checkout
-            $object =& new checkout_item();
+            $object = new checkout_item();
             $object->setCheckout($form->getValue("checkout"));
             $object->setItem($form->getValue("item"));
             $object->insert();

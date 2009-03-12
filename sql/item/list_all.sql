@@ -4,7 +4,7 @@ select
     it.c_qty as qty,
     coalesce(iat1.c_value, "[null]") as details1,
     coalesce(iat2.c_value, "[null]") as details2,
-    co.c_title as condition,
+    co.c_title as "condition",
     ty.c_title as type,
     it.c_status
 from [_]item as it

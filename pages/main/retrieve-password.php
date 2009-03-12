@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: retrieve-password.php,v 1.1 2005/03/27 19:53:12 bps7j Exp $
+ * $Id: retrieve-password.php,v 1.2 2009/03/12 03:15:59 pctainto Exp $
  *
  * Purpose: allows a user to enter his/her email address.  The system will email
  * the password to that address.
@@ -26,9 +26,9 @@
 include_once("RetrievePassword.php");
 include_once("member.php");
 
-$user =& new member();
+$user = new member();
 
-$form =& new XMLForm("forms/main/retrieve-password.xml");
+$form = new XMLForm("forms/main/retrieve-password.xml");
 $form->snatch();
 $form->validate();
 

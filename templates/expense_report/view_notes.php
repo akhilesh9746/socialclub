@@ -16,7 +16,7 @@
     <td nowrap>
       <a href="members/member/read/{c_creator}">{c_full_name}</a>
     </td>
-    <td>{status_title}</td>
+    <td>{c_new_status|bitmaskString,'status_id'}</td>
   </tr>{:note}
 </table>
 

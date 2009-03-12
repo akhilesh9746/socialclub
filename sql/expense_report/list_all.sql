@@ -14,3 +14,4 @@ where
     and re.c_deleted <> 1
     and me.c_deleted <> 1
 group by re.c_uid
+order by re.c_created_date DESC

@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:10 bps7j Exp $
+ * $Id: read.php,v 1.2 2009/03/12 03:16:01 pctainto Exp $
  */
 
 include_once("chat_type.php");
@@ -25,11 +25,11 @@ include_once("chat_type.php");
 $template = file_get_contents("templates/chat/read.php");
 
 # Get the chat's owner
-$owner =& new member();
+$owner = new member();
 $owner->select($object->getOwner());
 
 # Get the type of chat number that this is
-$type =& new chat_type();
+$type = new chat_type();
 $type->select($object->getType());
 
 # Insert the type's details

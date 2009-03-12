@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: database_object.php,v 1.6 2005/09/12 01:43:23 bps7j Exp $
+ * $Id: database_object.php,v 1.7 2009/03/12 03:16:00 pctainto Exp $
  */
 
 include_once("DateTime.php");
@@ -558,7 +558,7 @@ class database_object {
         $result = $obj['conn']->query("select * from $cfg[table_prefix]$type "
             . "where $col = $this->c_uid and c_deleted <> 1");
         while ($row = $result->fetchRow()) {
-            $this->children[$type][$row['c_uid']] =& new $type();
+            $this->children[$type][$row['c_uid']] = new $type();
             $this->children[$type][$row['c_uid']]->initFromRow($row);
         }
 

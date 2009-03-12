@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: configuration.php,v 1.2 2005/08/02 03:05:04 bps7j Exp $
+ * $Id: configuration.php,v 1.3 2009/03/12 03:15:59 pctainto Exp $
  */
 
 # Check that the user has correct permissions
@@ -41,7 +41,7 @@ while ($row = $result->fetchRow()) {
         if ($row['c_type'] != "string") {
             $formT = Template::unhide($formT, "typed");
         }
-        $form =& new XmlForm(Template::finalize($formT), true);
+        $form = new XmlForm(Template::finalize($formT), true);
         $form->setValue("val", $row['c_value']);
         $form->snatch();
         $form->validate();

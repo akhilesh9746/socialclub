@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: Text.php,v 1.1 2005/03/27 19:54:12 bps7j Exp $
+ * $Id: Text.php,v 1.2 2009/03/12 03:13:36 pctainto Exp $
  */
 
 include_once("CharacterData.php");
@@ -42,7 +42,7 @@ class Text extends CharacterData {
         // Split the text, create a new node, and insert it after this one
         $afterText = substr($this->data, $offset);
         $this->setData(substr($this->data, $offset));
-        $newChild =& new Text($afterText);
+        $newChild = new Text($afterText);
         return $this->parentNode->insertBefore($newChild, $this->nextSibling);
     } //}}}
 

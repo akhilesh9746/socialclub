@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.4 2005/08/02 03:05:23 bps7j Exp $
+ * $Id: list_all.php,v 1.5 2009/03/12 03:16:01 pctainto Exp $
  */
 
 $res['title'] = "List All Items";
@@ -167,7 +167,7 @@ else {
     # query and template.  Get the attributes that belong to the item type as a
     # guide for this process.
     $queryTemplate = file_get_contents("sql/item/list_all-by-type.sql");
-    $type =& new item_type();
+    $type = new item_type();
     $type->select($crit['type']);
     $res['title'] = "List All Items: " . $type->getTitle();
     $sortExists = false;
@@ -250,7 +250,7 @@ foreach (array("checked_out", "checked_in", "missing") as $stat) {
 }
 
 # Create the form from the template
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 $form->setValue("status", $cfg['status_id']['checked_in']);
 $form->setValue("sort", $crit['sort']);
 $form->snatch();

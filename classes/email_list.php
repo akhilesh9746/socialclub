@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: email_list.php,v 1.2 2005/08/02 02:31:34 bps7j Exp $
+ * $Id: email_list.php,v 1.3 2009/03/12 03:16:00 pctainto Exp $
  *
  * Mailman lists are really stupid with the requirement to have a password.  We
  * auto-generate a random password at subscribe time, then remember it in the DB
@@ -97,7 +97,7 @@ class email_list extends database_object {
         }
 
         # Add the subscription and unsubscription requests
-        $email =& new Email();
+        $email = new Email();
         foreach ($this->unsubscriptionRequests as $subscription) {
             $body .= $subscription->insertIntoTemplate($unsub);
             $subscription->delete(true);
@@ -105,7 +105,7 @@ class email_list extends database_object {
         foreach ($this->subscriptionRequests as $member) {
             if (!$this->isSubscribed($member)) {
                 $password = getRandomString(8);
-                $subscription =& new Subscription();
+                $subscription = new Subscription();
                 $subscription->setOwner($member->getUID());
                 $subscription->setList($this->c_uid);
                 $subscription->setEmail($member->getEmail());

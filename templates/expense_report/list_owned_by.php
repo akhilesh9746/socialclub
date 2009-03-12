@@ -13,7 +13,7 @@
         {c_created_date|_date_format,'m/d/Y'}</a>
     </td>
     <td>{total}</td>
-    <td>{status_title}</td>
+    <td>{c_status|bitmaskString,'status_id'}</td>
   </tr>{:report}
 </table>
 {:SOME}

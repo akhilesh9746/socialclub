@@ -17,16 +17,16 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:22 bps7j Exp $
+ * $Id: read.php,v 1.2 2009/03/12 03:16:01 pctainto Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/answer/read.php");
 
 # Get the member and question associated with the answer
-$question =& new question();
+$question = new question();
 $question->select($object->getQuestion());
-$member =& new member();
+$member = new member();
 $member->select($object->getCreator());
 
 # Plug it all into the templates

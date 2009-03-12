@@ -15,3 +15,4 @@ where
     and es.c_deleted <> 1
     and me.c_deleted <> 1
 group by es.c_uid
+order by es.c_created_date desc

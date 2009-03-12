@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: list_all.php,v 1.2 2005/08/02 03:05:26 bps7j Exp $
+ * $Id: list_all.php,v 1.3 2009/03/12 03:16:02 pctainto Exp $
  */
 
 $res['title'] = "List All Transactions";
@@ -36,7 +36,7 @@ while ($row = $result->fetchRow()) {
 }
 
 # Create the form
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 $form->snatch();
 $template = Template::replace($template, array("FORM" => $form->toString()));
 

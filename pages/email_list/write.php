@@ -17,14 +17,14 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.1 2005/03/27 19:53:25 bps7j Exp $
+ * $Id: write.php,v 1.2 2009/03/12 03:15:58 pctainto Exp $
  */
 
 $template = file_get_contents("templates/email_list/write.php");
 $template = $object->insertIntoTemplate($template);
 
 # Create the form.  Initialize it, then overwrite that with form data.
-$form =& new XmlForm("forms/email_list/write.xml");
+$form = new XmlForm("forms/email_list/write.xml");
 
 $form->setValue("title", $object->getTitle());
 $form->setValue("description", $object->getDescription());

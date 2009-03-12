@@ -26,7 +26,7 @@ out</span>, <span class="missing">missing</span></p>
     <th>Details 1</th>
     <th>Details 2</th>
   </tr>{item:}
-  <tr class="{c_status|bitmaskString,'status_id'}">
+  <tr class="{C_STATUS|bitmaskString,'status_id'}">
     <td class="sortID">
       <a href="members/item/read/{ID}">{ID}</a>
     </td>
@@ -51,7 +51,7 @@ class="checked_out">checked out</span>, <span class="missing">missing</span>.</p
     <th>Condition</th>{header:}
     <th>{c_name}</th>{:header}
   </tr>{item:}
-  <tr class="{c_status|bitmaskString,'status_id'}">
+  <tr class="{C_STATUS|bitmaskString,'status_id'}">
     <td class="sortID">
       <a href="members/item/read/{ID_table}">{ID_table}</a>
     </td>

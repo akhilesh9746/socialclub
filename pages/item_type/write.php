@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.2 2005/08/02 03:05:23 bps7j Exp $
+ * $Id: write.php,v 1.3 2009/03/12 03:15:59 pctainto Exp $
  */
 
 # Create templates
@@ -39,7 +39,7 @@ foreach ($object->getChildren("item_type_feature") as $attr) {
     $formT = Template::block($formT, "OPTION",
         $attr->getVarArray());
 }
-$form =& new XMLForm(Template::finalize($formT), true);
+$form = new XMLForm(Template::finalize($formT), true);
 
 # Put the object's information into the form
 $form->setValue("category", $object->getCategory());

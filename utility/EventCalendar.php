@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  *
- * $Id: EventCalendar.php,v 1.2 2005/08/02 23:45:38 bps7j Exp $
+ * $Id: EventCalendar.php,v 1.3 2009/03/12 03:13:36 pctainto Exp $
  */
 
 class EventCalendar {
@@ -27,7 +27,7 @@ class EventCalendar {
      * like
      * array (
      *   array( // One per day in the range
-     *     "date" => DateTime,
+     *     "date" => DateTimeSC,
      *     "events" => array(
      *       array ("title" => string, "uid" => int)
      *       ...
@@ -38,7 +38,7 @@ class EventCalendar {
      * $fill means whether to expand the "selection" to fill out partial
      * beginning and ending weeks.
      */
-    function getEvents(/*DateTime*/ $start, /*DateTime*/ $end, $fill = false) {
+    function getEvents(/*DateTimeSC*/ $start, /*DateTimeSC*/ $end, $fill = false) {
         global $obj;
         global $cfg;
         $cal = array();
@@ -71,11 +71,11 @@ class EventCalendar {
         # certain not to add adventures to elements in the array that are
         # outside the bounds of the dates we want to show.
         while ($row = $result->fetchRow()) {
-            $st =& new DateTime(substr($row['c_start_date'], 0, 10));
+            $st = new DateTimeSC(substr($row['c_start_date'], 0, 10));
             if ($st->compareTo($start) < 0) {
-                $st =& new DateTime($start->toString("Y-m-d"));
+                $st = new DateTimeSC($start->toString("Y-m-d"));
             }
-            $et =& new DateTime(substr($row['c_end_date'], 0, 10));
+            $et = new DateTimeSC(substr($row['c_end_date'], 0, 10));
             while ($st->compareTo($et) <= 0 and $st->compareTo($end) <= 0) {
                 $cal[$st->toString("Y-m-d")]['events'][] = array (
                     "title" => $row['c_title'],
@@ -93,7 +93,7 @@ class EventCalendar {
     function generateMonthView($start, $size,
         $showEvents = true, $abbrev = false, $fill = false)
     {
-        $end = new DateTime($start->toString("Y-m-t"));
+        $end = new DateTimeSC($start->toString("Y-m-t"));
         # figure out what the next and last months should be
         $next = $start->addMonths(1);
         $last = $start->addMonths(-1);
@@ -135,7 +135,7 @@ class EventCalendar {
             if ($arr['date']->getDayOfWeek() % 7 == 0 && $started) {
                 $result .= "</tr><tr height=$size>";
             }
-            if ($arr['date']->compareTo(new DateTime()) >= 0) {
+            if ($arr['date']->compareTo(new DateTimeSC()) >= 0) {
                 $past = false;
             }
             $started = true;

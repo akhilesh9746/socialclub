@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: optout.php,v 1.3 2005/08/04 21:24:16 bps7j Exp $
+ * $Id: optout.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
  */
 
 $template = file_get_contents("templates/member/optout.php");
@@ -68,7 +68,7 @@ foreach (array_keys($cats) as $key) {
         && $posted
         && !in_array($key, $checkboxes))
     {
-        $opt =& new optout();
+        $opt = new optout();
         $opt->setMember($cfg['object']);
         $opt->setCategory($key);
         $opt->insert();

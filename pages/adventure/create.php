@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.4 2005/09/12 01:39:02 bps7j Exp $
+ * $Id: create.php,v 1.5 2009/03/12 03:15:57 pctainto Exp $
  */
 
 include_once("location.php");
@@ -67,12 +67,13 @@ else {
                 array_change_key_case($row, 1)
                 + array("WIDTH" => (int) (100 / $cols)));
         }
+
         $formTemplate = Template::replace($formTemplate,
             array("ACTIVITY_ROW" => $thisRow), true);
     }
 
     # Turn the form template into a form and XML-parse it
-    $form =& new XMLForm(Template::finalize($formTemplate), true);
+    $form = new XMLForm(Template::finalize($formTemplate), true);
     $form->snatch();
     $form->validate();
 
@@ -86,7 +87,7 @@ else {
         }
         else {
             # Save the adventure in the database
-            $object =& new adventure();
+            $object = new adventure();
             $object->setFee($form->getValue("fee"));
             $object->setTitle($form->getValue("title"));
             $object->setDescription($form->getValue("description"));
@@ -105,7 +106,7 @@ else {
             # Create and save adventure-activity associations
             foreach ($form->getValue("activity") as $uid => $selected) {
                 if ($selected) {
-                    $advAct =& new adventure_activity();
+                    $advAct = new adventure_activity();
                     $advAct->setAdventure($object->getUID());
                     $advAct->setActivity($uid);
                     $advAct->insert();

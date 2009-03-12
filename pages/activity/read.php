@@ -17,13 +17,13 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: read.php,v 1.1 2005/03/27 19:53:31 bps7j Exp $
+ * $Id: read.php,v 1.2 2009/03/12 03:16:02 pctainto Exp $
  */
 
 # Create templates
 $template = file_get_contents("templates/activity/read.php");
 
-$cat =& new activity_category();
+$cat = new activity_category();
 $cat->select($object->getCategory());
 $template = Template::replace($template, array("cat_title" => $cat->getTitle()));
 

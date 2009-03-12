@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: write.php,v 1.4 2005/09/12 01:39:02 bps7j Exp $
+ * $Id: write.php,v 1.5 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("location.php");
@@ -54,7 +54,7 @@ while ($row = $result->fetchRow()) {
 }
 
 # Turn the form template into a form and XML-parse it
-$form =& new XMLForm(Template::finalize($formTemplate), true);
+$form = new XMLForm(Template::finalize($formTemplate), true);
 
 # Put the adventure's information into the form
 $form->setValue("title", $object->getTitle());

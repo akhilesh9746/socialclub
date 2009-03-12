@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: create.php,v 1.2 2005/08/02 03:05:24 bps7j Exp $
+ * $Id: create.php,v 1.3 2009/03/12 03:15:58 pctainto Exp $
  */
 
 include_once("location.php");
@@ -52,13 +52,13 @@ for ($i = 0; $i < $result->numRows();) {
         array("ACTIVITY_ROW" => $thisRow), true);
 }
 
-$form =& new XmlForm(Template::finalize($formTemplate), true);
+$form = new XmlForm(Template::finalize($formTemplate), true);
 $form->snatch();
 $form->validate();
 
 if ($form->isValid()) {
     # Create the location
-    $object =& new location();
+    $object = new location();
     $object->setTitle($form->getValue("title"));
     $object->setDescription($form->getValue("description"));
     $object->setZipCode($form->getValue("zip-code"));
@@ -67,7 +67,7 @@ if ($form->isValid()) {
     # Create location/activity associations
     foreach($form->getValue("activity") as $uid => $checked) {
         if ($checked) {
-            $locAct =& new location_activity();
+            $locAct = new location_activity();
             $locAct->setLocation($object->getUID());
             $locAct->setActivity($uid);
             $locAct->insert();

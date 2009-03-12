@@ -17,22 +17,22 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: calendar.php,v 1.1 2005/03/27 19:53:07 bps7j Exp $
+ * $Id: calendar.php,v 1.2 2009/03/12 03:15:58 pctainto Exp $
  * Purpose: this is the website's front page.
  */
 
 include_once("includes/authorize.php");
 include_once("EventCalendar.php");
 
-$start = new DateTime(date("Y-m") . "-01");
-$end = new DateTime(date("Y-m") . date("-t"));
+$start = new DateTimeSC(date("Y-m") . "-01");
+$end = new DateTimeSC(date("Y-m") . date("-t"));
 
 # If there's query parameters to show a different date, use it
 if (isset($_GET['date']) 
     && preg_match('/^\d\d\d\d-\d\d-\d\d$/', $_GET['date']))
 {
-    $start = new DateTime(date("Y-m", strtotime($_GET['date'])) . "-01");
-    $end = new DateTime($start->toString("Y-m") . $start->toString("-t"));
+    $start = new DateTimeSC(date("Y-m", strtotime($_GET['date'])) . "-01");
+    $end = new DateTimeSC($start->toString("Y-m") . $start->toString("-t"));
 }
 
 $res['title'] = "Calendar of Events for " . $start->toString("F Y");
