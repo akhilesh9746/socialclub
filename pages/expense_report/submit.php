@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: submit.php,v 1.4 2006/03/27 03:46:25 bps7j Exp $
+ * $Id: submit.php,v 1.5 2009/03/12 04:29:17 pctainto Exp $
  */
 
 require_once("MassEmail.php");
@@ -48,9 +48,7 @@ MassEmail::sendMassEmail(
         . "$cfg[site_url]$cfg[base_url]"
         . "/members/expense_report/read/$cfg[object]",
     0,
-    $cfg['group_id']['treasurer'],
-    1
-);
+    $cfg['group_id']['treasurer']);
 
 redirect("$cfg[base_url]/members/expense_report/read/$cfg[object]");
 
