@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: setup.php,v 1.8 2009/03/12 03:15:58 pctainto Exp $
+ * $Id: setup.php,v 1.9 2009/03/12 03:21:14 pctainto Exp $
  *
  * Create the variables and stuff the individual pages need, including
  * setting up error handling and global variables.
@@ -76,7 +76,7 @@ $cfg['error_types'] = array(
 	4096 => "E_RECOVERABLE_ERROR",
 	8192 => "E_DEPRECATED",
 	16384 => "E_USER_DEPRECATED");
-error_reporting(E_ALL|E_STRICT|E_DEPRECATED|E_RECOVERABLE_ERROR);
+error_reporting(E_ALL);
 
 # Define the levels of errors that I want to cause a webmaster email or log
 define("ERROR_EMAILING", E_ERROR | E_WARNING | E_PARSE | E_CORE_ERROR
