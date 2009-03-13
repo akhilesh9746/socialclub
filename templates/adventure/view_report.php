@@ -61,7 +61,7 @@ function enableForm(form) {
     <td>
       <input type="radio" class="compact" name="object" value="{C_UID}" onClick="enableForm(this.form)">
     </td>
-    <td>{c_status|bitmaskString,'status_id'}</td>
+    <td>{C_STATUS}</td>
     <td>
       <a href="members/member/read/{C_MEMBER}" title="View details for this member">{C_FULL_NAME}</a>
     </td>
