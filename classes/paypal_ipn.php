@@ -6,6 +6,7 @@ class paypal_ipn {
 	var $timeout;
 
 	var $error_email;
+	var $email_headers;
 	
 	function paypal_ipn($paypal_post_vars) {
 		$this->paypal_post_vars = $paypal_post_vars;
@@ -13,19 +14,19 @@ class paypal_ipn {
 	}
 
 	function send_response() {
-		$fp = @fsockopen( "www.paypal.com", 80, &$errno, &$errstr, 120 ); 
+		$fp = fsockopen( "www.paypal.com", 80, $errno, $errstr, 120 ); 
 
 		if (!$fp) { 
-			$this->error_out("PHP fsockopen() error: " . $errstr , "");
+			$this->error_out("PHP fsockopen() error: " . $errstr);
 		} else {
 			foreach($this->paypal_post_vars AS $key => $value) {
-				if (@get_magic_quotes_gpc()) {
+				if (get_magic_quotes_gpc()) {
 					$value = stripslashes($value);
 				}
 				$values[] = "$key" . "=" . urlencode($value);
 			}
 
-			$response = @implode("&", $values);
+			$response = implode("&", $values);
 			$response .= "&cmd=_notify-validate";
 
 			fputs( $fp, "POST /cgi-bin/webscr HTTP/1.0\r\n" ); 
@@ -42,7 +43,7 @@ class paypal_ipn {
 				$this->paypal_response .= fgets( $fp, 1024 ); 
 
 				if ($this->send_time < time() - $this->timeout) {
-					$this->error_out("Timed out waiting for a response from PayPal. ($this->timeout seconds)" , "");
+					$this->error_out("Timed out waiting for a response from PayPal. ($this->timeout seconds)");
 				}
 			}
 
@@ -63,7 +64,7 @@ class paypal_ipn {
 		return $this->paypal_post_vars['payment_status'];
 	}
 
-	function error_out($message, $em_headers) {
+	function error_out($message) {
 
 		$date = date("D M j G:i:s T Y", time());
 		$message .= "\n\nThe following data was received from PayPal:\n\n";
@@ -72,7 +73,7 @@ class paypal_ipn {
 		while( @list($key,$value) = @each($this->paypal_post_vars)) {
 			$message .= $key . ':' . " \t$value\n";
 		}
-		mail($this->error_email, "[$date] paypay_ipn notification", $message, $em_headers);
+		mail($this->error_email, "[$date] paypay_ipn notification", $message, $this->email_headers);
 
 	}
 } 
