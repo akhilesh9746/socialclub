@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: payment.php,v 1.1 2009/11/14 20:15:39 pctainto Exp $
+ * $Id: payment.php,v 1.2 2009/11/14 22:13:10 pctainto Exp $
  */
 
 include_once("database_object.php");
@@ -59,32 +59,32 @@ class payment extends database_object {
         $this->database_object();
     } //}}}
     
-    function intialize($vars) {
-    	setPayerId($vars['payer_id']);
-    	setPaymentDate($vars['payment_date']);
-    	setTxnId($vars['txn_id']);
-    	setFirstName($vars['first_name']);
-    	setLastName($vars['last_name']);
-    	setPayerEmail($vars['payer_email']);
-    	setPayerStatus($vars['payer_status']);
-    	setPaymentType($vars['payment_type']);
-    	setMemo($vars['memo']);
-    	setItemName($vars['item_name']);
-    	setItemNumber($vars['item_number']);
-    	setQuantity($vars['quantity']);
-    	setMcGross($vars['mc_gross']);
-    	setMcCurrenct($vars['mc_currency']);
-    	setAddressName($vars['address_name']);
-    	setAddressStreet($vars['address_street']);
-    	setAddressCity($vars['address_city']);
-    	setAddressState($vars['address_state']);
-    	setAddressZip($vars['address_zip']);
-    	setAddressCountry($vars['address_country']);
-    	setPayerBusinessName($vars['payer_business_name']);
-    	setPaymentStatus($vars['payment_status']);
-    	setPendingReason($vars['pending_reason']);
-    	setReasonCode($vars['reason_code']);
-    	setTxnType($vars['txn_type']);
+    function initialize($vars) {
+    	$this->setPayerId($vars['payer_id']);
+    	$this->setPaymentDate($vars['payment_date']);
+    	$this->setTxnId($vars['txn_id']);
+    	$this->setFirstName($vars['first_name']);
+    	$this->setLastName($vars['last_name']);
+    	$this->setPayerEmail($vars['payer_email']);
+    	$this->setPayerStatus($vars['payer_status']);
+    	$this->setPaymentType($vars['payment_type']);
+    	$this->setMemo($vars['memo']);
+    	$this->setItemName($vars['item_name1']);
+    	$this->setItemNumber($vars['item_number1']);
+    	$this->setQuantity($vars['quantity1']);
+    	$this->setMcGross($vars['mc_gross_1']);
+    	$this->setMcCurrency($vars['mc_currency']);
+    	$this->setAddressName($vars['address_name']);
+    	$this->setAddressStreet($vars['address_street']);
+    	$this->setAddressCity($vars['address_city']);
+    	$this->setAddressState($vars['address_state']);
+    	$this->setAddressZip($vars['address_zip']);
+    	$this->setAddressCountry($vars['address_country']);
+    	$this->setPayerBusinessName($vars['payer_business_name']);
+    	$this->setPaymentStatus($vars['payment_status']);
+    	$this->setPendingReason($vars['pending_reason']);
+    	$this->setReasonCode($vars['reason_code']);
+    	$this->setTxnType($vars['txn_type']);
     }
     
     function getPayerId() {
@@ -167,6 +167,14 @@ class payment extends database_object {
     	$this->c_item_name = $value;
     }
     
+    function getItemNumber() {
+    	return $this->c_item_number;
+    }
+    
+    function setItemNumber($value) {
+    	$this->c_item_number = $value;
+    }
+
     function getQuantity() {
     	return $this->c_quantity;
     }

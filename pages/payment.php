@@ -1,5 +1,9 @@
 <?
 
+include_once("paypal_ipn.php");
+include_once("membership.php");
+include_once("member.php");
+include_once("payment.php");
 // Adapted from a script by robin kohli (robin@19.5degs.com) for 19.5 Degrees (http://www.19.5degs.com)
 
 // email header
@@ -9,7 +13,6 @@ $em_headers .= "Return-Path: " . $cfg['paypal_email'] . "\n";
 $em_headers .= "Organization: " . $cfg['club_name'] . "\n";
 $em_headers .= "X-Priority: 3\n";
 
-include_once("paypal_ipn.php");
 
 $paypal_info = $HTTP_POST_VARS;
 $paypal_ipn = new paypal_ipn($paypal_info);
@@ -38,7 +41,7 @@ switch( $paypal_ipn->get_payment_status() )
 
 	case 'Completed':
 		$membership = new membership();
-		$membership->select($paypal_ipn->paypal_post_vars['item_number']);
+		$membership->select($paypal_ipn->paypal_post_vars['item_number1']);
 	
 		if ($paypal_ipn->paypal_post_vars['txn_type']=="reversal") {
 			$reason_code=$paypal_ipn->paypal_post_vars['reason_code'];
@@ -47,13 +50,13 @@ switch( $paypal_ipn->get_payment_status() )
 		} else {
 					
 			if (
-				(strtolower(trim($paypal_ipn->paypal_post_vars['business'])) == $cfg['paypal_email']) && 
+				(strtolower(trim($paypal_ipn->paypal_post_vars['receiver_email'])) == $cfg['paypal_email']) && 
 				(trim($paypal_ipn->paypal_post_vars['mc_currency'])=="USD") && 
-				(trim($paypal_ipn->paypal_post_vars['mc_gross']) == $membership->getTotalCost() + $cfg['paypal_handling_cost']) 
+				(((float) trim($paypal_ipn->paypal_post_vars['mc_gross_1'])) == $membership->getTotalCost() + $cfg['paypal_handling_cost']) 
 				) {
 				$payment = new payment();
-				$payment.initialize($paypal_ipn->paypal_post_vars);
-				$payment_id = $payment.insert();
+				$payment->initialize($paypal_ipn->paypal_post_vars);
+				$payment_id = $payment->insert();
 				
 				if ( $payment_id ) {
 					#Mark the membershp as paid
@@ -62,16 +65,15 @@ switch( $paypal_ipn->get_payment_status() )
 		    		#Add a note to the member that they paid
 		    		$member = new member();
 					$member->select($membership->getMember());
-					$member->addNote("Paid via paypal for membership " . $membership->getUID() . " ($" . $membership.getTotalCost() + $cfg['paypal_handling_cost'] . ")");
+					$member->addNote("Paid via paypal for membership " . $membership->getUID() . " ($" .  number_format(($membership->getTotalCost() + $cfg['paypal_handling_cost']), 2, ".", ",") . ")");
 					
-					$paypal_ipn->error_out("This was a successful transaction");			
-					// you should add your code for sending out the download link to your customer at $payer_email here.
+					$paypal_ipn->error_out("This was a successful transaction", "SUCCESS");
 
 				} else {
 					$paypal_ipn->error_out("This was a duplicate transaction");
 				} 
 			} else {
-				$paypal_ipn->error_out("Someone attempted a sale using a manipulated URL");
+				$paypal_ipn->error_out("The data for the amount paid did not match our records");
 			}
 		}
 		break;
