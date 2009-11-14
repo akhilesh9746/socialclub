@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: optout.php,v 1.1 2005/03/27 19:54:23 bps7j Exp $
+ * $Id: optout.php,v 1.2 2009/11/14 22:51:10 pctainto Exp $
  */
 
 include_once("database_object.php");
@@ -26,6 +26,7 @@ class optout extends database_object {
     // {{{declarations
     var $c_member = null;
     var $c_category = null;
+    var $c_category_type = null;
     // }}}
 
     /* {{{constructor
@@ -62,6 +63,37 @@ class optout extends database_object {
     function setCategory($value) {
         $this->c_category = $value;
     } //}}}
+
+    /* {{{getCategoryType
+     *
+     */
+    function getCategoryType() {
+        return $this->c_category_type;
+    } //}}}
+
+    /* {{{setCategoryType
+     *
+     */
+    function setCategoryType($value) {
+        $this->c_category_type = $value;
+    } //}}}
+
+    /* {{{getCategoryTypeAndID
+     *
+     */
+    function getCategoryTypeAndID() {
+        return $this->getCategoryType() . "_" . $this->getCategory();
+    } //}}}
+
+    /* {{{setCategoryTypeAndID
+     *
+     */
+    function setCategoryTypeAndID($value) {
+        preg_match("/([^_]+)_([^_]+)/",$value,$matches);
+        $this->setCategoryType($matches{1});
+        $this->setCategory($matches{2});
+    } //}}}
+
 
 }
 ?>
