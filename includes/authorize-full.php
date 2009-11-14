@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: authorize-full.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
+ * $Id: authorize-full.php,v 1.5 2009/11/14 22:27:45 pctainto Exp $
  */
 
 # If the browser sent auth, we can authenticate against the database.  The user
@@ -30,6 +30,7 @@ if ($cfg['auth']['user'] && $cfg['auth']['pass']) {
     $cmd->loadQuery("sql/misc/login-full.sql");
     $cmd->addParameter("active", $cfg['status_id']['active']);
     $cmd->addParameter("inactive", $cfg['status_id']['inactive']);
+    $cmd->addParameter("paid", $cfg['status_id']['paid']);
     $cmd->addParameter("email", $cfg['auth']['user']);
     $cmd->addParameter("password", $cfg['auth']['pass']);
     $result = $cmd->executeReader();

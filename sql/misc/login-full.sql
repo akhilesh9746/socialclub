@@ -26,7 +26,10 @@ select
     -- memberships that are either inactive or the begin date has not yet
     -- arrived.
     sum(if(
-            ms.c_status & {inactive,int} = {inactive,int}
+            (
+                ms.c_status & {inactive,int} = {inactive,int}
+                or ms.c_status & {paid,int} = {paid,int}
+            )
             and (
                 ms.c_begin_date is null
                 or ms.c_begin_date > current_date
