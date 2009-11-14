@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: optout.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
+ * $Id: optout.php,v 1.5 2009/11/14 22:55:11 pctainto Exp $
  */
 
 $template = file_get_contents("templates/member/optout.php");
@@ -25,19 +25,17 @@ $template = file_get_contents("templates/member/optout.php");
 # Get a list of all activity categories
 $cats = array();
 $cmd = $obj['conn']->createCommand();
-$cmd->loadQuery("sql/generic-select.sql");
-$cmd->addParameter("table", "[_]activity_category ");
-$cmd->addParameter("orderby", "c_uid");
+$cmd->loadQuery("sql/member/select-optout.sql");
 $result = $cmd->executeReader();
 while ($row = $result->fetchRow()) {
-    $cats[$row['c_uid']] = $row;
+    $cats[$row['c_type_and_id']] = $row;
 }
 
 # Get a list of the opts and re-key them by CATEGORY not by the c_uid
 $opts = array();
 foreach ($object->getChildren("optout", "c_member") as $key => $opt) {
     # Don't assign by reference -- subtle chaos ensues.
-    $opts[$opt->getCategory()] = $opt;
+    $opts[$opt->getCategoryTypeAndID()] = $opt;
 }
 
 # Get an array of checkboxes that the user checked
@@ -70,7 +68,7 @@ foreach (array_keys($cats) as $key) {
     {
         $opt = new optout();
         $opt->setMember($cfg['object']);
-        $opt->setCategory($key);
+        $opt->setCategoryTypeAndID($key);
         $opt->insert();
         $dirty = TRUE;
         $exists = true;
