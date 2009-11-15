@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: join.php,v 1.2 2009/03/12 03:15:58 pctainto Exp $
+ * $Id: join.php,v 1.3 2009/11/15 14:49:33 pctainto Exp $
  *
  * Purpose: lets a leader join a waitlisted attendee onto an adventure.  Follows 
  * the same logic as the process for joining from the waitlist...
@@ -36,17 +36,7 @@ $template = file_get_contents("templates/attendee/join.php");
 $template = $member->insertIntoTemplate(
     $adventure->insertIntoTemplate($template));
 
-$error = false;
-
-# Ensure that the person joining the attendee is either the leader
-# of the trip or is an officer (or root)
-if (!isset($cfg['user']) || 
-    ($cfg['user'] != $adventure->getOwner() &&
-     (!isset($cfg['group_id']['officer']) || !$current_user->isInGroup($cfg['group_id']['officer'])) &&
-     !$current_user->isRootUser())) {
-	$template = Template::unhide($template, "CANTJOIN");
-	$error = true;
-}
+$error = currentUserCanJoinAttendee($adventure);
 
 # Ensure that the member isn't already attending this adventure
 if ($object->getStatus() != $cfg['status_id']['waitlisted']) {
