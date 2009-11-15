@@ -12,6 +12,15 @@
       <ul>
       <li>Please <a href="members/main/feedback">give us feedback</a></li>
       <li>You can <a href="members/main/email">email the club list</a></li>
+{APPLICATIONS:}
+      <li>We're accepting officer applications! <a href="members/application/create">Apply today!</a></li>
+{:APPLICATIONS}
+{RECENT_APPS_SINGLE:}
+      <li>There is a recent application! <a href="members/application/list_all">Check it out!</a></li>
+{:RECENT_APPS_SINGLE}
+{RECENT_APPS_MULTIPLE:}
+      <li>There are {NUM_APPS} recent applications!  <a href="members/application/list_all">Check 'em out!</a></li>
+{:RECENT_APPS_MULTIPLE}
       </ul>
     </td>
 
