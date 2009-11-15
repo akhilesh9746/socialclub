@@ -16,7 +16,7 @@ particular category will be sent under the "Everything Else" category.  Click
 <p><b>I want to receive emails about...</b></p>
 
 {optout:}
-<input type="checkbox" name="cats[]" value="{c_uid}" id="cat{c_uid}" {CHECKED}>
+<input type="checkbox" name="cats[]" value="{c_type_and_id}" id="cat{c_type_and_id}" {CHECKED}>
 <label for="cat{c_uid}">{c_title}</label>
 <br>
 {:optout}
