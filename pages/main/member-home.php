@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: member-home.php,v 1.4 2009/03/12 03:15:59 pctainto Exp $
+ * $Id: member-home.php,v 1.5 2009/11/15 23:10:01 pctainto Exp $
  *
  * Purpose: the member homepage that members see after they log in.
  */
@@ -46,6 +46,33 @@ if (($chat = $obj['user']->getPrimaryChat()) != null) {
         + array("C_ABBREVIATION" => $type->getAbbreviation()), 
         false);
 }
+
+# Add a message if the officers are accepting applications and the user
+# hasn't applied in the past 2 months
+$days = 60;
+$cmd = $obj['conn']->createCommand();
+$cmd->loadQuery("sql/application/select-recent-applications.sql");
+$cmd->addParameter("days", $days);
+
+if (isset($cfg['taking_applications']) && $cfg['taking_applications'] == true) {
+    if ($obj['user']->isInGroup($cfg['group_id']['officer'])) {
+        $num_recent = $cmd->executeScalar();
+        if ($num_recent > 1) {
+            $wrapper = Template::unhide($wrapper, "RECENT_APPS_MULTIPLE");
+            $wrapper = Template::replace($wrapper, array("NUM_APPS"=>$num_recent));
+        } else if ($num_recent == 1) {
+            $wrapper = Template::unhide($wrapper, "RECENT_APPS_SINGLE");
+        }
+    } else {
+        $cmd->addParameter("member", $cfg['user']);
+        if (($num_recent = $cmd->executeScalar()) == 0) {
+            $wrapper = Template::unhide($wrapper, "APPLICATIONS");
+        }
+    }
+}    
+
+$cmd = $obj['conn']->createCommand();
+
 
 # Add a message if the member needs to renew within $days days
 $days = 30;
