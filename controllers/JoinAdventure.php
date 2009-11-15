@@ -17,7 +17,7 @@
  * this program; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307  USA
  * 
- * $Id: JoinAdventure.php,v 1.4 2009/03/12 03:15:58 pctainto Exp $
+ * $Id: JoinAdventure.php,v 1.5 2009/11/15 14:50:13 pctainto Exp $
  */
 // {{{require statements
 include_once("Email.php");
@@ -233,5 +233,19 @@ class JoinAdventure {
         return false;
     } //}}}
 
+    /* {{{currentUserCanJoinAttendee
+     */
+    function currentUserCanJoinAttendee(&$adventure, &$cfg) {
+        $current_user = new member();
+        $current_user->select($cfg[user]);
+        # Ensure that the person joining the attendee is either the leader
+        # of the trip or is an officer (or root)
+        if ($cfg[user] != $adventure->getOwner() &&
+            (!isset($cfg['group_id']['officer']) || !$current_user->isInGroup($cfg['group_id']['officer'])) &&
+             !$current_user->isRootUser()) {
+            return false;
+        }
+        return true;
+    }    
 }
 ?>
